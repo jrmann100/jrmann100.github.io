@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Routing</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body>div.spacer {
+            flex-grow: 1;
+        }
+
+        header,
+        footer {
+            background-color: #BBB;
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        header nav>ul {
+            display: table;
+            border-collapse: collapse;
+            list-style: none;
+        }
+
+        header nav>ul>li {
+            display: table-cell;
+            padding: 0 1rem;
+        }
+
+        header nav>ul>li:not(:first-of-type) {
+            border-left: 0.1px solid black;
+        }
+
+        header nav>ul>li:not(:last-of-type) {
+            border-right: 0.1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href='/'>Home</a>
+                </li>
+                <li>
+                    <a href='page1'>Page 1</a>
+                </li>
+                <li>
+                    <a href='page2'>Page 2</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div style="height: 3rem;"></div>
+    <main>
+    </main>
+    <script>
+        const main = document.querySelector("main");
+
+        async function load(path) {
+            if (path === "/") {
+                path = "/index";
+            }
+            const req = await fetch("/fragments" + path + ".html.inc");
+            const body = await req.text();
+            // const fragment = new DOMParser().parseFromString(body, 'text/html');
+            const template = document.createElement("template");
+            template.innerHTML = body;
+            const fragment = template.content;
+            while (main.firstChild) {
+                main.firstChild.remove();
+            }
+            dynamify(fragment);
+            fragment.querySelectorAll("*").forEach(el=>el.dataset["isFragment"] = "yes")
+            main.append(fragment);
+        }
+
+        function dynamify(parent) {
+            parent.querySelectorAll("a").forEach(el => {
+                el.addEventListener("click", async ev => {
+                    ev.preventDefault();
+                    load(new URL(el.href).pathname);
+                })
+            })
+        }
+
+        dynamify(document.body);
+
+        if (document.location.pathname == '/') {
+            load("/index");
+        }
+
+        // debug
+        if (document.location.pathname == '/layout.html') {
+            load("/index");
+        }
+    </script>
+    <div class="spacer"></div>
+    <footer>
+        footer here
+    </footer>
+</body>
+
+</html>
