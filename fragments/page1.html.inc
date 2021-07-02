@@ -1,3 +1,6 @@
+<title>
+    Routing | Page 1
+</title>
 <style>
     main {
         font-family: 'Arial', serif;
@@ -8,5 +11,5 @@
     You made it to page 1. Congrats!
 </p>
 <p>
-    You can go <a href="/index">back to the homepage</a> if you want now&hellip;
+    You can go back to the <a href="/index"></a>homepage</a> if you'd like&hellip;
 </p>

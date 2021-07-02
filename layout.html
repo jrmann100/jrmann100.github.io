@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    <title>Routing</title>
     <style>
         html,
         body {
@@ -65,50 +64,12 @@
                 </li>
             </ul>
         </nav>
+        You have navigated <span id="count">0</span> time(s).
     </header>
     <div style="height: 3rem;"></div>
     <main>
     </main>
-    <script>
-        const main = document.querySelector("main");
-
-        async function load(path) {
-            if (path === "/") {
-                path = "/index";
-            }
-            const req = await fetch("/fragments" + path + ".html.inc");
-            const body = await req.text();
-            // const fragment = new DOMParser().parseFromString(body, 'text/html');
-            const template = document.createElement("template");
-            template.innerHTML = body;
-            const fragment = template.content;
-            while (main.firstChild) {
-                main.firstChild.remove();
-            }
-            dynamify(fragment);
-            fragment.querySelectorAll("*").forEach(el=>el.dataset["isFragment"] = "yes")
-            main.append(fragment);
-        }
-
-        function dynamify(parent) {
-            parent.querySelectorAll("a").forEach(el => {
-                el.addEventListener("click", async ev => {
-                    ev.preventDefault();
-                    load(new URL(el.href).pathname);
-                })
-            })
-        }
-
-        dynamify(document.body);
-
-        if (document.location.pathname == '/') {
-            load("/index");
-        }
-
-        // debug
-        if (document.location.pathname == '/layout.html') {
-            load("/index");
-        }
+    <script type="module" src="/static/layout.js">
     </script>
     <div class="spacer"></div>
     <footer>

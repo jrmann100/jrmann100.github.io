@@ -1,6 +1,12 @@
+<title>
+    Routing | Page 2
+</title>
 <style>
     main {
         font-family: 'Arial', serif;
+    }
+    a.secret {
+        opacity: 0.1;
     }
 </style>
 <h1>Page 2</h1>
@@ -8,5 +14,6 @@
     You made it to page 2. Such dedication!
 </p>
 <p>
-    You can go <a href="/index">back to the homepage</a> if you want now&hellip;
+    You can go back to the <a href="/index"></a>homepage</a> if you'd like&hellip;
 </p>
+<a class="secret" href="page2/subpage">secret subpage link</a>
