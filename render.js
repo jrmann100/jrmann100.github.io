@@ -2,7 +2,7 @@ const fs = require("fs.promises");
 const path = require("path");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const publicLocation = "public"
+const publicLocation = "docs"
 const outputLocation = path.join(publicLocation, "build"); // maybe commander.js
 const fragmentsLocation = path.join(publicLocation, "fragments");
 
