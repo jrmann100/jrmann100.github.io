@@ -1,0 +1,43 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body>div.spacer {
+    flex-grow: 1;
+}
+
+header,
+footer {
+    background-color: #BBB;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+header nav>ul {
+    display: table;
+    border-collapse: collapse;
+    list-style: none;
+}
+
+header nav>ul>li {
+    display: table-cell;
+    padding: 0 1rem;
+}
+
+header nav>ul>li:not(:first-of-type) {
+    border-left: 0.1px solid black;
+}
+
+header nav>ul>li:not(:last-of-type) {
+    border-right: 0.1px solid black;
+}

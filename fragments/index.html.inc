@@ -2,10 +2,10 @@
     Routing | Home
 </title>
 <style>
-        a, h2 {
+    main#layout h2 {
         color: orange;
     }
-    </style>
+</style>
 <h1>Jordan's Routing</h1>
 <p>
     Please enjoy your visit!

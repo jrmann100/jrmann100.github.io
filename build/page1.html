@@ -1,22 +1,25 @@
-<!DOCTYPE html>
-<html>
-
-<head>
+<!DOCTYPE html><html><head>
     <link rel="stylesheet" href="/static/layout.css">
-</head>
+<title data-is-fragment="yes">
+    Routing | Page 1
+</title><style data-is-fragment="yes">
+    main#layout {
+        font-family: 'Arial', serif;
+    }
+</style></head>
 
 <body>
     <header>
         <nav>
             <ul>
                 <li>
-                    <a href='/'>Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li>
-                    <a href='page1'>Page 1</a>
+                    <a href="page1">Page 1</a>
                 </li>
                 <li>
-                    <a href='page2'>Page 2</a>
+                    <a href="page2">Page 2</a>
                 </li>
             </ul>
         </nav>
@@ -24,13 +27,17 @@
     </header>
     <div style="height: 3rem;"></div>
     <main id="layout">
-    </main>
+    <h1>Page 1</h1><p>
+    You made it to page 1. Congrats!
+</p><p>
+    You can go back to the <a href="/index"></a>homepage if you'd like…
+</p></main>
     <script type="module" src="/static/layout.js">
     </script>
     <div class="spacer"></div>
     <footer>
         footer here
     </footer>
-</body>
 
-</html>
+
+</body></html>

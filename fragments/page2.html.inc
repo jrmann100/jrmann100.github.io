@@ -2,10 +2,10 @@
     Routing | Page 2
 </title>
 <style>
-    main {
+    main#layout {
         font-family: 'Arial', serif;
     }
-    a.secret {
+    main#layout a.secret {
         opacity: 0.1;
     }
 </style>
