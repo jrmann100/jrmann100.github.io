@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head>
+    <link rel="stylesheet" href="/static/layout.css">
+<title data-is-fragment="yes">
+    Routing | Page 2
+</title><style data-is-fragment="yes">
+    main#layout {
+        font-family: 'Arial', serif;
+    }
+    main#layout a.secret {
+        opacity: 0.1;
+    }
+</style></head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/page1">Page 1</a>
+                </li>
+                <li>
+                    <a href="/page2">Page 2</a>
+                </li>
+            </ul>
+        </nav>
+        You have navigated <span id="count">0</span> time(s).
+    </header>
+    <div style="height: 3rem;"></div>
+    <main id="layout">
+    
+<!-- This content is server-side-rendered. -->
+<h1>Page 2</h1><p>
+    You made it to page 2. Such dedication!
+</p><p>
+    You can go back to the <a href="/index"></a>homepage if you'd like…
+</p><a class="secret" href="page2/subpage">secret subpage link</a></main>
+    <script type="module" src="/static/layout.js">
+    </script>
+    <div class="spacer"></div>
+    <footer>
+        footer here
+    </footer>
+
+
+</body></html>

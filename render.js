@@ -2,24 +2,28 @@ const fs = require("fs.promises");
 const path = require("path");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const outputLocation = "build"; // maybe commander.js
+const publicLocation = "public"
+const outputLocation = path.join(publicLocation, "build"); // maybe commander.js
+const fragmentsLocation = path.join(publicLocation, "fragments");
 
-(async () => {
+(async function main() {
     const templateString = await fs.readFile(path.join(__dirname, "layout.html"), "utf8");
-    // const fragment = await fs.readFile(path.join(__dirname, "fragments/index.html.inc"), "utf8");
 
+    // Create and clean build folder.
     try { await fs.access(outputLocation); } catch (e) {
-        await fs.mkdir("build")
+        await fs.mkdir(outputLocation, { recursive: true })
     }
 
-    const fragments = (await tree("fragments"))["fragments"];
-    // await fs.rm(path.join(__dirname, outputLocation), {recursive: true}); // this is dangerous!
+    const fragments = (await tree(fragmentsLocation))["fragments"];
 
     const buildItems = await fs.readdir(path.join(__dirname, outputLocation));
+    // effectively rm build/*. this is dangerous!!!
     await Promise.all(buildItems.map(async item => await fs.rm(path.join(__dirname, outputLocation, item), { recursive: true })));
+
+    // Render and populate build folder.
     await transformTree(fragments, path.join(__dirname, outputLocation), templateString);
 
-})()
+})();
 
 async function transformTree(fragments, location, templateString) {
     Object.entries(fragments).forEach(async ([key, value]) => {
@@ -43,17 +47,17 @@ function transform(templateString, fragmentString) {
     const document = dom.window.document;
     const fragment = new JSDOM(fragmentString).window.document;
     const main = document.querySelector("main#layout");
+    main.innerHTML += "\n<!-- This content is server-side-rendered. -->\n";
     main.append(...fragment.body.children);
     document.head.querySelectorAll("[data-is-fragment=yes]").forEach(el => el.remove());
     fragment.head.querySelectorAll("*").forEach(el => el.dataset["isFragment"] = "yes");
     document.head.append(...fragment.head.children);
     return dom.serialize();
 }
-//     // return template.replace(/^.*<!--{{ main content }}-->.*$/gm, fragment)
 
 async function tree(location) {
     const stat = await fs.stat(location);
-    if (stat.isFile()) return { [path.basename(location)]: await fs.readFile(location, "utf8") };
+    if (stat.isFile() && path.basename(location).endsWith('.html.inc')) return { [path.basename(location)]: await fs.readFile(location, "utf8") };
     else if (stat.isDirectory()) {
         const contents = await fs.readdir(location);
         return {
@@ -63,6 +67,4 @@ async function tree(location) {
                 .reduce((acc, e) => acc = { ...acc, ...e }, {})
         };
     }
-    // const files = await fs.readdir(path);
-
 }
