@@ -11,7 +11,7 @@ async function load(path) {
     if (path === "/") {
         path = "/index";
     }
-    const req = await fetch("/fragments" + path + ".html.inc");
+    const req = await fetch("/fragments" + path);
     const body = await req.text();
     const fragment = new DOMParser().parseFromString(body, 'text/html');
 
