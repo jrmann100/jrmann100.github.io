@@ -7,3 +7,5 @@ It's really hard to dynamically affect styles, and I'm not sure it's worth it. Y
 Still deciding between <template> and DOMParser, or documents and fragments. I like the automatic sorting into <head> and <body> with documents, but it feels wrong.
 
 `rm build/*` in render feels a bit dangerous. Not sure if there's a different/better way.
+
+GitHub pages totally doesn't work. Not sure what I was thinking.

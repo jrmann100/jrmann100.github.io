@@ -2,34 +2,43 @@ const fs = require("fs.promises");
 const path = require("path");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const publicLocation = "docs"
-const outputLocation = path.join(publicLocation, "build"); // maybe commander.js
-const fragmentsLocation = path.join(publicLocation, "fragments");
+const { program } = require("commander");
 
-(async function main() {
-    const templateString = await fs.readFile(path.join(__dirname, "layout.html"), "utf8");
+program
+    .requiredOption("-l, --layout [file]", "layout file", "layout.html")
+    .requiredOption("-i, --input [directory]", "fragments source directory", "fragments")
+    .requiredOption("-o, --output [directory]", "build directory", "build")
+    .option("-C, --no-clean", "do not clean build folder on build")
+    .action(async (options, command) => {
+        const templateString = await fs.readFile(path.join(__dirname, options.layout), "utf8");
 
-    // Create and clean build folder.
-    try { await fs.access(outputLocation); } catch (e) {
-        await fs.mkdir(outputLocation, { recursive: true })
-    }
+        // Create and clean build folder.
+        try { await fs.access(options.output); } catch (e) {
+            await fs.mkdir(options.output, { recursive: true })
+        }
 
-    const fragments = (await tree(fragmentsLocation))["fragments"];
+        const fragments = (await tree(options.input))[path.basename(options.input)];
 
-    const buildItems = await fs.readdir(path.join(__dirname, outputLocation));
-    // effectively rm build/*. this is dangerous!!!
-    await Promise.all(buildItems.map(async item => await fs.rm(path.join(__dirname, outputLocation, item), { recursive: true })));
+        const buildItems = await fs.readdir(path.join(__dirname, options.output));
 
-    // Render and populate build folder.
-    await transformTree(fragments, path.join(__dirname, outputLocation), templateString);
+        // effectively rm build/*. this is dangerous!!!
+        if (options.clean) {
+            console.log("Cleaning build directory...");
+            await Promise.all(buildItems.map(async item => await fs.rm(path.join(__dirname, options.output, item), { recursive: true })));
+        } else {
+            console.log("Not cleaning build directory. Old files may remain.")
+        }
+        // Render and populate build folder.
+        await transformTree(fragments, path.join(__dirname, options.output), templateString);
+    });
 
-})();
+program.parse();
 
 async function transformTree(fragments, location, templateString) {
     Object.entries(fragments).forEach(async ([key, value]) => {
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
             const transformed = transform(templateString, value);
-            const filePath = path.join(location, key.replace('.inc', ''));
+            const filePath = path.join(location, key.replace(".inc", ""));
             console.log(`Rendered ${filePath}`);
             return await fs.writeFile(filePath, transformed);
         } else {
@@ -57,7 +66,7 @@ function transform(templateString, fragmentString) {
 
 async function tree(location) {
     const stat = await fs.stat(location);
-    if (stat.isFile() && path.basename(location).endsWith('.html.inc')) return { [path.basename(location)]: await fs.readFile(location, "utf8") };
+    if (stat.isFile() && path.basename(location).endsWith(".html.inc")) return { [path.basename(location)]: await fs.readFile(location, "utf8") };
     else if (stat.isDirectory()) {
         const contents = await fs.readdir(location);
         return {
