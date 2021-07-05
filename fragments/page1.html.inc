@@ -3,7 +3,7 @@
 </title>
 <style>
     main#layout {
-        font-family: 'Arial', serif;
+        font-family: "Arial", serif;
     }
 </style>
 <h1>Page 1</h1>
@@ -11,5 +11,5 @@
     You made it to page 1. Congrats!
 </p>
 <p>
-    You can go back to the <a href="/index"></a>homepage</a> if you'd like&hellip;
+    You can go back to the <a href=""></a>homepage</a> if you"d like&hellip;
 </p>

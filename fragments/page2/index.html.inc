@@ -14,6 +14,6 @@
     You made it to page 2. Such dedication!
 </p>
 <p>
-    You can go back to the <a href="/index"></a>homepage</a> if you'd like&hellip;
+    You can go back to the <a href=""></a>homepage</a> if you'd like&hellip;
 </p>
 <a class="secret" href="page2/subpage">secret subpage link</a>
