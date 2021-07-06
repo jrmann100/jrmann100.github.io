@@ -10,6 +10,7 @@
     "nodemon": "^2.0.9"
   },
   "scripts": {
-    "build": "node render.js -l layout.html -i fragments -o build; cp -r static build; cp -r fragments build; find build/fragments -name \"*.html.inc\" -exec rename -v 's/\\.html.inc$/\\.html/i' {} \\;"
+    "build": "node render.js -l layout.html -i fragments -o build",
+    "build:pages": "node render.js -l layout.html -i fragments -o build; cp -r static build; cp -r fragments build; for f in $(find build/fragments -iname \"*.html.inc\"); do mv $f ${f%.inc}; done"
   }
 }
