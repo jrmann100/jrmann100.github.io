@@ -1,19 +1,15 @@
 const main = document.querySelector("main#layout");
+let count = 0;
 
 window.addEventListener("popstate", ev => {
-    console.log(`-> ${window.location.pathname}`);
+    console.log(`[popstate] ${window.location.pathname}`);
     load(window.location.pathname);
 });
 
 async function load(path) {
-    document.querySelector("#count").textContent = Number(document.querySelector("#count").textContent) + 1;
+    document.querySelector("#count").textContent = count++;
 
-    path = path.replace(new RegExp("^" + new URL(document.baseURI).pathname.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')), '');
-
-    if (path === "/") {
-        path = "/index";
-    }
-    const req = await fetch(new URL(document.baseURI).pathname + "fragments/" + path);
+    const req = await fetch(path.replace(".html", ".html.inc"));
     const body = await req.text();
     const fragment = new DOMParser().parseFromString(body, 'text/html');
 

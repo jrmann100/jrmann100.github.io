@@ -1,6 +1,6 @@
-<title>
-    Routing | Home
-</title>
+<script>
+    document.title = "Routing | Home"
+</script>
 <style>
     main#layout h2 {
         color: orange;
@@ -11,7 +11,7 @@
     Please enjoy your visit!
 </p>
 <p>
-    You could check out <a href='page1'>page 1</a> if you're bored&hellip;
+    You could check out <a href='./page1.html'>page 1</a> if you're bored&hellip;
 </p>
 <h2>
     I am an orange header.
