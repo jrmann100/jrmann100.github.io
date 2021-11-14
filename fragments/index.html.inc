@@ -1,18 +1,15 @@
 <script>
-    document.title = "Routing | Home"
+    document.title = "welcome to jordan's website"
 </script>
-<style>
-    main#layout h2 {
-        color: orange;
-    }
-</style>
-<h1>Jordan's Routing</h1>
+<h1 class="title">
+    jordan's website
+</h1>
 <p>
-    Please enjoy your visit!
+    Hello and welcome to my website!
 </p>
 <p>
-    You could check out <a href='./page1.html'>page 1</a> if you're bored&hellip;
+    I hope to show you many interesting things here.
 </p>
-<h2>
-    I am an orange header.
-</h2>
+<p>
+    But I have not made them yet. So for now please enjoy what is on the page and we will deal with the rest later!
+</p>

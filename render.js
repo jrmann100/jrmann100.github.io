@@ -19,7 +19,7 @@ async function transform(path, layout) {
     if (stat.isFile() && path.endsWith(".html.inc"))
         await fs.writeFile(
             path.replace(".html.inc", ".html"),
-            layout.replace("<!--content-->", await fs.readFile(path, "utf8")),
+            layout.replace("<!--main content-->", await fs.readFile(path, "utf8")),
             "utf8");
     else if (stat.isDirectory())
         await Promise.all(
