@@ -3,7 +3,7 @@ const fs = require("fs.promises");
 
 // Create and clean build folder.
 (async () => {
-    try { await fs.stat("build"); await fs.rm("build", { recursive: true }) } catch {};
+    try { await fs.stat("build"); await fs.rm("build", { recursive: true }) } catch { };
     await fs.mkdir("build", { recursive: true });
     await fs.cp("static", "build/static", { recursive: true });
     await fs.cp("fragments", "build", { recursive: true });
@@ -11,20 +11,27 @@ const fs = require("fs.promises");
     transform("build", layout);
 })();
 
-// const fragments = (await tree("fragments"));
-// console.log(fragments);
-
 async function transform(path, layout) {
     const stat = await fs.stat(path);
-    if (stat.isFile() && path.endsWith(".html.inc"))
+
+    if (stat.isFile() && path.endsWith(".html.inc")) {
+        const text = await fs.readFile(path, "utf8");
+        let head;
+        const body = text.replace(/<!--head-->(.|\n)*<!--\/head-->/, (match => {
+            head = match;
+            return "";
+        }));
         await fs.writeFile(
             path.replace(".html.inc", ".html"),
-            layout.replace("<!--main content-->", await fs.readFile(path, "utf8")),
+            layout.replace(/<!--head-->(.|\n)*<!--\/head-->/, head ?? "").replace(/<!--main-->(.|\n)*<!--\/main-->/, body),
             "utf8");
+        }
     else if (stat.isDirectory())
         await Promise.all(
             (await fs.readdir(path))
-            .map(subpath => path + "/" + subpath)
-            .map(somepath => transform(somepath, layout)));
+                .map(subpath => path + "/" + subpath)
+                .map(somepath => transform(somepath, layout)));
 };
+
+console.log("rendered!");
 

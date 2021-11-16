@@ -1,12 +1,9 @@
-<script>
-    document.title = "about jordan"
-</script>
-<style>
-    main#layout {
-        font-family: "Arial", serif;
-    }
-</style>
-<h1 class="title">about jordan</h1>
+<!--head-->
+<title>About Jordan</title>
+<meta name="description" content="Some interesting things about Jordan. Maybe you will learn something new!">
+<!--/head-->
+
+<h1 class="title">About Jordan</h1>
 <p>
     You made it to the about page. Congrats!
 </p>

@@ -1,3 +1,7 @@
+<!--head-->
+<title>A secret page!?</title>
+<meta name="description" content="This is crazy. I'd never expect to find a secret page on Jordan's Website.">
+<!--/head-->
 <h1 class="title">🤫</h1>
 <p>you found the secret news page. ssh!</p>
 <p><i>there was no secret news.</i></p>

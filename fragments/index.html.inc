@@ -1,8 +1,9 @@
-<script>
-    document.title = "welcome to jordan's website"
-</script>
+<!--head-->
+<title>Welcome to Jordan's Website</title>
+<meta name="description" content="Jordan made a little routing website and wants you to check it out!">
+<!--/head-->
 <h1 class="title">
-    jordan's website
+    Jordan's Website
 </h1>
 <p>
     Hello and welcome to my website!
