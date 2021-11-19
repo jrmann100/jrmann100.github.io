@@ -164,3 +164,5 @@ function dynamify(parent) {
 
 // make all links dynamic.
 dynamify(document.body);
+
+customElements.define("script-template", class ScriptTemplateElement extends HTMLElement { constructor() { super() } connectedCallback() { this.innerHTML = eval(this.innerText) } })

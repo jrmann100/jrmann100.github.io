@@ -11,6 +11,10 @@ html {
         --black: white;
         --white: black;
     }
+    footer img.invertible {
+        filter: hue-rotate(180deg) invert(1);
+    }
+    
 }
 
 body {
