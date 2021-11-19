@@ -11,20 +11,34 @@ const fs = require("fs.promises");
     transform("build", layout);
 })();
 
+const regionRegex = /<!--{{(?<open>.+)}}-->(?<content>(.|\n)*?)<!--{{(?<close>\/.+)}}-->/i;
+
+// todo: document and test. EXTENSIVELY.
 async function transform(path, layout) {
     const stat = await fs.stat(path);
 
     if (stat.isFile() && path.endsWith(".html.inc")) {
-        const text = await fs.readFile(path, "utf8");
+        let text = await fs.readFile(path, "utf8");
 
-        let head;
-        const body = text.replace(/<!--head-->(.|\n)*<!--\/head-->/, (match => {
-            head = match;
-            return "";
-        }));
+        let result = layout;
+        
+        let fragmentRegions = {};
+        while ((region = regionRegex.exec(text)) !== null) {
+            text = text.substring(0, region.index) + text.substring(region.index + region[0].length);
+            if (!("/" + region.groups?.open === region.groups?.close)) throw new Error("fragment's region tags don't match!", region.groups?.open, region.groups?.close);
+            const label = region.groups?.open;
+            fragmentRegions[label] = region[0];
+
+            const layoutMatch = result.match(new RegExp(`<!--{{${label}}}-->(.|\n)*<!--{{/${label}}}-->`, "i"));
+            if (layoutMatch === null) throw new Error("could not find matching region in layout for", label);
+            result = result.substring(0, layoutMatch.index) + region[0] + result.substring(layoutMatch.index + layoutMatch[0].length);
+        }
+        
+        
+
         await fs.writeFile(
             path.replace(".html.inc", ".html"),
-            layout.replace(/<!--head-->(.|\n)*<!--\/head-->/, head ?? "").replace(/<!--main-->(.|\n)*<!--\/main-->/, body),
+            result,
             "utf8");
     }
     else if (stat.isDirectory())

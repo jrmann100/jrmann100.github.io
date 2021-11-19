@@ -1,9 +1,9 @@
-<!--head-->
+<!--{{head}}-->
 <title>News</title>
 <meta name="description" content="Just some news to peruse and bemuse.">
 <style>header > nav > ul > li.news {font-weight: bold;}</style>
-<!--/head-->
-<!--main-->
+<!--{{/head}}-->
+<!--{{main}}-->
 <style>
     main#layout a.secret {
         opacity: 0.2;
@@ -20,4 +20,4 @@
     You can go back to the <a href="/index.html">homepage</a> if you'd like&hellip;
 </p>
 <a class="secret" href="subpage.html">link to the secret news page</a>
-<!--/main-->
+<!--{{/main}}-->

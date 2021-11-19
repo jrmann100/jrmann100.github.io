@@ -1,8 +1,3 @@
-// parts of the page to hydrate.
-const regions = ["head", "main"];
-
-// number of times the user has navigated.
-let count = 0;
 
 // handle history navigation within the page.
 window.addEventListener("popstate", ev => {
@@ -10,140 +5,47 @@ window.addEventListener("popstate", ev => {
     load(window.location.pathname);
 });
 
-// page transitions, like a slideshow.
-const animations = {
-    swing: {
-        in: [{
-            transform: "translate(80vw)",
-            opacity: "0"
-        },
-        {
-            transform: "translate(0vw)",
-            opacity: "1"
-        }], out: [{
-            transform: "translate(0vw)",
-            opacity: "1"
-        }, {
-            transform: "translate(-80vw)",
-            opacity: "0"
-        }]
-    },
-    flipX: {
-        in: [{
-            transform: "rotateX(-90deg)",
-        },
-        {
-            transform: "rotateX(0deg)",
-        }], out: [{
-            transform: "rotateX(0deg)",
-            opacity: "1"
-        }, {
-            transform: "rotateX(90deg)",
-        }]
-    },
-    spin: {
-        in: [{
-            transform: "rotate(-90deg) scale(0.5)",
-            opacity: "0"
-        },
-        {
-            transform: "rotate(0deg) scale(1)",
-            opacity: "1"
-        }], out: [{
-            transform: "rotate(0deg) scale(1)",
-            opacity: "1"
-        }, {
-            transform: "rotate(90deg) scale(0.5)",
-            opacity: "0"
-        }]
-    },
-    flipY: {
-        in: [{
-            transform: "rotateY(-90deg)",
-        },
-        {
-            transform: "rotateY(0deg)",
-        }], out: [{
-            transform: "rotateY(0deg)",
-            opacity: "1"
-        }, {
-            transform: "rotateY(90deg)",
-        }]
-    },
-}
+const regionRegex = /<!--{{(?<open>.+)}}-->(?<content>(.|\n)*?)<!--{{(?<close>\/.+)}}-->/i;
+const tagRegex = /^{{(\/?.+)}}$/;
 
-// remove the dynamically-populated section of the head.
-function repopulate(label, content) {
 
-    console.log("repopulating", label)
+// this needs to be error-tested and documented. EXTENSIVELY.
+async function load(path) {
+
+    let text = await (await fetch(path.replace(".html", ".html.inc"))).text(); // todo: fallback
+
     const commentsIterator = document.createNodeIterator(
         document.documentElement,
         NodeFilter.SHOW_COMMENT,
-        { acceptNode(node) { return regions.includes(node.nodeValue.replace(/^\//,"")) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT } }
+        { acceptNode(node) { return node.nodeValue.match(tagRegex) !== null ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT } }
     );
-    let comments = [];
-    for (let node = commentsIterator.nextNode(); node !== null; node = commentsIterator.nextNode()) comments.push(node);
-    console.log(comments);
-    // <!--label-->
-    let start = comments.find(n => n.nodeValue === label);
-    // <!--/label-->
-    let end = comments.find(n => n.nodeValue === "/" + label);
-    // remove the range if it exists.
-    if (start !== undefined && end !== undefined) {
+    let docRegions = {};
+    let start, end;
+    for (
+        [start, end] = [commentsIterator.nextNode(), commentsIterator.nextNode()];
+        start !== null && end !== null;
+        [start, end] = [commentsIterator.nextNode(), commentsIterator.nextNode()]) {
+            const label =  start.nodeValue.match(tagRegex)[1] ;
+            if  ("/" + label !== end.nodeValue.match(tagRegex)[1]) throw new Error("document's region tags don't match!", start, end);
         const range = document.createRange();
-        range.setStartBefore(start);
-        range.setEndAfter(end);
+        range.setStartAfter(start);
+        range.setEndBefore(end);
         range.deleteContents();
-        range.insertNode(dynamify(document.createRange().createContextualFragment(content)));
+        docRegions[label] = range;
     }
-}
 
-// stand-in for mutating strings. use as [textWithoutTargetContent, TargetContent] = textWithout(textWithTargetContent, regexMatchingTargetContent)
-function textWithout(text, regex) {
-    let without;
-    text = text.replace(regex, match => { without = match; return "" });
-    return [text, without];
-}
 
-// todo: will need to seriously error-test this.
-// re-populate the head and body with dynamically-loaded content.
-function switcheroo(text) {
-    regions.forEach((label => {
-        let content;
-        [text, content] = textWithout(text, new RegExp(`<!--${label}-->(.|\n)*<!--\/${label}-->`));
-        console.log(content);
-        if (content != undefined) repopulate(label, content);
-    }));
-}
-
-// main function. loads a page fragment for a given path and hydrates its content.
-async function load(path) {
-    const text = await (await fetch(path.replace(".html", ".html.inc"))).text(); // todo: fallback
-
-    const animation = Object.values(animations)[count++ % Object.keys(animations).length];
-
-    // animate out, wait until complete, then switch content and animate in.
-    // todo: could clone the new content and actually swap it, but that's a lot of work.
-    // make sure to respect the user's choice if they don't want to see animations.
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-        setTimeout(() => {
-
-            switcheroo(text);
-            document.querySelector("main#layout").animate(
-                animation.in, {
-                duration: 500,
-                fill: "forwards",
-                easing: "ease-out"
-            }
-            )
-        }, document.querySelector("main#layout").animate(
-            animation.out, {
-            duration: 500,
-            fill: "forwards",
-            easing: "ease-in"
-        }
-        ).effect.getComputedTiming().duration);
-    else switcheroo(text);
+    let region;
+    while ((region = regionRegex.exec(text)) !== null) {
+        text = text.substring(0, region.index) + text.substring(region.index + region[0].length);
+        if (!("/" + region.groups?.open === region.groups?.close)) throw new Error("fragment's region tags don't match!", region.groups?.open, region.groups?.close);
+        const label = region.groups?.open;
+        console.log("region", region.groups?.open);
+        console.log(docRegions, region)
+        if (!Reflect.has(docRegions,label)) throw new Error("could not find document region for fragment region", label);
+        docRegions[label].insertNode(dynamify(docRegions[label].createContextualFragment(region.groups?.content)))
+    }
+    if (text.length < 0) console.warn("Template content found out of a region:", text);
 }
 
 // convert hard links into dynamic ones that load() content instead of redirecting.
