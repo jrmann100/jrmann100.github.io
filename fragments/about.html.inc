@@ -1,9 +1,11 @@
 <!--head-->
 <title>About Jordan</title>
 <meta name="description" content="Some interesting things about Jordan. Maybe you will learn something new!">
+<style>header > nav > ul > li.about {font-weight: bold;}</style>
 <!--/head-->
-
+<!--main-->
 <h1 class="title">About Jordan</h1>
+<i>This about page is a work in progress.</i>
 <p>
     You made it to the about page. Congrats!
 </p>
@@ -17,3 +19,4 @@
 <p>
     You can go back to the <a href="/index.html">homepage</a> if you'd like&hellip;
 </p>
+<!--/main-->

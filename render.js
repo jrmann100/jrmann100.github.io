@@ -7,22 +7,15 @@ const fs = require("fs.promises");
     await fs.mkdir("build", { recursive: true });
     await fs.cp("static", "build/static", { recursive: true });
     await fs.cp("fragments", "build", { recursive: true });
-    const layout = evalScriptTemplates(await fs.readFile("layout.html", "utf8"));
+    const layout = await fs.readFile("layout.html", "utf8");
     transform("build", layout);
 })();
-
-// eval is unsafe!!
-function evalScriptTemplates(html) {
-return html.replace(
-    /<script-template>(.|\n)*<\/script-template>/gi,
-    match => eval(match.replace(/<\/?script-template>/gi, "")));
-}
 
 async function transform(path, layout) {
     const stat = await fs.stat(path);
 
     if (stat.isFile() && path.endsWith(".html.inc")) {
-        // const text = evalScriptTemplates(await fs.readFile(path, "utf8"));
+        const text = await fs.readFile(path, "utf8");
 
         let head;
         const body = text.replace(/<!--head-->(.|\n)*<!--\/head-->/, (match => {

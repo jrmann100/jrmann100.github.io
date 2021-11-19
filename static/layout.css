@@ -14,7 +14,6 @@ html {
     footer img.invertible {
         filter: hue-rotate(180deg) invert(1);
     }
-    
 }
 
 body {
@@ -27,6 +26,7 @@ body {
     justify-content: space-between;
     font-family: Helvetica, Arial sans-serif;
 }
+
 /* 
 a:link {
     color: mediumslateblue;
@@ -51,6 +51,7 @@ main#layout {
     border: 0.1rem solid;
     box-shadow: 0.5rem 0.5rem var(--black);
     margin: 1rem min(10rem, 5vw);
+    transform-origin: center center;
 }
 
 main#layout>h1.title {
@@ -91,6 +92,7 @@ header>nav>ul::before {
 
 header>nav>ul>li:not(:last-of-type)::after {
     content: " | ";
+    font-weight: normal;
 }
 
 header>nav>ul {

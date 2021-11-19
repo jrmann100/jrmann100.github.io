@@ -7,10 +7,11 @@
   <link rel="stylesheet" href="/static/layout.css" />
   <link rel="icon" href="/static/icon.png" />
   <meta name="author" content="Jordan" />
-  <!-- <meta name="description -->
+  <!-- <meta name="description" content=""> -->
   <meta name="generator" content="Jordan's tiny routing/SSR engine." />
-  <meta name="keywords" content="jordan,personal website,programming,web design" />
-  <meta name="theme-color" content="#F0F0F0" />
+  <meta name="keywords" content="jordan,personal website,blog,programming,web design" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="white">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="black">
   <meta name="color-scheme" content="light dark" />
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
   <meta name="robots" content="index,follow" />
@@ -22,9 +23,9 @@
   <header>
     <nav>
       <ul>
-        <li><a href="/index.html">Jordan's Website</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/news/index.html">News</a></li>
+        <li class="index"><a href="/index.html">Jordan's Website</a></li>
+        <li class="about"><a href="/about.html">About</a></li>
+        <li class="news"><a href="/news/index.html">News</a></li>
       </ul>
     </nav>
   </header>
@@ -33,9 +34,7 @@
     <!--/main-->
   </main>
   <script type="module" src="/static/layout.js"></script>
-  <footer><span><span id="emoji">❤️</span> Made with love by Jordan.
-      <script-template>`Copyright ${new Date().getFullYear()}.`</script-template>
-    </span><a href="https://ichi.city"><img width="88" height="31" class="invertible" src="https://ichi.city/banner.png"
+  <footer><span>❤️ Made with love by Jordan.</span><a href="https://ichi.city"><img width="88" height="31" class="invertible" src="https://ichi.city/banner.png"
         alt="hosted by ichi.city" /></a></footer>
 </body>
 

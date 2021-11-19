@@ -1,5 +1,6 @@
-// section of the page that will be populated with content.
-const main = document.querySelector("main#layout");
+// parts of the page to hydrate.
+const regions = ["head", "main"];
+
 // number of times the user has navigated.
 let count = 0;
 
@@ -72,51 +73,54 @@ const animations = {
 }
 
 // remove the dynamically-populated section of the head.
-function removeDynamicHead() {
-    let comments = [...document.head.childNodes].filter(n => n.nodeType === Node.COMMENT_NODE);
-    // <!--head-->
-    let start = comments.find(n => n.nodeValue === "head");
-    // <!--/head-->
-    let end = comments.find(n => n.nodeValue === "/head");
+function repopulate(label, content) {
+
+    console.log("repopulating", label)
+    const commentsIterator = document.createNodeIterator(
+        document.documentElement,
+        NodeFilter.SHOW_COMMENT,
+        { acceptNode(node) { return regions.includes(node.nodeValue.replace(/^\//,"")) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT } }
+    );
+    let comments = [];
+    for (let node = commentsIterator.nextNode(); node !== null; node = commentsIterator.nextNode()) comments.push(node);
+    console.log(comments);
+    // <!--label-->
+    let start = comments.find(n => n.nodeValue === label);
+    // <!--/label-->
+    let end = comments.find(n => n.nodeValue === "/" + label);
     // remove the range if it exists.
     if (start !== undefined && end !== undefined) {
         const range = document.createRange();
         range.setStartBefore(start);
         range.setEndAfter(end);
         range.deleteContents();
+        range.insertNode(dynamify(document.createRange().createContextualFragment(content)));
     }
 }
 
+// stand-in for mutating strings. use as [textWithoutTargetContent, TargetContent] = textWithout(textWithTargetContent, regexMatchingTargetContent)
+function textWithout(text, regex) {
+    let without;
+    text = text.replace(regex, match => { without = match; return "" });
+    return [text, without];
+}
+
+// todo: will need to seriously error-test this.
 // re-populate the head and body with dynamically-loaded content.
 function switcheroo(text) {
-    // distinguish head content, if available, from body content.
-    let head;
-    const body = text.replace(/<!--head-->(.|\n)*<!--\/head-->/, (match => {
-        // the replace() function saves us the step of matching and then removing.
-        head = match;
-        // we will replace it with nothing.
-        return "";
+    regions.forEach((label => {
+        let content;
+        [text, content] = textWithout(text, new RegExp(`<!--${label}-->(.|\n)*<!--\/${label}-->`));
+        console.log(content);
+        if (content != undefined) repopulate(label, content);
     }));
-
-    // clear existing content.
-    removeDynamicHead();
-    main.innerHTML = "";
-
-    // populate new content.
-    // contextualFragments apparently work with <script> tags.
-    if (head != undefined) document.head.appendChild(document.createRange().createContextualFragment(head));
-
-    main.appendChild(dynamify(document.createRange().createContextualFragment(body)));
 }
 
 // main function. loads a page fragment for a given path and hydrates its content.
 async function load(path) {
-    const emoji = ["😶", "😮", "🥱", "🤭", "😶", "😯", "😮‍💨", "😴", "😴", "🥱", "😳", "😊", "🤗"];
-    document.querySelector("#emoji").textContent = emoji[count++ % emoji.length];
-
     const text = await (await fetch(path.replace(".html", ".html.inc"))).text(); // todo: fallback
 
-    const animation = Object.values(animations)[count % Object.keys(animations).length];
+    const animation = Object.values(animations)[count++ % Object.keys(animations).length];
 
     // animate out, wait until complete, then switch content and animate in.
     // todo: could clone the new content and actually swap it, but that's a lot of work.
@@ -125,14 +129,14 @@ async function load(path) {
         setTimeout(() => {
 
             switcheroo(text);
-            main.animate(
+            document.querySelector("main#layout").animate(
                 animation.in, {
                 duration: 500,
                 fill: "forwards",
                 easing: "ease-out"
             }
             )
-        }, main.animate(
+        }, document.querySelector("main#layout").animate(
             animation.out, {
             duration: 500,
             fill: "forwards",
@@ -162,7 +166,5 @@ function dynamify(parent) {
     return parent;
 }
 
-// make all links dynamic.
+// make all links dynamic, enabling routing.
 dynamify(document.body);
-
-customElements.define("script-template", class ScriptTemplateElement extends HTMLElement { constructor() { super() } connectedCallback() { this.innerHTML = eval(this.innerText) } })
