@@ -49,4 +49,3 @@ async function transform(path, layout) {
 };
 
 console.log("rendered!");
-

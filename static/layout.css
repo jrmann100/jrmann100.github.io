@@ -46,12 +46,23 @@ main#layout {
     box-sizing: border-box;
     padding: 2rem;
     font-size: 1.2rem;
-    transition: border 0.5s, box-shadow 0.5s;
+    margin: 1rem min(10rem, 5vw);
+    transform-origin: center center;
+    position: relative;
+    --main-height: 100%;
+}
+
+main#layout::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--main-height);
+    transition: border 0.5s, box-shadow 0.5s, height 1s;
     border-color: var(--black);
     border: 0.1rem solid;
     box-shadow: 0.5rem 0.5rem var(--black);
-    margin: 1rem min(10rem, 5vw);
-    transform-origin: center center;
 }
 
 main#layout>h1.title {
@@ -59,7 +70,7 @@ main#layout>h1.title {
 }
 
 @media screen and (orientation:portrait) {
-    main#layout {
+    main#layout::after {
         border-color: transparent;
         box-shadow: 0.2rem 0.2rem transparent;
     }

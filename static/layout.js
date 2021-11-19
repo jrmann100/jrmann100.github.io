@@ -25,12 +25,13 @@ async function load(path) {
         [start, end] = [commentsIterator.nextNode(), commentsIterator.nextNode()];
         start !== null && end !== null;
         [start, end] = [commentsIterator.nextNode(), commentsIterator.nextNode()]) {
-            const label =  start.nodeValue.match(tagRegex)[1] ;
-            if  ("/" + label !== end.nodeValue.match(tagRegex)[1]) throw new Error("document's region tags don't match!", start, end);
+        const label = start.nodeValue.match(tagRegex)[1];
+        if ("/" + label !== end.nodeValue.match(tagRegex)[1]) throw new Error("document's region tags don't match!", start, end);
         const range = document.createRange();
         range.setStartAfter(start);
         range.setEndBefore(end);
         range.deleteContents();
+        if (label === "main") updateMainHeight(); // todo
         docRegions[label] = range;
     }
 
@@ -40,10 +41,10 @@ async function load(path) {
         text = text.substring(0, region.index) + text.substring(region.index + region[0].length);
         if (!("/" + region.groups?.open === region.groups?.close)) throw new Error("fragment's region tags don't match!", region.groups?.open, region.groups?.close);
         const label = region.groups?.open;
-        console.log("region", region.groups?.open);
-        console.log(docRegions, region)
-        if (!Reflect.has(docRegions,label)) throw new Error("could not find document region for fragment region", label);
-        docRegions[label].insertNode(dynamify(docRegions[label].createContextualFragment(region.groups?.content)))
+        console.log("rendering region", region.groups?.open);
+        if (!Reflect.has(docRegions, label)) throw new Error("could not find document region for fragment region", label);
+        docRegions[label].insertNode(dynamify(docRegions[label].createContextualFragment(region.groups?.content)));
+        if (label === "main") updateMainHeight(); // todo
     }
     if (text.length < 0) console.warn("Template content found out of a region:", text);
 }
@@ -70,3 +71,32 @@ function dynamify(parent) {
 
 // make all links dynamic, enabling routing.
 dynamify(document.body);
+
+// todo fadeout content without frame
+async function asyncAnimate(el, frames) {
+    return new Promise(res => setTimeout(res,
+        el.animate(
+            frames, {
+            duration: 500,
+            fill: "forwards",
+            easing: "ease-out"
+        }
+        ).effect.getComputedTiming().duration));
+}
+
+const fadeout = [{
+    opacity: "1",
+},
+{
+    opacity: "0",
+}];
+
+const fadein = [{
+    opacity: "0",
+},
+{
+    opacity: "1",
+}];
+
+function updateMainHeight() { document.querySelector("main#layout").style.setProperty("--main-height", document.querySelector("main#layout").getBoundingClientRect().height + "px"); }
+updateMainHeight();
