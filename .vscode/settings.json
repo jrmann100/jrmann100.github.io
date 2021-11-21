@@ -2,5 +2,6 @@
     "files.associations": {
         "*.html.inc": "html"
     },
-    "liveServer.settings.root": "build/"
+    "liveServer.settings.root": "build/",
+    "todo-tree.tree.scanMode": "workspace"
 }
