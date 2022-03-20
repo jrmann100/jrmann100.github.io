@@ -1,7 +1,14 @@
+<!--{{title}}-->
+jrmann.com
+<!--{{/title}}-->
 <!--{{head}}-->
 <title>Welcome to Jordan's Website</title>
 <meta name="description" content="Jordan made a little routing website and wants you to check it out!">
-<style>header > nav > ul > li.index {font-weight: bold;}</style>
+<style>
+    header>nav>ul>li.index {
+        font-weight: bold;
+    }
+</style>
 <!--{{/head}}-->
 <!--{{main}}-->
 <h1 class="title">

@@ -1,7 +1,8 @@
 {
-    "files.associations": {
-        "*.html.inc": "html"
-    },
-    "liveServer.settings.root": "build/",
-    "todo-tree.tree.scanMode": "workspace"
+  "files.associations": {
+    "*.html.inc": "html"
+  },
+  "liveServer.settings.root": "build/",
+  "todo-tree.tree.scanMode": "workspace",
+  "liveServer.settings.multiRootWorkspaceName": "routing"
 }

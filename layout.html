@@ -4,8 +4,8 @@
 <head>
   <!--{{head}}-->
   <!--{{/head}}-->
-  <link rel="stylesheet" href="/static/layout.css" />
-  <link rel="icon" href="/static/icon.png" />
+  <link rel="stylesheet" href="/static/css/layout.css" />
+  <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
   <meta name="author" content="Jordan" />
   <!-- <meta name="description" content=""> -->
   <meta name="generator" content="Jordan's tiny routing/SSR engine." />
@@ -19,13 +19,33 @@
   <meta charset="UTF-8">
 </head>
 
-<body>
+<body class="desktop">
   <header>
+    <div class="face">
+      <a href="/">
+        <svg viewBox="0 0 515 515" width="16" height="16">
+          <path
+            d="m 18.51729,257.49997 v 0 c 0,-131.98648 106.99619,-238.982685 238.98268,-238.982685 v 0 c 63.38217,0 124.16835,25.178464 168.98631,69.996403 44.81796,44.817952 69.99643,105.604142 69.99643,168.986282 v 0 c 0,131.98652 -106.99621,238.98274 -238.98274,238.98274 v 0 C 125.51348,496.48272 18.51729,389.48649 18.51729,257.49997 Z" />
+        </svg>
+        <svg viewBox="0 0 515 515" width="16" height="16">
+          <path
+            d="M 257.49997,18.517285 C 246.291,63.351791 194.00866,236.07343 195.20077,285.20076 c 1.19211,49.12733 80.22227,-4.58031 90.00001,30 9.77769,34.5803 -25.07747,150.99443 -27.70081,181.28195" />
+        </svg>
+        <svg viewBox="0 0 515 515" class="eye" width="16" height="16">
+          <path
+            d="m 290.57699,165.20077 v 0 c 0,-30.16789 24.4559,-54.62378 54.62379,-54.62378 v 0 c 14.48712,0 28.3809,5.75499 38.62484,15.99893 10.24397,10.24394 15.99895,24.13771 15.99895,38.62485 v 0 c 0,30.16788 -24.4559,54.62377 -54.62379,54.62377 v 0 c -30.16789,0 -54.62379,-24.45589 -54.62379,-54.62377 z" />
+        </svg>
+      </a>
+    </div>
+    <div class="title">
+      <!--{{title}}-->
+      <!--{{/title}}-->
+    </div>
     <nav>
       <ul>
-        <li class="index"><a href="/index.html">Jordan's Website</a></li>
-        <li class="about"><a href="/about.html">About</a></li>
-        <li class="news"><a href="/news/index.html">News</a></li>
+        <li><a href="/news/index.html">news</a></li>
+        <li><a href="/about.html">about</a></li>
+        <li><a href="/index.html">home</a></li>
       </ul>
     </nav>
   </header>
@@ -33,9 +53,14 @@
     <!--{{main}}-->
     <!--{{/main}}-->
   </main>
-  <script type="module" src="/static/layout.js"></script>
-  <footer><span>❤️ Made with love by Jordan.</span><a href="https://ichi.city"><img width="88" height="31"
-        class="invertible" src="https://ichi.city/banner.png" alt="hosted by ichi.city" /></a></footer>
+  <script type="module" src="/static/js/layout.js"></script>
+  <footer>
+    Made entirely by Jordan.
+    <script data-value="`Copyright ${new Date().getUTCFullYear()}.`">
+      document.currentScript.outerHTML = eval(document.currentScript.dataset.value);
+    </script>
+    <script src="/static/js/gallery.js"></script>
+  </footer>
 </body>
 
 </html>

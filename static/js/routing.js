@@ -1,9 +1,5 @@
-
-// handle history navigation (back, forward).
-window.addEventListener("popstate", ev => {
-    console.log(`[popstate] ${window.location.pathname}`);
-    load(window.location.pathname);
-});
+// will get dispatched on load().
+const event = new Event('navigate');
 
 // matches a label comment's content, i.e. {{/label}}.
 const tagRegex = /^{{(\/?.+)}}$/;
@@ -51,9 +47,11 @@ async function load(path) {
     // match the new fragment regions to cleared document regions with the same label.
     const fragmentRegions = await locateRegions(contextualFragment);
     Object.entries(fragmentRegions).forEach(([label, range]) => {
-                if (!Reflect.has(docRegions, label)) throw new Error("could not find document region for fragment region", label);
-                docRegions[label].insertNode(range.cloneContents());
+        if (!Reflect.has(docRegions, label)) throw new Error("could not find document region for fragment region", label);
+        docRegions[label].insertNode(range.cloneContents());
     });
+
+    document.body.dispatchEvent(event);
 }
 
 // convert hard links into dynamic ones that load() content instead of redirecting.
@@ -76,5 +74,13 @@ function dynamify(parent) {
     return parent;
 }
 
-// make all links dynamic, enabling routing.
-dynamify(document.body);
+export function setup() {
+    // handle history navigation (back, forward).
+    window.addEventListener("popstate", _ev => {
+        console.log(`[popstate] ${window.location.pathname}`);
+        load(window.location.pathname);
+    });
+
+    // make all links dynamic, enabling routing.
+    dynamify(document.body);
+}

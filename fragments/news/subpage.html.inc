@@ -1,3 +1,6 @@
+<!--{{title}}-->
+Secret Subpage!
+<!--{{/title}}-->
 <!--{{head}}-->
 <title>A secret page!?</title>
 <meta name="description" content="This is crazy. I'd never expect to find a secret page on Jordan's Website.">

@@ -1,5 +1,5 @@
 
-const fs = require("fs.promises");
+import * as fs from "fs/promises";
 
 // Create and clean build folder.
 (async () => {
@@ -9,6 +9,7 @@ const fs = require("fs.promises");
     await fs.cp("fragments", "build", { recursive: true });
     const layout = await fs.readFile("layout.html", "utf8");
     transform("build", layout);
+    console.log("rendered!");
 })();
 
 const regionRegex = /<!--{{(?<open>.+)}}-->(?<content>(.|\n)*?)<!--{{(?<close>\/.+)}}-->/i;
@@ -21,9 +22,9 @@ async function transform(path, layout) {
         let text = await fs.readFile(path, "utf8");
 
         let result = layout;
-        
+
         let fragmentRegions = {};
-        while ((region = regionRegex.exec(text)) !== null) {
+        for (let region = regionRegex.exec(text); region !== null; region = regionRegex.exec(text)) {
             text = text.substring(0, region.index) + text.substring(region.index + region[0].length);
             if (!("/" + region.groups?.open === region.groups?.close)) throw new Error("fragment's region tags don't match!", region.groups?.open, region.groups?.close);
             const label = region.groups?.open;
@@ -33,8 +34,8 @@ async function transform(path, layout) {
             if (layoutMatch === null) throw new Error("could not find matching region in layout for", label);
             result = result.substring(0, layoutMatch.index) + region[0] + result.substring(layoutMatch.index + layoutMatch[0].length);
         }
-        
-        
+
+
 
         await fs.writeFile(
             path.replace(".html.inc", ".html"),
@@ -47,5 +48,3 @@ async function transform(path, layout) {
                 .map(subpath => path + "/" + subpath)
                 .map(somepath => transform(somepath, layout)));
 };
-
-console.log("rendered!");

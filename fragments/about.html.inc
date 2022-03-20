@@ -1,3 +1,6 @@
+<!--{{title}}-->
+About Jordan
+<!--{{/title}}-->
 <!--{{head}}-->
 <title>About Jordan</title>
 <meta name="description" content="Some interesting things about Jordan. Maybe you will learn something new!">

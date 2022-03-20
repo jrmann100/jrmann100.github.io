@@ -1,7 +1,14 @@
+<!--{{title}}-->
+News
+<!--{{/title}}-->
 <!--{{head}}-->
 <title>News</title>
 <meta name="description" content="Just some news to peruse and bemuse.">
-<style>header > nav > ul > li.news {font-weight: bold;}</style>
+<style>
+    header>nav>ul>li.news {
+        font-weight: bold;
+    }
+</style>
 <!--{{/head}}-->
 <!--{{main}}-->
 <style>

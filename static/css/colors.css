@@ -1,0 +1,36 @@
+html {
+  height: 100%;
+  --white: #fff;
+  --black: #222;
+  --good: darkseagreen;
+  --bad: lightcoral;
+  --accent: dodgerblue;
+  --visited: mediumslateblue;
+  --noise: url("/static/img/noise-light.png");
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --black: #eee;
+    --white: #222;
+    --accent: lightskyblue;
+    --noise: url("/static/img/noise-dark.png");
+  }
+}
+
+body {
+  background-color: var(--white);
+  color: var(--black);
+  background-image: var(--noise);
+  font-family: system-ui, Helvetica, Arial, sans-serif;
+}
+
+/******* links ********/
+
+a:link {
+  color: var(--accent);
+}
+
+a:visited {
+  color: var(--visited);
+}
