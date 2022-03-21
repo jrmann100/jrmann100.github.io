@@ -1,0 +1,13 @@
+header {
+  grid-template-areas: "face" "nav" "title";
+  grid-template-rows: fit-content(12rem) fit-content(2rem) 1fr;
+  row-gap: 0.5rem;
+  justify-items: center;
+}
+
+header div.title {
+  font-size: 1.5em;
+}
+header nav {
+  justify-self: center;
+}

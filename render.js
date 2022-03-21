@@ -5,10 +5,15 @@ import * as fs from "fs/promises";
 (async () => {
     try { await fs.stat("build"); await fs.rm("build", { recursive: true }) } catch { };
     await fs.mkdir("build", { recursive: true });
-    await fs.cp("static", "build/static", { recursive: true });
+    /* pre-render fragments */
+    // copy all fragments to where pre-rendered HTML files will be.
     await fs.cp("fragments", "build", { recursive: true });
     const layout = await fs.readFile("layout.html", "utf8");
+    // convert fragments to HTML by pre-rendering them.
     transform("build", layout);
+    /* copy assets */
+    await fs.cp("fragments", "build/fragments", { recursive: true });
+    await fs.cp("static", "build/static", { recursive: true });
     console.log("rendered!");
 })();
 
@@ -41,6 +46,7 @@ async function transform(path, layout) {
             path.replace(".html.inc", ".html"),
             result,
             "utf8");
+        await fs.rm(path);
     }
     else if (stat.isDirectory())
         await Promise.all(

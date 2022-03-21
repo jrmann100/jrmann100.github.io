@@ -32,11 +32,10 @@ async function locateRegions(root) {
 // load a page fragment for a given path and swap the current content with its own.
 // todo test with malformed data
 async function load(path) {
-
     // fetch the fragment text.
-    let text = await (await fetch(path.replace(".html", ".html.inc"))).text(); // todo fallback
+    let text = await (await fetch("/fragments/" + path.replace(".html", ".html.inc"))).text(); // todo fallback
     // turn the fragment into DOM content.
-    const contextualFragment = dynamify(document.createRange().createContextualFragment(text));
+    const contextualFragment = document.createRange().createContextualFragment(text);
 
     // find existing document regions on the page.
     const docRegions = await locateRegions(document.documentElement);
@@ -48,9 +47,11 @@ async function load(path) {
     const fragmentRegions = await locateRegions(contextualFragment);
     Object.entries(fragmentRegions).forEach(([label, range]) => {
         if (!Reflect.has(docRegions, label)) throw new Error("could not find document region for fragment region", label);
-        docRegions[label].insertNode(range.cloneContents());
+        const clone = range.cloneContents();
+        docRegions[label].insertNode(clone);
     });
-
+    // todo: this is redundant, but I can't figure out how to add the event listeners to the fragment.
+    dynamify(document.body);
     document.body.dispatchEvent(event);
 }
 
@@ -69,7 +70,7 @@ function dynamify(parent) {
                     window.history.pushState(null, null, el.href);
                 } else
                     console.log(window.location.pathname, "x", path);
-            })
+            });
     });
     return parent;
 }
