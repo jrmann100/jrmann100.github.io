@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 html {
   height: 100%;
   --white: #fff;
@@ -14,6 +16,7 @@ html {
     --black: #eee;
     --white: #222;
     --accent: lightskyblue;
+    --visited: thistle;
     --noise: url("/static/img/noise-dark.png");
   }
 }
@@ -22,7 +25,8 @@ body {
   background-color: var(--white);
   color: var(--black);
   background-image: var(--noise);
-  font-family: system-ui, Helvetica, Arial, sans-serif;
+  font-family: "Roboto", system-ui, Helvetica, Arial, sans-serif;
+  transition: background-color 0.5s;
 }
 
 /******* links ********/

@@ -6,7 +6,7 @@ News
 <meta name="description" content="Just some news to peruse and bemuse.">
 <style>
     header>nav>ul>li.news {
-        font-weight: bold;
+        font-weight: 900;
     }
 </style>
 <!--{{/head}}-->

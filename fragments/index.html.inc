@@ -9,97 +9,49 @@
     }
 
     header>nav>ul>li.index {
-        font-weight: bold;
-    }
-
-
-    body.stuck header .title div.lower {
-        text-transform: lowercase;
-    }
-
-    header .title div {
-        --title-div-transition: max-width 0.3s, opacity 0.2s;
-        transition: var(--title-div-transition), visibility 0.3s 0s;
-        display: inline-block;
-    }
-
-    header .title div.name {
-        display: flex;
-        justify-content: center;
-        width: 16rem;
-        transition: width 0.3s;
-
-    }
-
-    body.stuck header div.name {
-        width: 14rem;
-    }
-
-    header .title div.del {
-        max-width: 8.5rem;
-        opacity: 1;
-        visibility: visible;
-        transform-origin: right;
-    }
-
-    body.stuck header .title div.del {
-        max-width: 0;
-        visibility: hidden;
-        opacity: 0;
-        transition: var(--title-div-transition), visibility 0s 0.3s;
-    }
-
-    header .title div.undel {
-        max-width: 0;
-        visibility: hidden;
-        opacity: 0;
-        transition: var(--title-div-transition), visibility 0s 0.5s, opacity 0.1s;
-        /* Check this whole transition thing for opacity. */
-    }
-
-    body.stuck header .title div.undel {
-        opacity: 1;
-        visibility: visible;
-        transition: var(--title-div-transition), visibility 0.5s 0s;
-    }
-
-    body.stuck header .title div.undel {
-        max-width: 2.5rem;
-    }
-
-    /* I absolutely hate this. :-of-type is dependent on tags, so we need to target 2/2 where it is a sibling of another one of its kind. */
-    body.stuck header .title div.undel.h {
-        max-width: 5rem;
+        font-weight: 900;
     }
 </style>
 <!--{{/head}}-->
 <!--{{title}}-->
-&nbsp;Hi,&nbsp;I'm
-<noscript>Jordan Mann.</noscript>
-<div class="name" style="display: none;">
-    <div class="lower">J</div>
-    <div class="del">ordan&nbsp;</div>
-    <div class="undel">r</div>
-    <div class="del">M</div>
-    <div class="undel">m</div>
-    ann
-    <div class="undel h">100</div>
-    .
-</div>
+Hi, I'm Jordan Mann.
 <!--{{/title}}-->
 <!--{{main}}-->
-<h1 class="title">
-    Jordan's Website
+<!-- todo -->
+<img loading="lazy" class="profile-photo lazy" src="https://jrmann.com/static/img/jordan.jpeg" height="250"
+    alt="Photo of Jordan, looking handsome in a maroon shirt.">
+<h1>
+    who?
 </h1>
-<p>
-    Hello and welcome to my website!
-</p>
-<p>
-    I hope to show you many interesting things here.
-</p>
-<p>
-    But I have not made them yet. So for now please enjoy what is on the page and we will deal with the rest later!
-</p>
+I'm a student pursuing my passions, including art, dance, and technology.
+<h1>
+    where?
+</h1>
+I'm from the Bay Area, but it often feels as though I'm living in cyberspace. You can find me on <a
+    href="https://github.com/jrmann100">GitHub</a>, <a href="https://jsfiddle.net/user/jrmann100">JSFiddle</a>, or
+<a href="https://stackoverflow.com/users/9068081/jordan-mann">Stack Overflow</a>. Email: first name at last name dot
+com.
+<h1>
+    what?
+</h1>
+You can take a look at my <a target="_blank"
+    href="https://docs.google.com/document/d/19HvlGXLH77AvFYCLOAfuUHSBb-Ko73WLqq1zqfBmN28/edit?usp=sharing">résumé</a>,
+or visit the galleries for <a href="https://jrmann.com/gallery/software">software design</a>, <a
+    href="https://jrmann.com/gallery/art">art</a>, and <a href="https://jrmann.com/gallery/dance">dance</a>.
+<h1>
+    how?
+</h1>
+I teach myself everything in project form, and most often I'm looking to find opportunities that will make a
+difference in the world while also pushing me in a new direction. I treat my programming like an art, germinating
+projects in my mind, visualizing them in sketchbooks, and finally realizing work with code.
+<h1>
+    when? why?
+</h1>
+When I picked up <i><a target="_blank" href="https://www.manning.com/books/hello-world">Hello World!</a></i> at age
+ten, I fell in love with the art of programming. I've experimented with user interfaces all my life, and being able
+to create my own (a few syntax errors notwithstanding) felt like magic. I've since expanded my skills from the
+Python language to include the HTML, JavaScript, and CSS you're reading right now, and I've learned the command line
+and rudimentary embedded development through other projects.
 <script>
     document.documentElement.addEventListener("mousemove", (e) => {
         const els = document.querySelectorAll("header .face svg");
@@ -118,14 +70,5 @@
                 el.style.filter = `drop-shadow(${chx * 0.5}rem ${Math.abs(chy) * 0.5}rem 0.5rem var(--shadow-color))`
             }))
     });
-
-    new IntersectionObserver(
-        ([e]) => {
-            document.body.classList.toggle("stuck", !e.isIntersecting);
-        }, {
-        threshold: [0.9]
-    }
-    ).observe(document.querySelector('header'));
-    document.querySelector("header .name").style.removeProperty('display'); // hidden by default if no JS.
 </script>
 <!--{{/main}}-->

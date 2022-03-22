@@ -47,17 +47,18 @@ async function load(path) {
     const fragmentRegions = await locateRegions(contextualFragment);
     Object.entries(fragmentRegions).forEach(([label, range]) => {
         if (!Reflect.has(docRegions, label)) throw new Error("could not find document region for fragment region", label);
-        const clone = range.cloneContents();
-        docRegions[label].insertNode(clone);
+        docRegions[label].insertNode(dynamify(range.cloneContents()));
+        dynamify(range.commonAncestorContainer);
     });
     // todo: this is redundant, but I can't figure out how to add the event listeners to the fragment.
-    dynamify(document.body);
+    // dynamify(document.body);
     document.body.dispatchEvent(event);
 }
 
 // convert hard links into dynamic ones that load() content instead of redirecting.
 function dynamify(parent) {
     parent.querySelectorAll("a").forEach(el => {
+        console.log(el);
         // only make relative links dynamic.
         // todo: maybe stat the fragment here?
         if (new URL(el.href).origin === window.location.origin)

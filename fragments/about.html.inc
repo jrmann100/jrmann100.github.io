@@ -6,7 +6,7 @@ About Jordan
 <meta name="description" content="Some interesting things about Jordan. Maybe you will learn something new!">
 <style>
     header>nav>ul>li.about {
-        font-weight: bold;
+        font-weight: 900;
     }
 </style>
 <!--{{/head}}-->

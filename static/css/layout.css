@@ -35,7 +35,7 @@ header nav {
 }
 
 header nav li {
-  font-weight: 500;
+  transition: font-weight 0.2s;
 }
 
 header nav ul {
@@ -116,5 +116,4 @@ footer {
   margin-top: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  color: #f0f0f0;
 }

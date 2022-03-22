@@ -5,3 +5,5 @@ It's really hard to dynamically affect styles, and I'm not sure it's worth it. Y
 Description doesn't work with ichi. Comments are likely getting in the way.
 
 ESLint + Prettier + maybe TypeScript would be nice.
+
+Roboto bold is too bold compared to jrmann.com as it is now.
