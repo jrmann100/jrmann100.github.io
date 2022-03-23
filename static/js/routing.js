@@ -58,7 +58,6 @@ async function load(path) {
 // convert hard links into dynamic ones that load() content instead of redirecting.
 function dynamify(parent) {
     parent.querySelectorAll("a").forEach(el => {
-        console.log(el);
         // only make relative links dynamic.
         // todo: maybe stat the fragment here?
         if (new URL(el.href).origin === window.location.origin)

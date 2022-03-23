@@ -1,6 +1,8 @@
 import { setup as setupRouting } from "./routing.js";
+import { setPalette, setup as setupColors } from "./colors.js";
 // import { setup as setupMedia } from "./media.js";
 
+setupColors();
 setupRouting();
 // setupMedia();
 
@@ -16,4 +18,5 @@ console.log("all modules loaded.");
 document.body.addEventListener("navigate", () => {
     console.log('navigating');
     loadingAnimation.play();
+    setPalette();
 });

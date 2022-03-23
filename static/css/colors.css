@@ -16,8 +16,8 @@ html {
     --black: #eee;
     --white: #222;
     --accent: lightskyblue;
-    --visited: thistle;
-    --noise: url("/static/img/noise-dark.png");
+    --visited: plum;
+    /* --noise: url("/static/img/noise-dark.png"); */
   }
 }
 
