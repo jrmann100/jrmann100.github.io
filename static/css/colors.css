@@ -8,7 +8,7 @@ html {
   --bad: lightcoral;
   --unvisited: dodgerblue;
   --accent: mediumslateblue;
-  --noise: url("/static/img/noise-light.png");
+  --noise: url("/static/img/noise.png");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,8 +17,14 @@ html {
     --white: #222;
     --unvisited: lightskyblue;
     --accent: plum;
-    /* --noise: url("/static/img/noise-dark.png"); */
   }
+}
+
+html[data-color-scheme="dark"] {
+  --black: #eee;
+  --white: #222;
+  --unvisited: lightskyblue;
+  --accent: plum;
 }
 
 body {
@@ -46,3 +52,10 @@ a:hover {
 a:visited {
   color: var(--accent);
 } */
+
+@media (prefers-reduced-motion) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -72,13 +72,11 @@ function dynamify(parent) {
     return parent;
 }
 
-export function setup() {
-    // handle history navigation (back, forward).
-    window.addEventListener("popstate", _ev => {
-        console.log(`[popstate] ${window.location.pathname}`);
-        load(window.location.pathname);
-    });
+// handle history navigation (back, forward).
+window.addEventListener("popstate", _ev => {
+    console.log(`[popstate] ${window.location.pathname}`);
+    load(window.location.pathname);
+});
 
-    // make all links dynamic, enabling routing.
-    dynamify(document.body);
-}
+// make all links dynamic, enabling routing.
+dynamify(document.body);

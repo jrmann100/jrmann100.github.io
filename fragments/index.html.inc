@@ -11,6 +11,14 @@
     header>nav>ul>li.index {
         font-weight: 900;
     }
+
+    img.profile-photo {
+        float: right;
+        margin: 1rem;
+        box-shadow: 0.1rem 0.5rem 0.5rem rgb(0 0 0 / 50%);
+        mix-blend-mode: luminosity;
+        object-fit: cover;
+    }
 </style>
 <!--{{/head}}-->
 <!--{{title}}-->
@@ -18,7 +26,7 @@ Hi, I'm Jordan Mann.
 <!--{{/title}}-->
 <!--{{main}}-->
 <!-- todo -->
-<img class="profile-photo lazy" src="https://jrmann.com/static/img/jordan.jpeg" height="250"
+<img class="profile-photo" src="/static/img/jordan.webp" height="420" width="280"
     alt="Photo of Jordan, looking handsome in a maroon shirt.">
 <h1>
     who?
@@ -52,23 +60,4 @@ ten, I fell in love with the art of programming. I've experimented with user int
 to create my own (a few syntax errors notwithstanding) felt like magic. I've since expanded my skills from the
 Python language to include the HTML, JavaScript, and CSS you're reading right now, and I've learned the command line
 and rudimentary embedded development through other projects.
-<script>
-    document.documentElement.addEventListener("mousemove", (e) => {
-        const els = document.querySelectorAll("header .face svg");
-        const face_rect = els[0].getBoundingClientRect();
-
-        // The function approaches 1 and -1, so that there isn't a dramatic effect at the bottom of the page.
-
-        const cap = (x) => 2 / Math.PI * Math.atan(2 * x);
-        const chx = cap((e.clientX - (face_rect.x + (face_rect.width / 2))) / face_rect.width);
-        const chy = cap((e.clientY - (face_rect.y + (face_rect.height / 2))) / face_rect.height);
-
-        window.requestAnimationFrame(() =>
-            els.forEach((el, n) => {
-                el.style.transform = `perspective(100rem) rotateY(${chx * 20 * (n + 1) / els.length}deg) rotateX(${chy * -20 * (n + 1) / els.length}deg) translateZ(${n * 0.5}rem)`;
-                // Changed to white for some wacky box-shadow stuff. Was rgba(0,0,0,0.2).
-                el.style.filter = `drop-shadow(${chx * 0.5}rem ${Math.abs(chy) * 0.5}rem 0.5rem var(--shadow-color))`
-            }))
-    });
-</script>
 <!--{{/main}}-->

@@ -1,6 +1,6 @@
 @import "./josh.css";
-@import "./layout-desktop.css" screen and (min-aspect-ratio: 2/3);
-@import "./layout-mobile.css" screen and (max-aspect-ratio: 2/3);
+@import "./layout-desktop.css" (min-aspect-ratio: 3/4);
+@import "./layout-mobile.css" (max-aspect-ratio: 3/4);
 @import "./colors-switcher.css";
 
 html {
@@ -34,8 +34,16 @@ header {
 header nav {
   grid-area: nav;
   display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+@media print {
+  header nav {
+    display: none;
+  }
 }
 
 header nav li {
@@ -124,4 +132,8 @@ footer {
   margin-top: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+html:not(.js-enabled) .js-only {
+  display: none;
 }

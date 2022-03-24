@@ -1,8 +1,6 @@
-import { setup as setupRouting } from "./routing.js";
-// import { setup as setupMedia } from "./media.js";
-
-setupRouting();
-// setupMedia();
+import "./routing.js";
+import "./face.js";
+import { motion } from "./media.js";
 
 const loadingAnimation = document.querySelector('header .eye path').animate(
     {
@@ -15,5 +13,5 @@ loadingAnimation.finish();
 console.log("all modules loaded.");
 document.documentElement.addEventListener("navigate", () => {
     console.log('navigating');
-    loadingAnimation.play();
+    if (motion.matches) { loadingAnimation.play() };
 });
