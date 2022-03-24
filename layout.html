@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" href="/static/css/colors.css" />
+  <script src="/static/js/colors.js"></script>
   <link rel="stylesheet" href="/static/css/layout.css" />
   <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
   <meta name="author" content="Jordan" />
@@ -47,6 +49,15 @@
         <li class="about"><a href="/about.html">about</a></li>
         <li class="index"><a href="/index.html">home</a></li>
       </ul>
+      <div class="colors-switcher">
+        <input type="radio" class="light" id="colors-input-light" name="colors" value="light">
+        <input type="radio" class="auto" id="colors-input-auto" name="colors" value="auto">
+        <input type="radio" class="dark" id="colors-input-dark" name="colors" value="dark">
+        <div class="indicator"></div>
+        <label for="colors-input-light" class="label light">☀️</label>
+        <label for="colors-input-auto" class="label auto">☁️</label>
+        <label for="colors-input-dark" class="label dark">🌙</label>
+      </div>
     </nav>
   </header>
   <main id="layout">
@@ -57,7 +68,7 @@
   <footer>
     Made entirely by Jordan.
     <script data-value="`Copyright ${new Date().getUTCFullYear()}.`">
-      document.write(eval(document.currentScript.dataset.value));
+      document.currentScript.outerHTML = eval(document.currentScript.dataset.value);
     </script>
   </footer>
 </body>

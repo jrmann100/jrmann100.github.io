@@ -1,0 +1,93 @@
+.colors-switcher {
+  display: inline-block;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  display: inline-grid;
+  grid-template-rows: 2em;
+  grid-template-columns: repeat(3, 2em);
+}
+
+.colors-switcher input {
+  display: block;
+  font-size: inherit;
+  margin: 0;
+  opacity: 0;
+}
+
+.colors-switcher .indicator {
+  position: absolute;
+  height: 1.8em;
+  margin: 0.1em;
+  border: 0.1em solid var(--accent);
+  /* border-radius: 1em; */
+  --t: ease-out;
+  visibility: hidden;
+}
+
+.colors-switcher input:checked ~ .indicator {
+  visibility: visible;
+}
+
+.colors-switcher input.light:checked ~ .indicator {
+  left: 0;
+  right: 4em;
+  transition: left 0.2s var(--t), right 0.3s var(--t);
+}
+
+.colors-switcher input.auto:checked ~ .indicator {
+  left: 2em;
+  right: 2em;
+  transition: left 0.2s var(--t), right 0.2s var(--t);
+}
+
+.colors-switcher input.dark:checked ~ .indicator {
+  left: 4em;
+  right: 0em;
+  transition: left 0.3s var(--t), right 0.2s var(--t);
+}
+
+.colors-switcher .label,
+.colors-switcher input {
+  grid-row: 1;
+  width: 1.8em;
+  height: 1.8em;
+  align-self: center;
+  justify-self: center;
+}
+
+.colors-switcher .label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 0.1s, filter 0s;
+}
+
+html[data-color-scheme="light"] .colors-switcher .label {
+  filter: brightness(0);
+}
+
+.colors-switcher .light {
+  grid-column: 1;
+}
+
+.colors-switcher .auto {
+  grid-column: 2;
+}
+
+.colors-switcher .dark {
+  grid-column: 3;
+}
+
+.colors-switcher input.light:not(:checked):not(:hover) ~ label.light {
+  opacity: 0.8;
+}
+
+.colors-switcher input.auto:not(:checked):not(:hover) ~ label.auto {
+  opacity: 0.8;
+}
+
+.colors-switcher input.dark:not(:checked):not(:hover) ~ label.dark {
+  opacity: 0.8;
+}

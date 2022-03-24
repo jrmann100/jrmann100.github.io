@@ -1,6 +1,3 @@
-// will get dispatched on load().
-const event = new Event('navigate');
-
 // matches a label comment's content, i.e. {{/label}}.
 const tagRegex = /^{{(\/?.+)}}$/;
 
@@ -52,7 +49,7 @@ async function load(path) {
     });
     // todo: this is redundant, but I can't figure out how to add the event listeners to the fragment.
     // dynamify(document.body);
-    document.body.dispatchEvent(event);
+    document.documentElement.dispatchEvent(new CustomEvent('navigate', { detail: { destination: path } }));
 }
 
 // convert hard links into dynamic ones that load() content instead of redirecting.

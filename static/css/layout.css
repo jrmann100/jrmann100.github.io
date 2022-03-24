@@ -1,7 +1,7 @@
-@import "./colors.css";
 @import "./josh.css";
 @import "./layout-desktop.css" screen and (min-aspect-ratio: 2/3);
 @import "./layout-mobile.css" screen and (max-aspect-ratio: 2/3);
+@import "./colors-switcher.css";
 
 html {
   scroll-behavior: smooth;
@@ -11,7 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
-  transition: background-color 0.3s;
+  transition: background-color 0.5s;
 }
 
 main {
@@ -33,6 +33,9 @@ header {
 
 header nav {
   grid-area: nav;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 header nav li {
@@ -40,7 +43,7 @@ header nav li {
 }
 
 header nav ul {
-  display: flex;
+  display: inline-flex;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -49,6 +52,10 @@ header nav ul {
 
 header nav a:not(:hover) {
   text-decoration: none;
+}
+
+header nav a:hover {
+  text-decoration: underline;
 }
 
 header .face {

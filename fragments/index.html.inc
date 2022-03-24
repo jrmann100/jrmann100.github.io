@@ -18,7 +18,7 @@ Hi, I'm Jordan Mann.
 <!--{{/title}}-->
 <!--{{main}}-->
 <!-- todo -->
-<img loading="lazy" class="profile-photo lazy" src="https://jrmann.com/static/img/jordan.jpeg" height="250"
+<img class="profile-photo lazy" src="https://jrmann.com/static/img/jordan.jpeg" height="250"
     alt="Photo of Jordan, looking handsome in a maroon shirt.">
 <h1>
     who?
