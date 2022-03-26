@@ -67,12 +67,12 @@
   --b: rgba(255, 255, 255, 0.2);
 }
 
-html[data-color-scheme="light"] .colors-switcher .label {
+html[data-color-scheme='light'] .colors-switcher .label {
   --b: rgba(0, 0, 0, 0.2);
 }
 
 @media (forced-colors: none) {
-  html[data-color-scheme="light"] .colors-switcher .label {
+  html[data-color-scheme='light'] .colors-switcher .label {
     filter: brightness(0);
   }
 }

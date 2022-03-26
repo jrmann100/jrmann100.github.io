@@ -1,8 +1,8 @@
-@import "./josh.css";
-@import "./layout-desktop.css" (min-aspect-ratio: 3/4);
-@import "./layout-mobile.css" (max-aspect-ratio: 3/4);
-@import "./colors-switcher.css";
-@import "./face.css";
+@import './josh.css';
+@import './layout-desktop.css' (min-aspect-ratio: 3/4);
+@import './layout-mobile.css' (max-aspect-ratio: 3/4);
+@import './colors-switcher.css';
+@import './face.css';
 
 html {
   scroll-behavior: smooth;

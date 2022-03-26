@@ -4,5 +4,7 @@
   },
   "liveServer.settings.root": "build/",
   "todo-tree.tree.scanMode": "workspace",
-  "liveServer.settings.multiRootWorkspaceName": "routing"
+  "liveServer.settings.multiRootWorkspaceName": "routing",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
