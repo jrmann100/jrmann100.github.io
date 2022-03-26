@@ -1,0 +1,56 @@
+header .face {
+  width: 6rem;
+  height: 6rem;
+  transition: height 0.5s, width 0.5s, margin 0.5s;
+  position: relative;
+  grid-area: face;
+  align-self: center;
+  justify-self: center;
+}
+
+header .face svg {
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  filter: drop-shadow(0 0 0.5rem var(--shadow-color)); /* todo */
+  fill: none;
+  stroke: var(--black);
+  stroke-width: 25;
+  /* stroke-linecap: round; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.1s ease, filter 0.1s linear;
+}
+
+@media print {
+  header .face svg {
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+header .face .eye path {
+  animation: blink 5s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  stroke-linecap: round;
+}
+
+@keyframes blink {
+  0% {
+    transform: scaleY(1) scaleX(1);
+  }
+
+  94% {
+    transform: scaleY(1) scaleX(1);
+  }
+
+  97% {
+    transform: scaleY(0) scaleX(0.8);
+  }
+
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+}

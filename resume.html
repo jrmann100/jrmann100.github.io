@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="/static/css/colors.css" />
+  <script src="/static/js/colors.js"></script>
+  <link rel="stylesheet" href="/static/css/layout.css" />
+  <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
+  <meta name="author" content="Jordan" />
+  <!-- <meta name="description" content=""> -->
+  <meta name="generator" content="Jordan's tiny routing/SSR engine." />
+  <meta name="keywords" content="jordan,personal website,blog,programming,web design" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFF">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111">
+  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta charset="UTF-8">
+  <!--{{head}}-->
+<title>Jordan Mann - Résumé</title>
+<style>
+    @media print {
+        header span.only-screen {
+            display: none;
+        }
+
+        header span.only-print {
+            display: initial;
+        }
+    }
+
+    @media not print {
+        header span.only-screen {
+            display: initial;
+        }
+
+        header span.only-print {
+            display: none;
+        }
+    }
+
+    h2 {
+        background-color: var(--black);
+        color: var(--white);
+        font-size: 1em;
+        max-width: max-content;
+        padding: 0 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    h2 {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+        forced-color-adjust: none;
+    }
+
+    @media print {
+        footer {
+            display: none;
+        }
+    }
+
+    main {
+        font-size: 1rem;
+    }
+
+    span.date {
+        float: right;
+    }
+</style>
+<!--{{/head}}-->
+</head>
+
+<body class="desktop">
+  <header>
+    <div class="face"
+      data-label="Expressive abstract logo, reminiscent of Apple and perhaps even Picasso's The Ladies of Avignon.">
+      <a href="/index.html" aria-label="Return to the home page">
+        <svg viewBox="0 0 515 515" width="160" height="160" role="img">
+          <title>An abstract circular face.</title>
+          <path
+            d="m 18.51729,257.49997 v 0 c 0,-131.98648 106.99619,-238.982685 238.98268,-238.982685 v 0 c 63.38217,0 124.16835,25.178464 168.98631,69.996403 44.81796,44.817952 69.99643,105.604142 69.99643,168.986282 v 0 c 0,131.98652 -106.99621,238.98274 -238.98274,238.98274 v 0 C 125.51348,496.48272 18.51729,389.48649 18.51729,257.49997 Z" />
+        </svg>
+        <svg viewBox="0 0 515 515" width="160" height="160">
+          <title>An abstract nose, pointing left.</title>
+          <path
+            d="M 257.49997,18.517285 C 246.291,63.351791 194.00866,236.07343 195.20077,285.20076 c 1.19211,49.12733 80.22227,-4.58031 90.00001,30 9.77769,34.5803 -25.07747,150.99443 -27.70081,181.28195" />
+        </svg>
+        <svg viewBox="0 0 515 515" class="eye" width="160" height="160">
+          <title>An abstract circular right eye.</title>
+          <path
+            d="m 290.57699,165.20077 v 0 c 0,-30.16789 24.4559,-54.62378 54.62379,-54.62378 v 0 c 14.48712,0 28.3809,5.75499 38.62484,15.99893 10.24397,10.24394 15.99895,24.13771 15.99895,38.62485 v 0 c 0,30.16788 -24.4559,54.62377 -54.62379,54.62377 v 0 c -30.16789,0 -54.62379,-24.45589 -54.62379,-54.62377 z" />
+        </svg>
+      </a>
+    </div>
+    <h1 class="title">
+      <!--{{title}}-->
+<span class="only-print">Jordan Mann</span><span class="only-screen">Résumé</span>
+<!--{{/title}}-->
+    </h1>
+    <nav>
+      <ul>
+        <li class="news"><a href="/news/index.html">news</a></li>
+        <li class="about"><a href="/about.html">about</a></li>
+        <li class="index"><a href="/index.html">home</a></li>
+      </ul>
+      <div class="colors-switcher js-only">
+        <input type="radio" class="light" id="colors-input-light" name="colors" value="light">
+        <input type="radio" class="auto" id="colors-input-auto" name="colors" value="auto">
+        <input type="radio" class="dark" id="colors-input-dark" name="colors" value="dark">
+        <div class="indicator"></div>
+        <label for="colors-input-light" class="label light">☀️</label>
+        <label for="colors-input-auto" class="label auto">☁️</label>
+        <label for="colors-input-dark" class="label dark">🌙</label>
+      </div>
+    </nav>
+  </header>
+  <main id="layout">
+    <!--{{main}}-->
+<section>
+    <h2>education</h2>
+    <ul>
+        <li><b>Dartmouth College</b><span class="date">Class of 2025</span></li>
+        <li><b>Redwood High School</b> 4.4 GPA <span class="date">2017 - 2021</span></li>
+    </ul>
+</section>
+<br>
+<section>
+    <h2>employment</h2>
+    <ul>
+        <li><b>DALI Lab</b> (Dartmouth College) Software developer <span class="date">2022 - Present</span></li>
+        <li><b>Upwork</b> Software designer/developer <span class="date">2021 - Present</span></li>
+    </ul>
+    <br>
+    <figure>
+        <figcaption><b>Freelance Software Development</b><span class="date">2017 - Present</span></figcaption>
+        <ul>
+            <li><b>Mann Consulting</b> VoIP transcription product on AWS with Google Cloud
+                <br>and Digium Switchvox. Web scraping for recruiting
+            </li>
+            <li><b>Clicktime</b> Virtualized OS images across multiple PCs</li>
+            <li><b>Peer Tutor Marin</b> Designed/developed website, branding, payment</li>
+            <li><b>Baskin Clinic</b> Redesigned online medical intake forms</li>
+            <li><b>Technology4Life</b> Designed/developed educational website for seniors</li>
+            <li><b>Jordan Mann Software Solutions</b>
+                <ul><b><a href="https://apps.apple.com/us/app/benuse/id1581388010">Benuse</a></b> iOS Hacker News reader
+                </ul>
+                <ul><b><a href="https://apps.apple.com/sa/app/dartmouth-directory/id1609884875">Dartmouth
+                            Directory</a></b>
+                    iOS directory and contacts search</ul>
+                <ul><b><a href="https://github.com/jrmann100/notifwd">notifwd</a></b> macOS notification forwarding
+                    utility
+                </ul>
+            </li>
+        </ul>
+    </figure>
+</section>
+<br>
+<section>
+    <h2>technology</h2>
+    <ul>
+        <li>Contribute to open-source development with Git/GitHub, VSCode, Stack Overflow</li>
+        <li>Expert in Apple/macOS consulting</li>
+    </ul>
+    <br>
+    <figure style='break-after:page'>
+        <figcaption><b>Front-End Web Development</b></figcaption>
+        <ul>
+            <li>Expert in HTML, CSS, JavaScript</li>
+            <li>Integrated web development with Webpack, TypeScript, NPM/Yarn</li>
+            <li>Build with Svelte/SvelteKit framework, React/React Native</li>
+            <li>Design with Inkscape, Figma, responsive/accessible CSS</li>
+            <li>Audit accessibility/performance/compatibility with DevTools/Lighthouse</li>
+        </ul>
+    </figure>
+    <br>
+    <figure>
+        <figcaption><b>Back-End Web Development</b></figcaption>
+        <ul>
+            <li>Build Python servers with Flask/SQLAlchemy</li>
+            <li>Build NodeJS servers with Express</li>
+            <li>Design APIs with HTTP REST, WebSockets, WebRTC</li>
+            <li>Deploy on AWS, Google Cloud, Firebase</li>
+            <li>Host with Docker/Docker Compose, NGINX, pfSense + HAProxy</li>
+            <li>Develop in command line with Bash/Vim</li>
+        </ul>
+    </figure>
+</section>
+<br>
+<section>
+    <h2>hobbies</h2>
+    <figure>
+        <figcaption><b>Dance</b></figcaption>
+        <ul>
+            <li><b>Marin Dance Theatre</b> classically trained in ballet and other styles <span class="date">2008 -
+                    2021</span></li>
+            <li><b>Ballet Austin</b> summer intensive (2019)</li>
+        </ul>
+    </figure>
+    <br>
+    <figure>
+        <figcaption><b>Scouts BSA</b><span class="date">2009 - 2021</span></figcaption>
+        <ul>
+            <li><b>Eagle Scout</b> Troop 59, Larkspur, CA</li>
+            <li><b>National Youth Leadership Training</b> staff (2019)</li>
+        </ul>
+    </figure>
+    <br>
+    <figure>
+        <figcaption><b>National Art Honor Society,</b> Redwood High School branch<span class="date">2017 - 2021</span>
+        </figcaption>
+        <ul>
+            <li>Co-president (2019) and vice-president (2020)</li>
+        </ul>
+    </figure>
+</section>
+<!--{{/main}}-->
+  </main>
+  <footer>
+    Made entirely by Jordan.
+    <script data-value="`Copyright ${new Date().getUTCFullYear()}.`">
+      document.currentScript.outerHTML = eval(document.currentScript.dataset.value);
+    </script>
+    <noscript>
+      &nbsp;Copyright 2022.
+    </noscript>
+  </footer>
+  <script async defer type="module" src="/static/js/layout.js"></script>
+</body>
+
+</html>
