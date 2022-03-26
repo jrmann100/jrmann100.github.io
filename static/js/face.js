@@ -1,12 +1,13 @@
 if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
   // only follow the cursor when the cursor can hover over things
   document.documentElement.addEventListener('mousemove', (e) => {
+    /** @type {NodeListOf<SVGElement>} */
     const els = document.querySelectorAll('header .face svg');
     const face_rect = els[0].getBoundingClientRect();
 
     // The function approaches 1 and -1, so that there isn't a dramatic effect at the bottom of the page.
 
-    const cap = (x) => (2 / Math.PI) * Math.atan(2 * x);
+    const cap = (/** @type {number} */ x) => (2 / Math.PI) * Math.atan(2 * x);
     const chx = cap((e.clientX - (face_rect.x + face_rect.width / 2)) / face_rect.width);
     const chy = cap((e.clientY - (face_rect.y + face_rect.height / 2)) / face_rect.height);
 

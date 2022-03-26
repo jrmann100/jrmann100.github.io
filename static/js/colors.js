@@ -134,6 +134,9 @@ const palettesLight = [
   ['#faf9fb', '#120d2d', '#cd6143']
 ];
 const query = window.matchMedia('(prefers-color-scheme: light)');
+/**
+ * @type {string | null}
+ */
 let lastPreference = null;
 
 query.addEventListener('change', () => {
@@ -178,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const storedPreference = getStoredPreference();
   document
     .querySelector('.colors-switcher')
-    .querySelectorAll('input')
+    ?.querySelectorAll('input')
     .forEach((el) => {
       el.addEventListener('change', () => {
         localStorage.setItem('color-scheme', el.value);
