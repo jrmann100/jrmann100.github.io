@@ -26,9 +26,9 @@ function updatePalette(dirty = false) {
     if (preference === lastPreference && !dirty) { return; }
     lastPreference = preference;
     const palette = (preference === 'dark' ? palettesDark : palettesLight)[Math.floor(Math.random() * (preference === 'dark' ? palettesDark : palettesLight).length)];
-    document.documentElement.style.setProperty('--white', palette[0]);
-    document.documentElement.style.setProperty('--black', palette[1]);
-    document.documentElement.style.setProperty('--accent', palette[2]); // todo rename accent in CSS
+    document.documentElement.style.setProperty('--p-white', palette[0]);
+    document.documentElement.style.setProperty('--p-black', palette[1]);
+    document.documentElement.style.setProperty('--p-accent', palette[2]); // todo rename accent in CSS
     document.documentElement.setAttribute('data-color-scheme', preference);
 }
 
@@ -51,4 +51,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-document.documentElement.classList.add('js-enabled');
+document.documentElement.setAttribute('data-js-enabled', '');

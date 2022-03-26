@@ -11,7 +11,7 @@ if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference
 
         window.requestAnimationFrame(() =>
             els.forEach((el, n) => {
-                el.style.transform = `perspective(100rem) rotateY(${chx * 20 * (n + 1) / els.length}deg) rotateX(${chy * -20 * (n + 1) / els.length}deg) translateZ(${n * 0.5}rem)`;
+                el.style.transform = `perspective(100rem) rotateY(${chx * 20 * (n + 1) / els.length}deg) rotateX(${chy * -20 * (n + 1) / els.length}deg) translateZ(${n * el.getBoundingClientRect().width * 0.08}px)`;
                 // Changed to white for some wacky box-shadow stuff. Was rgba(0,0,0,0.2).
                 el.style.filter = `drop-shadow(${chx * 0.5}rem ${Math.abs(chy) * 0.5}rem 0.5rem var(--shadow-color))`
             }))

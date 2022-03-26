@@ -6,7 +6,6 @@ html {
   --black: #222;
   --good: darkseagreen;
   --bad: lightcoral;
-  --unvisited: dodgerblue;
   --accent: mediumslateblue;
   --noise: url("/static/img/noise.png");
 }
@@ -15,16 +14,14 @@ html {
   html {
     --black: #eee;
     --white: #222;
-    --unvisited: lightskyblue;
     --accent: plum;
   }
 }
 
-html[data-color-scheme="dark"] {
-  --black: #eee;
-  --white: #222;
-  --unvisited: lightskyblue;
-  --accent: plum;
+html[data-color-scheme] {
+  --black: var(--p-black);
+  --white: var(--p-white);
+  --accent: var(--p-accent);
 }
 
 body {
@@ -35,7 +32,19 @@ body {
   transition: background-color 3s;
 }
 
-/******* links ********/
+@media print, (prefers-contrast: more), (forced-colors: active) {
+  html,
+  html[data-color-scheme] {
+    --black: black;
+    --white: white;
+    --accent: mediumslateblue;
+  }
+  body {
+    background-image: none;
+  }
+}
+
+/* todo unvisited link? */
 
 a {
   color: var(--accent);
@@ -44,14 +53,6 @@ a {
 a:hover {
   text-decoration: none;
 }
-
-/* a:link {
-  color: var(--unvisited);
-}
-
-a:visited {
-  color: var(--accent);
-} */
 
 @media (prefers-reduced-motion) {
   * {
