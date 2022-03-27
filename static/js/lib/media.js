@@ -7,5 +7,5 @@
 // query.addEventListener('change', updateLayout);
 // updateLayout(query);
 
-export const mobile = window.matchMedia('(max-aspect-ratio: 3/4)');
-export const motion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+export const mobileQuery = window.matchMedia('(max-aspect-ratio: 3/4)');
+export const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');

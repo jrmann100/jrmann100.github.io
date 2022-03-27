@@ -1,140 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <link rel="stylesheet" href="/static/css/colors.css" />
-  <script src="/static/js/colors.js"></script>
-  <link rel="stylesheet" href="/static/css/layout.css" />
-  <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
-  <meta name="author" content="Jordan" />
-  <!-- <meta name="description" content=""> -->
-  <meta name="generator" content="Jordan's tiny routing/SSR engine." />
-  <meta name="keywords" content="jordan,personal website,blog,programming,web design" />
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFF">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111">
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
-  <meta name="robots" content="index,follow" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta charset="UTF-8">
-  <!--{{head}}-->
+  <head>
+    <link rel="stylesheet" href="/static/css/colors.css" />
+    <script src="/static/js/colors.js"></script>
+    <link rel="stylesheet" href="/static/css/layout.css" />
+    <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
+    <meta name="author" content="Jordan" />
+    <!-- <meta name="description" content=""> -->
+    <meta name="generator" content="Jordan's tiny routing/SSR engine." />
+    <meta name="keywords" content="jordan,personal website,blog,programming,web design" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFF" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8" />
+    <!--{{head}}-->
 <title>Welcome to Jordan's Website</title>
-<meta name="description" content="Jordan made a little routing website and wants you to check it out!">
+<meta
+  name="description"
+  content="Jordan made a little routing website and wants you to check it out!"
+/>
 <style>
-    header div.face {
-        height: 10rem;
-        width: 10rem;
-        margin: 1rem;
-    }
+  header div.face {
+    height: 10rem;
+    width: 10rem;
+    margin: 1rem;
+  }
 
-    header>nav>ul>li.index {
-        font-weight: 900;
-    }
+  header > nav > ul > li.index {
+    font-weight: 900;
+  }
 
-    img.profile-photo {
-        float: right;
-        margin: 1rem;
-        box-shadow: 0.1rem 0.5rem 0.5rem rgb(0 0 0 / 50%);
-        mix-blend-mode: luminosity;
-        object-fit: cover;
-    }
+  img.profile-photo {
+    float: right;
+    margin: 1rem;
+    box-shadow: 0.1rem 0.5rem 0.5rem rgb(0 0 0 / 50%);
+    mix-blend-mode: luminosity;
+    object-fit: cover;
+  }
 </style>
 <!--{{/head}}-->
-</head>
+  </head>
 
-<body class="desktop">
-  <header>
-    <div class="face"
-      data-label="Expressive abstract logo, reminiscent of Apple and perhaps even Picasso's The Ladies of Avignon.">
-      <a href="/index.html" aria-label="Return to the home page">
-        <svg viewBox="0 0 515 515" width="160" height="160" role="img">
-          <title>An abstract circular face.</title>
-          <path
-            d="m 18.51729,257.49997 v 0 c 0,-131.98648 106.99619,-238.982685 238.98268,-238.982685 v 0 c 63.38217,0 124.16835,25.178464 168.98631,69.996403 44.81796,44.817952 69.99643,105.604142 69.99643,168.986282 v 0 c 0,131.98652 -106.99621,238.98274 -238.98274,238.98274 v 0 C 125.51348,496.48272 18.51729,389.48649 18.51729,257.49997 Z" />
-        </svg>
-        <svg viewBox="0 0 515 515" width="160" height="160">
-          <title>An abstract nose, pointing left.</title>
-          <path
-            d="M 257.49997,18.517285 C 246.291,63.351791 194.00866,236.07343 195.20077,285.20076 c 1.19211,49.12733 80.22227,-4.58031 90.00001,30 9.77769,34.5803 -25.07747,150.99443 -27.70081,181.28195" />
-        </svg>
-        <svg viewBox="0 0 515 515" class="eye" width="160" height="160">
-          <title>An abstract circular right eye.</title>
-          <path
-            d="m 290.57699,165.20077 v 0 c 0,-30.16789 24.4559,-54.62378 54.62379,-54.62378 v 0 c 14.48712,0 28.3809,5.75499 38.62484,15.99893 10.24397,10.24394 15.99895,24.13771 15.99895,38.62485 v 0 c 0,30.16788 -24.4559,54.62377 -54.62379,54.62377 v 0 c -30.16789,0 -54.62379,-24.45589 -54.62379,-54.62377 z" />
-        </svg>
-      </a>
-    </div>
-    <h1 class="title">
-      <!--{{title}}-->
-Hi, I'm Jordan Mann.
-<!--{{/title}}-->
-    </h1>
-    <nav>
-      <ul>
-        <li class="news"><a href="/news/index.html">news</a></li>
-        <li class="about"><a href="/about.html">about</a></li>
-        <li class="index"><a href="/index.html">home</a></li>
-      </ul>
-      <div class="colors-switcher js-only">
-        <input type="radio" class="light" id="colors-input-light" name="colors" value="light">
-        <input type="radio" class="auto" id="colors-input-auto" name="colors" value="auto">
-        <input type="radio" class="dark" id="colors-input-dark" name="colors" value="dark">
-        <div class="indicator"></div>
-        <label for="colors-input-light" class="label light">☀️</label>
-        <label for="colors-input-auto" class="label auto">☁️</label>
-        <label for="colors-input-dark" class="label dark">🌙</label>
+  <body class="desktop">
+    <header>
+      <div
+        class="face"
+        data-label="Expressive abstract logo, reminiscent of Apple and perhaps even Picasso's The Ladies of Avignon."
+      >
+        <a href="/index.html" aria-label="Return to the home page">
+          <svg viewBox="0 0 515 515" width="160" height="160" role="img">
+            <title>An abstract circular face.</title>
+            <path
+              d="m 18.51729,257.49997 v 0 c 0,-131.98648 106.99619,-238.982685 238.98268,-238.982685 v 0 c 63.38217,0 124.16835,25.178464 168.98631,69.996403 44.81796,44.817952 69.99643,105.604142 69.99643,168.986282 v 0 c 0,131.98652 -106.99621,238.98274 -238.98274,238.98274 v 0 C 125.51348,496.48272 18.51729,389.48649 18.51729,257.49997 Z"
+            />
+          </svg>
+          <svg viewBox="0 0 515 515" width="160" height="160">
+            <title>An abstract nose, pointing left.</title>
+            <path
+              d="M 257.49997,18.517285 C 246.291,63.351791 194.00866,236.07343 195.20077,285.20076 c 1.19211,49.12733 80.22227,-4.58031 90.00001,30 9.77769,34.5803 -25.07747,150.99443 -27.70081,181.28195"
+            />
+          </svg>
+          <svg viewBox="0 0 515 515" class="eye" width="160" height="160">
+            <title>An abstract circular right eye.</title>
+            <path
+              d="m 290.57699,165.20077 v 0 c 0,-30.16789 24.4559,-54.62378 54.62379,-54.62378 v 0 c 14.48712,0 28.3809,5.75499 38.62484,15.99893 10.24397,10.24394 15.99895,24.13771 15.99895,38.62485 v 0 c 0,30.16788 -24.4559,54.62377 -54.62379,54.62377 v 0 c -30.16789,0 -54.62379,-24.45589 -54.62379,-54.62377 z"
+            />
+          </svg>
+        </a>
       </div>
-    </nav>
-  </header>
-  <main id="layout">
-    <!--{{main}}-->
+      <h1 class="title">
+        <!--{{title}}-->
+<span style="display: inline-block">Hi, I'm&nbsp;</span
+><span style="display: inline-block">Jordan Mann.</span>
+<!--{{/title}}-->
+      </h1>
+      <nav>
+        <ul>
+          <li class="news"><a href="/news/index.html">news</a></li>
+          <li class="about"><a href="/about.html">about</a></li>
+          <li class="index"><a href="/index.html">home</a></li>
+        </ul>
+        <div class="colors-switcher js-only">
+          <input type="radio" class="light" id="colors-input-light" name="colors" value="light" />
+          <input type="radio" class="auto" id="colors-input-auto" name="colors" value="auto" />
+          <input type="radio" class="dark" id="colors-input-dark" name="colors" value="dark" />
+          <div class="indicator"></div>
+          <label for="colors-input-light" class="label light">☀️</label>
+          <label for="colors-input-auto" class="label auto">☁️</label>
+          <label for="colors-input-dark" class="label dark">🌙</label>
+        </div>
+      </nav>
+    </header>
+    <main id="layout">
+      <!--{{main}}-->
 <!-- todo -->
-<img class="profile-photo" src="/static/img/jordan.webp" height="420" width="280"
-    alt="Photo of Jordan, looking handsome in a maroon shirt.">
-<h1>
-    who?
-</h1>
+<img
+  class="profile-photo"
+  src="/static/img/jordan.webp"
+  height="420"
+  width="280"
+  alt="Photo of Jordan, looking handsome in a maroon shirt."
+/>
+<h1>who?</h1>
 I'm a student pursuing my passions, including art, dance, and technology.
-<h1>
-    where?
-</h1>
-I'm from the Bay Area, but it often feels as though I'm living in cyberspace. You can find me on <a
-    href="https://github.com/jrmann100">GitHub</a>, <a href="https://jsfiddle.net/user/jrmann100">JSFiddle</a>, or
-<a href="https://stackoverflow.com/users/9068081/jordan-mann">Stack Overflow</a>. Email: first name at last name dot
-com.
-<h1>
-    what?
-</h1>
-You can take a look at my <a target="_blank"
-    href="https://docs.google.com/document/d/19HvlGXLH77AvFYCLOAfuUHSBb-Ko73WLqq1zqfBmN28/edit?usp=sharing">résumé</a>,
-or visit the galleries for <a href="https://jrmann.com/gallery/software">software design</a>, <a
-    href="https://jrmann.com/gallery/art">art</a>, and <a href="https://jrmann.com/gallery/dance">dance</a>.
-<h1>
-    how?
-</h1>
-I teach myself everything in project form, and most often I'm looking to find opportunities that will make a
-difference in the world while also pushing me in a new direction. I treat my programming like an art, germinating
-projects in my mind, visualizing them in sketchbooks, and finally realizing work with code.
-<h1>
-    when? why?
-</h1>
-When I picked up <i><a target="_blank" href="https://www.manning.com/books/hello-world">Hello World!</a></i> at age
-ten, I fell in love with the art of programming. I've experimented with user interfaces all my life, and being able
-to create my own (a few syntax errors notwithstanding) felt like magic. I've since expanded my skills from the
-Python language to include the HTML, JavaScript, and CSS you're reading right now, and I've learned the command line
-and rudimentary embedded development through other projects.
+<h1>where?</h1>
+I'm from the Bay Area, but it often feels as though I'm living in cyberspace. You can find me on
+<a href="https://github.com/jrmann100">GitHub</a>,
+<a href="https://jsfiddle.net/user/jrmann100">JSFiddle</a>, or
+<a href="https://stackoverflow.com/users/9068081/jordan-mann">Stack Overflow</a>. Email: first name
+at last name dot com.
+<h1>what?</h1>
+You can take a look at my
+<a
+  target="_blank"
+  href="https://docs.google.com/document/d/19HvlGXLH77AvFYCLOAfuUHSBb-Ko73WLqq1zqfBmN28/edit?usp=sharing"
+  >résumé</a
+>, or visit the galleries for <a href="https://jrmann.com/gallery/software">software design</a>,
+<a href="https://jrmann.com/gallery/art">art</a>, and
+<a href="https://jrmann.com/gallery/dance">dance</a>.
+<h1>how?</h1>
+I teach myself everything in project form, and most often I'm looking to find opportunities that
+will make a difference in the world while also pushing me in a new direction. I treat my programming
+like an art, germinating projects in my mind, visualizing them in sketchbooks, and finally realizing
+work with code.
+<h1>when? why?</h1>
+When I picked up
+<i><a target="_blank" href="https://www.manning.com/books/hello-world">Hello World!</a></i> at age
+ten, I fell in love with the art of programming. I've experimented with user interfaces all my life,
+and being able to create my own (a few syntax errors notwithstanding) felt like magic. I've since
+expanded my skills from the Python language to include the HTML, JavaScript, and CSS you're reading
+right now, and I've learned the command line and rudimentary embedded development through other
+projects.
 <!--{{/main}}-->
-  </main>
-  <footer>
-    Made entirely by Jordan.
-    <script data-value="`Copyright ${new Date().getUTCFullYear()}.`">
-      document.currentScript.outerHTML = eval(document.currentScript.dataset.value);
-    </script>
-    <noscript>
-      &nbsp;Copyright 2022.
-    </noscript>
-  </footer>
-  <script async defer type="module" src="/static/js/layout.js"></script>
-</body>
-
+    </main>
+    <footer>
+      <small>
+        Made entirely by Jordan.
+        <script data-value="`Copyright ${new Date().getUTCFullYear()}.`">
+          document.currentScript.outerHTML = eval(document.currentScript.dataset.value);
+        </script>
+        <noscript> &nbsp;Copyright 2022. </noscript>
+      </small>
+    </footer>
+    <script async defer type="module" src="/static/js/layout.js"></script>
+  </body>
 </html>
