@@ -4,8 +4,6 @@
  * @author Jordan Mann
  */
 
-import { motionQuery } from './media.js';
-
 /**
  * A spin animation to indicate dynamic page loading.
  */
@@ -20,6 +18,8 @@ const loadingAnimation = document.querySelector('header .eye path')?.animate(
 
 // Don't play the loading animation on first load.
 loadingAnimation?.finish();
+
+const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
 
 // Play the loading animation on dynamic page load - this event is fired by the routing module.
 document.documentElement.addEventListener('navigate', () => {
