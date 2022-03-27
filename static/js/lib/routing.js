@@ -1,12 +1,20 @@
-// matches a label comment's content, i.e. {{/label}}.
+/**
+ * @file Replaces standard navigation with dynamic content injection.
+ * @module routing
+ * @author Jordan Mann
+ */
+
+/**
+ * Matches a label comment's content, i.e. {{/label}}.
+ */
 const tagRegex = /^{{(\/?.+)}}$/;
 
 /**
  * Identify regions in a document or fragment by their label comments.
  * The regions themselves do not include the labels, only their enclosed content.
  *
- * @param {ParentNode} root
- * @returns {Promise<Map<string, Range>>}
+ * @param {Node} root in which to locate regions.
+ * @returns {Promise<Map<string, Range>>} located regions.
  */
 async function locateRegions(root) {
   const commentsIterator = document.createNodeIterator(root, NodeFilter.SHOW_COMMENT, {
@@ -17,7 +25,6 @@ async function locateRegions(root) {
     }
   });
 
-  // label: Range
   let regions = new Map();
 
   // take matching labels two at a time and convert them into ranges enclosing content.
@@ -27,8 +34,9 @@ async function locateRegions(root) {
     [start, end] = [commentsIterator.nextNode(), commentsIterator.nextNode()]
   ) {
     const label = start.nodeValue?.match(tagRegex)?.[1];
-    if ('/' + label !== end.nodeValue?.match(tagRegex)?.[1])
+    if ('/' + label !== end.nodeValue?.match(tagRegex)?.[1]) {
       throw new Error(`document's region tags don't match: '${start}' and '${end}'`);
+    }
     const range = document.createRange();
     range.setStartAfter(start);
     range.setEndBefore(end);
@@ -36,10 +44,12 @@ async function locateRegions(root) {
   }
   return regions;
 }
-// load a page fragment for a given path and swap the current content with its own.
-// todo test with malformed data
+
 /**
- * @param {string} path
+ * Load a page fragment for a given path and swap the current content with its own.
+ *
+ * @param {string} path the relative path to load.
+ * @todo error handling
  */
 async function load(path) {
   // fetch the fragment text.
@@ -51,15 +61,15 @@ async function load(path) {
   const docRegions = await locateRegions(document.documentElement);
 
   // clear all document regions.
-  Object.values(docRegions).forEach((range) => range.deleteContents());
+  docRegions.forEach((range) => range.deleteContents());
 
   // match the new fragment regions to cleared document regions with the same label.
   const fragmentRegions = await locateRegions(contextualFragment);
-  Object.entries(fragmentRegions).forEach(([label, range]) => {
-    if (!Reflect.has(docRegions, label))
+  fragmentRegions.forEach((range, label) => {
+    if (!docRegions.has(label)) {
       throw new Error(`could not find document region for fragment region '${label}'`);
+    }
     docRegions.get(label)?.insertNode(dynamify(range.cloneContents()));
-    dynamify(range.commonAncestorContainer);
   });
   // todo: this is redundant, but I can't figure out how to add the event listeners to the fragment.
   // dynamify(document.body);
@@ -68,15 +78,17 @@ async function load(path) {
   );
 }
 
-// convert hard links into dynamic ones that load() content instead of redirecting.
 /**
- * @param {HTMLElement} parent
+ * Convert hard links into dynamic ones that load() content instead of redirecting.
+ *
+ * @param {ParentNode} parent the parent element/fragment to transform.
+ * @returns {ParentNode} the transformed parent node.
  */
 function dynamify(parent) {
   parent.querySelectorAll('a').forEach((/** @type {HTMLAnchorElement} */ el) => {
     // only make relative links dynamic.
     // todo: maybe stat the fragment here?
-    if (new URL(el.href).origin === window.location.origin)
+    if (new URL(el.href).origin === window.location.origin) {
       el.addEventListener('click', async (/** @type {{ preventDefault: () => void; }} */ ev) => {
         ev.preventDefault();
         const path = new URL(el.href).pathname;
@@ -84,8 +96,11 @@ function dynamify(parent) {
           console.log(window.location.pathname, '->', path);
           load(path);
           window.history.pushState(null, '', el.href);
-        } else console.log(window.location.pathname, 'x', path);
+        } else {
+          console.log(window.location.pathname, 'x', path);
+        }
       });
+    }
   });
   return parent;
 }

@@ -25,7 +25,8 @@
 </style>
 <!--{{/head}}-->
 <!--{{title}}-->
-Hi, I'm Jordan Mann.
+<span style="display: inline-block">Hi, I'm&nbsp;</span
+><span style="display: inline-block">Jordan Mann.</span>
 <!--{{/title}}-->
 <!--{{main}}-->
 <!-- todo -->

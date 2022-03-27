@@ -4,10 +4,15 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "watch build",
-      "type": "shell",
-      "command": "nodemon --ignore build render.js -e js,css,html,html.inc",
-      "problemMatcher": []
+      "type": "npm",
+      "script": "build-watch",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "label": "npm: build-watch",
+      "detail": "nodemon render.js -i build -e js,json,html,css,html.inc"
     }
   ]
 }

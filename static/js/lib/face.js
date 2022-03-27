@@ -1,3 +1,33 @@
+/**
+ * @file Animates the face logo in the header.
+ * @module face
+ * @author Jordan Mann
+ */
+
+import { motionQuery } from './media.js';
+
+/**
+ * A spin animation to indicate dynamic page loading.
+ */
+const loadingAnimation = document.querySelector('header .eye path')?.animate(
+  {
+    transform: ['rotateZ(90deg) scaleY(-1)', 'rotateZ(450deg) scaleY(-1)'],
+    strokeDasharray: ['343, 343, 343', '0, 343, 343'],
+    strokeDashoffset: [0, 340]
+  },
+  1500
+);
+
+// Don't play the loading animation on first load.
+loadingAnimation?.finish();
+
+// Play the loading animation on dynamic page load - this event is fired by the routing module.
+document.documentElement.addEventListener('navigate', () => {
+  if (motionQuery.matches) {
+    loadingAnimation?.play();
+  }
+});
+
 if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
   // only follow the cursor when the cursor can hover over things
   document.documentElement.addEventListener('mousemove', (e) => {

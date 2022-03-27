@@ -1,8 +1,25 @@
+/**
+ * @file Pre-renders .html.inc include files into full HTML pages.
+ * @author Jordan Mann
+ * @copyright 2022
+ * @license MIT
+ * This script should require no NPM dependencies to run.
+ */
+
 import * as fs from 'fs/promises';
 
+/**
+ * Matches a region of format <!--{{name}}-->content<!--{{/name}}-->
+ */
 const regionRegex = /<!--{{(?<open>.+)}}-->(?<content>(.|\n)*?)<!--{{(?<close>\/.+)}}-->/i;
 
-// todo: document and test
+/**
+ * Recursively pre-render all include files within a folder.
+ *
+ * @param {string} path the path to the folder in which to locate include files.
+ * @param {string} layout path to the layout file.
+ * @todo document and test
+ */
 async function transform(path, layout) {
   const stat = await fs.stat(path);
 
@@ -47,9 +64,17 @@ async function transform(path, layout) {
   }
 }
 
-(async () => {
+/**
+ * Transform fragments/ using layout.html; copy static/ and fragments/ into the build/ folder.
+ */
+async function main() {
   // remove existing build folder
-  await fs.stat('build').then(() => fs.rm('build', { recursive: true }));
+  try {
+    await fs.stat('build');
+    await fs.rm('build', { recursive: true });
+  } catch {
+    // build folder does not exist
+  }
   // re-create build folder
   await fs.mkdir('build', { recursive: true });
   /* pre-render fragments */
@@ -62,4 +87,6 @@ async function transform(path, layout) {
   await fs.cp('fragments', 'build/fragments', { recursive: true });
   await fs.cp('static', 'build/static', { recursive: true });
   console.log('rendered!');
-})();
+}
+
+main();
