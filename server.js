@@ -1,3 +1,8 @@
+/**
+ * @file Sample server for static pre-rendered site.
+ * @author Jordan Mann
+ */
+
 import express from 'express';
 const app = express();
 const port = 3000;
