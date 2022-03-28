@@ -12,7 +12,7 @@ News
 <!--{{/head}}-->
 <!--{{main}}-->
 <style>
-  main#layout a.secret {
+  a.secret {
     opacity: 0.2;
   }
 </style>

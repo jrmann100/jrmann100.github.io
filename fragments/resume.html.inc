@@ -4,6 +4,10 @@
 <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
 <style>
+  header > nav > ul > li.resume {
+    font-weight: bold;
+  }
+
   @media print {
     header span.only-screen {
       display: none;

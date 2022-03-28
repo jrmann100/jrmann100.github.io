@@ -76,6 +76,9 @@ async function load(path) {
   document.documentElement.dispatchEvent(
     new CustomEvent('navigate', { detail: { destination: path } })
   );
+
+  // todo I hadn't considered how scrolling would be a serious issue when routing.
+  // setTimeout(() => document.documentElement.scrollTo({ top: 0, behavior: 'auto' }));
 }
 
 /**
