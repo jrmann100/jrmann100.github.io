@@ -53,7 +53,7 @@ async function locateRegions(root) {
  */
 async function load(path) {
   // fetch the fragment text.
-  let text = await (await fetch('/fragments/' + path.replace('.html', '.html.inc'))).text(); // todo fallback
+  let text = await (await fetch('/fragments/' + path)).text(); // todo fallback
   // turn the fragment into DOM content.
   const contextualFragment = document.createRange().createContextualFragment(text);
 
@@ -71,14 +71,9 @@ async function load(path) {
     }
     docRegions.get(label)?.insertNode(dynamify(range.cloneContents()));
   });
-  // todo: this is redundant, but I can't figure out how to add the event listeners to the fragment.
-  // dynamify(document.body);
   document.documentElement.dispatchEvent(
     new CustomEvent('navigate', { detail: { destination: path } })
   );
-
-  // todo I hadn't considered how scrolling would be a serious issue when routing.
-  // setTimeout(() => document.documentElement.scrollTo({ top: 0, behavior: 'auto' }));
 }
 
 /**
@@ -98,7 +93,11 @@ function dynamify(parent) {
         if (window.location.pathname !== path) {
           console.log(window.location.pathname, '->', path);
           load(path);
-          window.history.pushState(null, '', el.href);
+          window.history.pushState(
+            { scroll: { top: window.scrollY, left: window.scrollX, behavior: 'auto' } },
+            '',
+            el.href
+          );
         } else {
           console.log(window.location.pathname, 'x', path);
         }
@@ -109,9 +108,14 @@ function dynamify(parent) {
 }
 
 // handle history navigation (back, forward).
-window.addEventListener('popstate', () => {
+window.addEventListener('popstate', (e) => {
   console.log(`[popstate] ${window.location.pathname}`);
   load(window.location.pathname);
+  const scrollOptions = Reflect.get(e.state, 'scroll');
+  if (scrollOptions !== undefined) {
+    window.scroll(scrollOptions);
+  }
+  // window.scroll()
 });
 
 // make all links dynamic, enabling routing.
