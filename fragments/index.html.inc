@@ -5,7 +5,11 @@
   content="Jordan made a little routing website and wants you to check it out!"
 />
 <style>
-  header div.face {
+  header {
+    grid-template-rows: 2rem 10rem;
+  }
+
+  header .face {
     height: 10rem;
     width: 10rem;
     margin: 1rem;
@@ -57,6 +61,7 @@
   <!-- todo links -->
   <li>I'm passionate about art, dance, and technology.</li>
 </ul>
+<br />
 <h2>what?</h2>
 <p>
   You're looking at it! I designed and developed nearly 100% of this website from scratch.<sup
@@ -64,7 +69,7 @@
   >
 </p>
 <p>
-  <b>See my <a href="/resume.html">résumé.</a></b>
+  <b>Also: see my <a href="/resume.html">résumé.</a></b>
 </p>
 <br />
 <h2>where?</h2>
@@ -82,8 +87,8 @@
 <h2>how?</h2>
 <p>I teach myself through projects that make a difference in the world.</p>
 <p>
-  Regardless of whether I'm working with code or with my hands, I visualize experiences in my
-  sketchbook before I realize them in visuals, sounds, and movements.
+  Whether I'm working with code or with my hands, I visualize experiences in my sketchbook before
+  realizing them with visuals, sounds, and movements.
 </p>
 <br />
 <h2>when? why?</h2>
