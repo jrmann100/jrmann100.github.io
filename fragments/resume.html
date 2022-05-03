@@ -1,5 +1,6 @@
 <!--{{title}}-->
-<span class="only-print">Jordan Mann</span><span class="only-screen">Résumé</span>
+<span class="only-print" hidden="needs-js">Jordan Mann</span>
+<span class="only-screen">Résumé</span>
 <!--{{/title}}-->
 <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
@@ -63,7 +64,7 @@
 <section>
   <h2>education</h2>
   <ul>
-    <li><b>Dartmouth College</b><span class="date">Class of 2025</span></li>
+    <li><b>Dartmouth College</b> <span class="date">Class of 2025</span></li>
     <li><b>Redwood High School</b> 4.4 GPA <span class="date">2017 - 2021</span></li>
   </ul>
 </section>
@@ -75,7 +76,9 @@
       <b>DALI Lab</b> (Dartmouth College) Software developer
       <span class="date">2022 - Present</span>
     </li>
-    <li><b>Upwork</b> Software designer/developer <span class="date">2021 - Present</span></li>
+    <li>
+      <b>Upwork</b> Freelance software designer/developer <span class="date">2021 - Present</span>
+    </li>
   </ul>
   <br />
   <figure>
