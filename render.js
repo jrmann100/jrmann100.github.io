@@ -95,6 +95,26 @@ async function transform(path, layoutSections) {
 }
 
 /**
+ * Recursively .html.inc fragments to .html.
+ *
+ * @param {string} path the path to the folder in which to rename fragments.
+ */
+async function removeInc(path) {
+  const stat = await fs.stat(path);
+
+  // rename the file.
+  if (stat.isFile() && path.endsWith('.html.inc')) {
+    await fs.rename(path, path.replace(/\.html\.inc$/, '.html'));
+  } else if (stat.isDirectory()) {
+    await Promise.all(
+      (await fs.readdir(path))
+        .map((subpath) => `${path}/${subpath}`)
+        .map((somepath) => removeInc(somepath))
+    );
+  }
+}
+
+/**
  * Transform fragments/ using layout.html; copy static/ and fragments/ into the build/ folder.
  */
 async function main() {
@@ -107,8 +127,6 @@ async function main() {
   } catch {
     // build folder does not exist
   }
-  // re-create build folder
-  await fs.mkdir('build', { recursive: true });
   // console.timeEnd('- clean');
 
   // console.time('- transform');
@@ -118,11 +136,12 @@ async function main() {
   const layout = await fs.readFile('layout.html', 'utf8');
   const layoutSections = locateSections(layout);
   // convert fragments to HTML by pre-rendering them.
-  transform('build', layoutSections);
+  await transform('build', layoutSections);
   // console.timeEnd('- transform');
 
   // console.time('- assets');
   await fs.cp('fragments', 'build/fragments', { recursive: true });
+  await removeInc('build/fragments');
   await fs.cp('static', 'build/static', { recursive: true });
   // console.timeEnd('- assets');
 
