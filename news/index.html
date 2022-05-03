@@ -30,6 +30,7 @@
   <body class="desktop">
     <header>
       <div
+        hidden="needs-css"
         class="face"
         data-label="Expressive abstract logo, reminiscent of Apple and perhaps even Picasso's The Ladies of Avignon."
       >
@@ -54,7 +55,7 @@
           </svg>
         </a>
       </div>
-      <h1 class="title">
+      <h1>
         <!--{{title}}-->
 News
 <!--{{/title}}-->
@@ -63,8 +64,12 @@ News
         <ul>
           <li class="home"><a href="/index.html">home</a></li>
           <li class="resume"><a href="/resume.html">résumé</a></li>
+          <details>
+            <summary><a href="/utilities.html">utilities</summary>
+            <a href="/utilities/godango.html">godango</a>
+          </details>
         </ul>
-        <div class="colors-switcher js-only">
+        <div class="colors-switcher js-only" hidden data-show>
           <input type="radio" class="light" id="colors-input-light" name="colors" value="light" />
           <input type="radio" class="auto" id="colors-input-auto" name="colors" value="auto" />
           <input type="radio" class="dark" id="colors-input-dark" name="colors" value="dark" />
