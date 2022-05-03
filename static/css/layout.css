@@ -3,10 +3,7 @@
 @import './layout-mobile.css' (max-aspect-ratio: 3/4);
 @import './colors-switcher.css';
 @import './face.css';
-
-html {
-  scroll-behavior: smooth;
-}
+@import './interactive.css';
 
 body {
   display: flex;
@@ -48,7 +45,7 @@ header nav {
 }
 
 header nav li {
-  transition: font-weight 0.2s;
+  transition: font-weight 0.2s; /* checkme this clicks without variable fonts */
 }
 
 header nav ul {
@@ -67,7 +64,7 @@ header nav a:hover {
   text-decoration: underline;
 }
 
-header .title {
+header h1 {
   font-size: 2em;
   grid-area: title;
   display: flex;
