@@ -1,0 +1,69 @@
+/******** interactivity module ********/
+
+input {
+  --status: var(--black);
+}
+input:invalid {
+  /* todo prob localize to input */
+  --status: var(--bad);
+}
+
+input,
+button {
+  padding: 0.5rem 0.8rem;
+  box-sizing: border-box;
+  border: 0.1rem solid var(--black);
+
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: bold;
+  transition: box-shadow 0.2s;
+}
+
+input[type='button'],
+input[type='submit'],
+button {
+  cursor: pointer;
+}
+
+input[type='submit']:hover,
+input[type='button']:hover,
+button:hover {
+  box-shadow: 0 0.2rem 0 var(--black), 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+}
+
+form:valid input[type='submit']:active,
+input[type='button']:active,
+button:active {
+  box-shadow: inset 0 0.1rem 0 var(--black), inset 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+}
+
+input[type='text'],
+input[type='text']::placeholder {
+  font-weight: normal;
+}
+
+input[type='submit'] {
+  width: 8rem;
+  text-align: left;
+  margin-right: 0;
+}
+
+input[type='text']:valid,
+form:valid > input[type='submit'] {
+  --status: var(--good);
+}
+
+form:invalid > input[type='submit'] {
+  opacity: 0.5;
+}
+
+input[type='text']:not([readonly]):not([disabled]) {
+  box-shadow: inset -0.5rem 0 0 var(--status);
+}
+
+input[type='text']:not([readonly]):not([disabled]):focus {
+  box-shadow: inset -0.8rem 0 0 var(--status);
+}
