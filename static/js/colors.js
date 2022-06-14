@@ -83,7 +83,6 @@ const palettes = new Map([
       ['#2c2a29', '#fbf7fb', '#fa7801'],
       ['#282927', '#d7d6d0', '#f39766'],
       ['#2e2a40', '#f0eeea', '#b1883d'],
-      ['#020200', '#d6ac27', '#e96c06'],
       ['#233033', '#f9f6f3', '#d76c23'],
       ['#35444a', '#fdfeff', '#16bac9'],
       ['#252d49', '#eef1f4', '#ea5d18'],
@@ -102,7 +101,6 @@ const palettes = new Map([
       ['#000100', '#e4e6dd', '#9f7d50'],
       ['#292630', '#fffffd', '#34b369'],
       ['#181306', '#fdf7f6', '#6fb92a'],
-      ['#090b0a', '#fffafd', '#de2526'],
       ['#000703', '#e1e8e8', '#b5a191'],
       ['#101831', '#fcfbfb', '#9d702a'],
       ['#0a0a0f', '#e5e7e7', '#cfa554'],
@@ -238,5 +236,3 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 });
-
-document.documentElement.setAttribute('data-js-enabled', '');
