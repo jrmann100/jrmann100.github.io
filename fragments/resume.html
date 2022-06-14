@@ -1,11 +1,11 @@
 <!--{{title}}-->
 <span class="only-print" hidden="needs-js">Jordan Mann</span>
-<span class="only-screen">Résumé</span>
+<span class="only-screen">résumé</span>
 <!--{{/title}}-->
 <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
 <style>
-  header > nav > ul > li.resume {
+  header>nav>ul>li.resume {
     font-weight: bold;
   }
 
@@ -33,7 +33,7 @@
     background-color: var(--black);
     color: var(--white);
     font-size: 1em;
-    max-width: max-content;
+    width: fit-content;
     padding: 0 0.5em;
     margin-bottom: 0.5em;
   }
@@ -41,7 +41,7 @@
   h2 {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    color-adjust: exact;
+    /* color-adjust: exact; */
     forced-color-adjust: none;
   }
 
@@ -101,11 +101,7 @@
           iOS Hacker News reader
         </ul>
         <ul>
-          <b
-            ><a href="https://apps.apple.com/sa/app/dartmouth-directory/id1609884875"
-              >Dartmouth Directory</a
-            ></b
-          >
+          <b><a href="https://apps.apple.com/sa/app/dartmouth-directory/id1609884875">Dartmouth Directory</a></b>
           iOS directory and contacts search
         </ul>
         <ul>
@@ -171,9 +167,7 @@
   <br />
   <figure>
     <figcaption>
-      <b>National Art Honor Society,</b> Redwood High School branch<span class="date"
-        >2017 - 2021</span
-      >
+      <b>National Art Honor Society,</b> Redwood High School branch<span class="date">2017 - 2021</span>
     </figcaption>
     <ul>
       <li>Co-president (2019) and vice-president (2020)</li>

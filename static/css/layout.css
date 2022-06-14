@@ -25,7 +25,7 @@ header {
   border-bottom: 0.1rem solid var(--black);
 }
 
-/* todo always black */
+/* todo always accent or black */
 header .face-wrapper {
   grid-area: face;
   width: 100%;
@@ -33,6 +33,22 @@ header .face-wrapper {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 0rem;
+}
+
+header .face-wrapper {
+  background-color: var(--black);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  /* color-adjust: exact; */
+  forced-color-adjust: none;
+}
+
+header .face-wrapper .face svg {
+  stroke: var(--white);
+}
+
+html[data-color-scheme="dark"] .face-wrapper {
+  background-color: var(--accent);
 }
 
 header nav {
