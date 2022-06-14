@@ -5,13 +5,13 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build-watch",
+      "script": "dev",
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "problemMatcher": [],
-      "label": "npm: build-watch",
+      "label": "npm: dev",
       "detail": "nodemon render.js -i build -e js,json,html,css,html.inc"
     }
   ]
