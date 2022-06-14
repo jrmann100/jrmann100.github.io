@@ -1,14 +1,13 @@
 header {
-  grid-template-areas: 'nav' 'face' 'title';
-  grid-template-rows: 2rem 8rem 2rem;
-  row-gap: 0.5rem;
-  justify-items: center;
+    display: grid;
+    justify-items: center;
+    grid-template-areas: 'face''title''nav';
+    grid-template-rows: 5rem auto auto;
+    row-gap: 0.5rem;
 }
 
+header nav,
 header h1 {
-  font-size: 1.5em;
-}
-header nav {
-  justify-self: center;
-  /* flex-direction: column; */
+    justify-self: center;
+    margin: 0 0.5rem;
 }

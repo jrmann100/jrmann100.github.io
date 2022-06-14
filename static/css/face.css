@@ -1,37 +1,32 @@
-header .face {
-  width: 6rem;
-  height: 6rem;
-  transition: /* todo scroll jumping height 0.5s,*/ width 0.5s, height 0.5s, margin 0.5s;
+.face {
   position: relative;
-  grid-area: face;
-  align-self: center;
-  justify-self: center;
   z-index: 1;
+  width: 4rem;
+  height: 4rem;
 }
 
-header .face svg {
+.face svg {
   --shadow-color: rgba(0, 0, 0, 0.2);
-  filter: drop-shadow(0 0 0.5rem var(--shadow-color)); /* todo */
+  /* filter: drop-shadow(0 0 0.5rem var(--shadow-color)); */
+  /* todo */
   fill: none;
   stroke: var(--black);
   stroke-width: 25;
   /* stroke-linecap: round; */
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  transition: transform 0.1s ease, filter 0.1s linear;
+  transition: transform 0.2s ease-out, filter 0.1s linear;
 }
 
 @media print {
-  header .face svg {
+  .face svg {
     transform: none !important;
     filter: none !important;
   }
 }
 
-header .face .eye path {
+.face .eye path {
   animation: blink 5s infinite;
   transform-box: fill-box;
   transform-origin: center;

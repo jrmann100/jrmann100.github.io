@@ -1,6 +1,6 @@
 @import './josh.css';
-@import './layout-desktop.css' (min-aspect-ratio: 3/4);
-@import './layout-mobile.css' (max-aspect-ratio: 3/4);
+@import './layout-desktop.css'(min-aspect-ratio: 30001/40000);
+@import './layout-mobile.css'(max-aspect-ratio: 30000/40000);
 @import './colors-switcher.css';
 @import './face.css';
 @import './interactive.css';
@@ -17,25 +17,31 @@ main {
 }
 
 main,
-header,
 footer {
-  padding: 1rem max(1rem, 10%);
+  padding: 1rem 1rem;
 }
 
 header {
-  position: relative;
-  display: grid;
-  align-items: center;
   border-bottom: 0.1rem solid var(--black);
 }
 
+/* todo always black */
+header .face-wrapper {
+  grid-area: face;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0rem;
+}
+
 header nav {
-  grid-area: nav;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.5rem;
   align-items: center;
-  column-gap: 1rem;
+  justify-content: center;
+  grid-area: nav;
 }
 
 @media print {
@@ -45,7 +51,8 @@ header nav {
 }
 
 header nav li {
-  transition: font-weight 0.2s; /* checkme this clicks without variable fonts */
+  transition: font-weight 0.2s;
+  /* checkme this clicks without variable fonts */
 }
 
 header nav ul {
@@ -64,14 +71,38 @@ header nav a:hover {
   text-decoration: underline;
 }
 
+header nav details summary {
+  cursor: pointer;
+  display: inline-block;
+  color: var(--accent);
+}
+
+header nav details>summary::after {
+  content: ' [+]';
+}
+
+header nav details[open]>summary::after {
+  content: ' [-] (\a0';
+}
+
+header nav details[open]::after {
+  color: var(--accent);
+  content: ')';
+}
+
 header h1 {
-  font-size: 2em;
+  font-size: 2rem;
+  background-clip: text;
   grid-area: title;
-  display: flex;
-  max-width: max-content;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  white-space: nowrap;
+  max-width: fit-content;
+}
+
+header h1 {
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(to bottom right, var(--black), var(--accent));
+  color: transparent;
 }
 
 /* The footer is stuck to the bottom of the page. */
@@ -83,8 +114,4 @@ footer {
   margin-top: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-}
-
-html:not([data-js-enabled]) .js-only {
-  display: none;
 }
