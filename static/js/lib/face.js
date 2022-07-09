@@ -22,7 +22,7 @@ loadingAnimation?.finish();
 const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
 
 // Play the loading animation on dynamic page load - this event is fired by the routing module.
-document.documentElement.addEventListener('navigate', () => {
+window.layoutAddEventListener.call(document.documentElement, 'navigate', () => {
   if (motionQuery.matches) {
     loadingAnimation?.play();
   }
@@ -30,7 +30,7 @@ document.documentElement.addEventListener('navigate', () => {
 
 if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
   // only follow the cursor when the cursor can hover over things
-  document.documentElement.addEventListener('mousemove', (e) => {
+  window.layoutAddEventListener.call(document.documentElement, 'mousemove', (e) => {
     /** @type {NodeListOf<SVGElement>} */
     const els = document.querySelectorAll('header .face svg');
     const face_rect = els[0].getBoundingClientRect();

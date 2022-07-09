@@ -87,11 +87,16 @@ function dynamify(parent) {
     // only make relative links dynamic.
     // todo: maybe stat the fragment here?
     if (new URL(el.href).origin === window.location.origin) {
-      el.addEventListener('click', async (/** @type {{ preventDefault: () => void; }} */ ev) => {
+      window.layoutAddEventListener.call(el, 'click', async (ev) => {
+        if (ev.ctrlKey || ev.metaKey) {
+          return;
+        }
         ev.preventDefault();
         const path = new URL(el.href).pathname;
         if (window.location.pathname !== path) {
-          console.log(window.location.pathname, '->', path);
+          console.log(
+            `🔀 ${window.location.pathname.replace('.html', '')} -> ${path.replace('.html', '')}`
+          );
           load(path);
           window.history.pushState(
             { scroll: { top: window.scrollY, left: window.scrollX, behavior: 'auto' } },
@@ -99,7 +104,7 @@ function dynamify(parent) {
             el.href
           );
         } else {
-          console.log(window.location.pathname, 'x', path);
+          // console.log(window.location.pathname, 'x', path);
         }
       });
     }
@@ -108,8 +113,8 @@ function dynamify(parent) {
 }
 
 // handle history navigation (back, forward).
-window.addEventListener('popstate', (e) => {
-  console.log(`[popstate] ${window.location.pathname}`);
+window.layoutAddEventListener('popstate', (e) => {
+  console.log(`🔀 popstate ${window.location.pathname}`);
   load(window.location.pathname);
   const scrollOptions = Reflect.get(e.state, 'scroll');
   if (scrollOptions !== undefined) {
@@ -120,3 +125,4 @@ window.addEventListener('popstate', (e) => {
 
 // make all links dynamic, enabling routing.
 dynamify(document.body);
+console.log(`🔀 routing module ready.`);

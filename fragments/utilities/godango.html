@@ -2,6 +2,10 @@
 <title>godango</title>
 <meta name="description" content="Dice-Based Passphrase Generator by Jordan Mann" />
 <style>
+  header nav li.godango {
+    font-weight: 900;
+  }
+
   /* todo mobile format */
   summary {
     width: fit-content;
@@ -14,15 +18,16 @@
     row-gap: 1rem;
   }
 
-  fieldset,
   textarea {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   fieldset[name='result'] {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    border: 0;
+    padding: 0;
   }
 
   input[name='output'] {
@@ -45,15 +50,11 @@
     background-color: inherit;
   }
 
-  fieldset,
-  input,
-  textarea {
-    border: 0.1rem solid var(--black);
-  }
-
   textarea,
   .stats input {
+    /* fixme for some reason these ghost in front of the nav dropdown menu */
     opacity: 0.5;
+    padding: 0.2rem;
   }
 </style>
 <!--{{/head}}-->
@@ -69,7 +70,7 @@
   <fieldset name="result">
     <input name="copy" type="button" value="copy" />
     <input name="new" type="submit" value="new" />
-    <input name="output" size="40" readonly type="text" />
+    <input name="output" size="20" readonly type="text" /> <!-- todo width !-->
   </fieldset>
   <textarea style="resize: none; line-height: 200%" cols="40" rows="8" readonly></textarea>
   <details class="options" open>
@@ -105,4 +106,8 @@
     <a href="https://github.com/jrmann100/godango">GitHub.</a></small>
 </form>
 <script type="module" src="/static/js/godango.js"></script>
+<script type="module">
+  import { main } from "/static/js/godango.js"
+  main();
+</script>
 <!--{{/main}}-->
