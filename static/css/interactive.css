@@ -3,6 +3,7 @@
 input {
   --status: var(--black);
 }
+
 input:invalid {
   /* todo prob localize to input */
   --status: var(--bad);
@@ -46,17 +47,16 @@ input[type='text']::placeholder {
 }
 
 input[type='submit'] {
-  width: 8rem;
   text-align: left;
   margin-right: 0;
 }
 
 input[type='text']:valid,
-form:valid > input[type='submit'] {
+form:valid>input[type='submit'] {
   --status: var(--good);
 }
 
-form:invalid > input[type='submit'] {
+form:invalid>input[type='submit'] {
   opacity: 0.5;
 }
 

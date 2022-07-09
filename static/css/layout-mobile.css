@@ -1,8 +1,9 @@
 header {
     display: grid;
-    justify-items: center;
-    grid-template-areas: 'face''title''nav';
-    grid-template-rows: 5rem auto auto;
+    align-items: center;
+    grid-template-areas: 'face title''nav nav';
+    grid-template-columns: 5rem auto;
+    grid-template-rows: 5rem auto;
     row-gap: 0.5rem;
 }
 
@@ -10,4 +11,10 @@ header nav,
 header h1 {
     justify-self: center;
     margin: 0 0.5rem;
+}
+
+header nav {
+    justify-content: space-evenly;
+    width: 100%;
+
 }

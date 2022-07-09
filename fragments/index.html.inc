@@ -16,6 +16,9 @@
   @media (min-aspect-ratio: 30001/40000) {
     main {
       column-count: 2;
+      column-gap: 5rem;
+      max-width: 70rem;
+      margin: 0 auto;
     }
 
     section {
@@ -37,6 +40,7 @@
   figure.profile-figure figcaption {
     text-align: center;
     font-style: italic;
+    font-size: 0.8em;
   }
 
   @media (max-aspect-ratio: 30000/40000) {

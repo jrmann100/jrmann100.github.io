@@ -23,11 +23,21 @@ html[data-color-scheme] {
 }
 
 body {
-  background-color: var(--white);
   color: var(--black);
-  background-image: var(--noise);
   font-family: system-ui, Helvetica, Arial, sans-serif;
-  transition: background-color 3s;
+  accent-color: var(--accent);
+}
+
+.solid {
+  background-color: var(--white);
+  background-image: var(--noise);
+  transition: background-color 0.5s;
+}
+
+*:focus-visible {
+  outline-color: var(--accent);
+  outline-width: 0.1rem;
+  outline-style: solid;
 }
 
 @media print,

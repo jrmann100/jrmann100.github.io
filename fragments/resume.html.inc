@@ -6,7 +6,7 @@
 <title>Jordan Mann - Résumé</title>
 <style>
   header>nav>ul>li.resume {
-    font-weight: bold;
+    font-weight: 900;
   }
 
   @media print {

@@ -8,8 +8,9 @@
 body {
   display: flex;
   flex-direction: column;
-  font-size: 1.2rem;
-  transition: background-color 0.5s;
+  font-size: 1rem;
+  max-width: 100rem;
+  margin: 0
 }
 
 main {
@@ -22,6 +23,7 @@ footer {
 }
 
 header {
+  font-size: 1.2em;
   border-bottom: 0.1rem solid var(--black);
 }
 
@@ -53,10 +55,9 @@ html[data-color-scheme="dark"] .face-wrapper {
 
 header nav {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   gap: 0.5rem;
   align-items: center;
-  justify-content: center;
   grid-area: nav;
 }
 
@@ -71,12 +72,15 @@ header nav li {
   /* checkme this clicks without variable fonts */
 }
 
-header nav ul {
+header nav>ul {
   display: inline-flex;
+  gap: 0.5rem;
+}
+
+header nav ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  gap: 0.5rem;
 }
 
 header nav a:not(:hover) {
@@ -87,10 +91,19 @@ header nav a:hover {
   text-decoration: underline;
 }
 
+header nav details {
+  position: relative;
+}
+
 header nav details summary {
   cursor: pointer;
   display: inline-block;
   color: var(--accent);
+}
+
+header nav li>details[open]>summary {
+  font-weight: 600;
+  ;
 }
 
 header nav details>summary::after {
@@ -98,27 +111,34 @@ header nav details>summary::after {
 }
 
 header nav details[open]>summary::after {
-  content: ' [-] (\a0';
+  content: ' [-]';
 }
 
-header nav details[open]::after {
-  color: var(--accent);
-  content: ')';
+header nav details div.nav-dropdown {
+  position: absolute;
+  top: 2rem;
+  height: 5rem;
+  border: 0.1rem solid var(--black);
+  width: max-content;
+  padding: 0.2rem;
+  box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
 }
 
 header h1 {
-  font-size: 2rem;
+  font-size: 1.5em;
   background-clip: text;
   grid-area: title;
   white-space: nowrap;
   max-width: fit-content;
 }
 
-header h1 {
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-image: linear-gradient(to bottom right, var(--black), var(--accent));
-  color: transparent;
+@media not print {
+  header h1 {
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(to bottom right, var(--black), var(--accent));
+    color: transparent;
+  }
 }
 
 /* The footer is stuck to the bottom of the page. */

@@ -98,7 +98,7 @@ function entropy() {
 /**
  *
  */
-async function main() {
+export async function main() {
   // https://www.eff.org/dice
   const text = await (
     await fetch('/static/data/eff_large_wordlist.txt', {
@@ -266,5 +266,3 @@ async function main() {
   });
   create();
 }
-
-main();

@@ -8,17 +8,6 @@ header {
 }
 
 header nav {
+    justify-content: center;
     justify-self: end;
-}
-
-header .face-wrapper {
-    background-color: var(--black);
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    /* color-adjust: exact; */
-    forced-color-adjust: none;
-}
-
-header .face-wrapper .face svg {
-    stroke: var(--white);
 }
