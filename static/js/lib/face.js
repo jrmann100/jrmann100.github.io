@@ -1,6 +1,5 @@
 /**
  * @file Animates the face logo in the header.
- * @module face
  * @author Jordan Mann
  */
 
@@ -22,7 +21,7 @@ loadingAnimation?.finish();
 const motionQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
 
 // Play the loading animation on dynamic page load - this event is fired by the routing module.
-window.layoutAddEventListener.call(document.documentElement, 'navigate', () => {
+document.layoutAddEventListener('navigate', () => {
   if (motionQuery.matches) {
     loadingAnimation?.play();
   }
@@ -30,19 +29,25 @@ window.layoutAddEventListener.call(document.documentElement, 'navigate', () => {
 
 if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
   // only follow the cursor when the cursor can hover over things
-  window.layoutAddEventListener.call(document.documentElement, 'mousemove', (e) => {
-    /** @type {NodeListOf<SVGElement>} */
+  document.documentElement.layoutAddEventListener('mousemove', (evt) => {
+    if (!(evt instanceof MouseEvent)) {
+      // fixme it's a bug with layoutAddEventListener
+      return;
+    }
     const els = document.querySelectorAll('header .face svg');
     const face_rect = els[0].getBoundingClientRect();
 
     // The function approaches 1 and -1, so that there isn't a dramatic effect at the bottom of the page.
 
     const cap = (/** @type {number} */ x) => (2 / Math.PI) * Math.atan(2 * x);
-    const chx = cap((e.clientX - (face_rect.x + face_rect.width / 2)) / face_rect.width);
-    const chy = cap((e.clientY - (face_rect.y + face_rect.height / 2)) / face_rect.height);
+    const chx = cap((evt.clientX - (face_rect.x + face_rect.width / 2)) / face_rect.width);
+    const chy = cap((evt.clientY - (face_rect.y + face_rect.height / 2)) / face_rect.height);
 
     window.requestAnimationFrame(() =>
       els.forEach((el, n) => {
+        if (!(el instanceof SVGElement)) {
+          return;
+        }
         el.style.transform = `perspective(100rem) rotateY(${
           (chx * 20 * (n + 1)) / els.length
         }deg) rotateX(${(chy * -20 * (n + 1)) / els.length}deg) translateZ(${

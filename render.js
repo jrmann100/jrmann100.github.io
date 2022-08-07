@@ -1,7 +1,6 @@
 /**
  * @file Pre-renders .html.inc include files into full HTML pages.
  * @author Jordan Mann
- * @copyright 2022
  * @license MIT
  * This script should require no NPM dependencies to run.
  */

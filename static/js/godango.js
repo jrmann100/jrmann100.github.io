@@ -1,7 +1,14 @@
+/**
+ * @file Godango helper. Generates word dumplings.
+ * @author Jordan Mann
+ */
 const storageKey = 'godango-defaults';
 
 /**
+ * Get a random number.
+ * Tries to use window.crypto, which is stronger than Math.random().
  *
+ * @returns {number} a random number on [0,256).
  */
 function randomUint8() {
   if (window.crypto) {
@@ -12,30 +19,39 @@ function randomUint8() {
 }
 
 /**
+ * Simulate a dice roll.
  *
+ * @returns {number} a random number on [1,6].
  */
 function roll() {
   return 1 + (randomUint8() % 6);
 }
 
 /**
+ * Get a random digit 0-9.
  *
+ * @returns {number} a random number on [0,10).
  */
 function number() {
   return randomUint8() % 10;
 }
 
 /**
+ * Get a random letter.
  *
- * @param capital
+ * @param {boolean} capital whether the letter should be capitalized.
+ * @returns {string} a random letter.
  */
 function letter(capital = true) {
   return String.fromCharCode((capital ? 65 : 97) + (randomUint8() % 26));
 }
 
 /**
+ * Get a random word by simulating six dice rolls.
  *
- * @param words
+ * @typedef { Object<string,string> } wordlist
+ * @param {wordlist} words the list of words to choose from using dice.
+ * @returns {string} a random word.
  */
 function word(words) {
   return words[
@@ -49,15 +65,18 @@ function word(words) {
 }
 
 /**
+ * Get a random 'secret sauce' composed of one capital letter and one number.
  *
+ * @returns {string} the sauce.
  */
 function sauce() {
   return `${number()}${letter()}`;
 }
 
 let defaults = {
-  COUNT: 4,
-  SAUCE_TYPE: 'random',
+  COUNT: 3,
+  /** @type {'custom' | 'random' | 'none'} */
+  SAUCE_TYPE: 'custom',
   SAUCE_VALUE: sauce(),
   SEPARATOR: '-',
   WORDLIST: './eff_large_wordlist.txt',
@@ -65,8 +84,10 @@ let defaults = {
 };
 
 /**
+ * Bundle random words into a dumpling and add some special sauce.
  *
- * @param words
+ * @param {wordlist} words the list of words to choose from using dice.
+ * @returns {string} a word dumpling!
  */
 function godango(words) {
   return (
@@ -85,7 +106,9 @@ function godango(words) {
 }
 
 /**
+ * Calculate the entropy of a word dumpling.
  *
+ * @returns {number} the entropy, in number of bits.
  */
 function entropy() {
   return Math.round(
@@ -96,7 +119,7 @@ function entropy() {
 }
 
 /**
- *
+ * Make UI responsive.
  */
 export async function main() {
   // https://www.eff.org/dice
@@ -107,7 +130,7 @@ export async function main() {
   ).text();
 
   const words = Object.fromEntries(
-    [...text.matchAll(/(\d+)\t(\w+)\n/g)].map(([_, number, word]) => [number, word])
+    [...text.matchAll(/(\d+)\t(\w+)\n/g)].map(([, number, word]) => [number, word])
   );
 
   const form = document.querySelector('form');
@@ -153,7 +176,7 @@ export async function main() {
   }
 
   /**
-   *
+   * Generate a word dumpling and update the UI to display it.
    */
   function create() {
     if (outputBox == null || entropyBox == null || lengthBox == null || lastBox == null) {
@@ -172,8 +195,10 @@ export async function main() {
   }
 
   /**
+   * Update user settings.
    *
-   * @param doCreate
+   * @param {boolean} doCreate make a word dumpling with the updated settings
+   * (usually where the changed settings would result a different kind of dumpling being made.)
    */
   function updateDefaults(doCreate = true) {
     localStorage.setItem(storageKey, JSON.stringify(defaults));
@@ -210,7 +235,7 @@ export async function main() {
   separatorInput.value = defaults.SEPARATOR;
 
   /**
-   *
+   * Disable the sauce input if not in custom sauce mode.
    */
   function tryDisableCustomSauce() {
     if (sauceInput === null) {
@@ -232,7 +257,9 @@ export async function main() {
 
   sauceRadios.forEach((radio) =>
     radio.addEventListener('change', (_) => {
-      defaults.SAUCE_TYPE = radio.value;
+      if (radio.value === 'custom' || radio.value === 'random' || radio.value === 'none') {
+        defaults.SAUCE_TYPE = radio.value;
+      }
       tryDisableCustomSauce();
       updateDefaults();
     })
