@@ -40,10 +40,7 @@ body {
   outline-style: solid;
 }
 
-@media print,
-(prefers-contrast: more),
-(forced-colors: active) {
-
+@media print, (prefers-contrast: more), (forced-colors: active) {
   html,
   html[data-color-scheme] {
     --black: black;
@@ -73,6 +70,6 @@ a:hover {
   }
 }
 
-[hidden='needs-css'] {
+[data-needs-css] {
   display: revert;
 }

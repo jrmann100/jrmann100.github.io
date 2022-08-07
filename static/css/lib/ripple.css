@@ -1,0 +1,148 @@
+:host,
+div.wrapper {
+  border-radius: 0.5rem;
+}
+
+:host {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  cursor: pointer;
+  width: 8rem;
+  height: 12rem;
+  display: inline-block;
+}
+
+div.wrapper {
+  box-shadow: 0 0.1rem 0.5rem rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease-out, box-shadow 0.2s ease-out, filter 0.3s, outline 0.2s;
+  color: var(--button-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  background-color: var(--white);
+  color: var(--black);
+  fill: var(--black);
+  filter: brightness(1);
+  /* outline: 0.1rem solid var(--black); */
+  font-family: -apple-system, system-ui, sans-serif;
+  outline: 0.1rem solid var(--black);
+  /* fixme not rounded in Safari */
+}
+
+:host(:focus-visible) .wrapper {
+  outline: 0.2rem solid var(--accent);
+}
+
+:host * {
+  pointer-events: none;
+}
+
+div.wrapper svg {
+  flex-basis: 100%;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+div.wrapper svg path {
+  fill: inherit;
+}
+
+/* This is old behavior, and sort of ironic since the buttons
+       are now actually three-dimensional. But it looks nice.
+  */
+
+:host(:hover:not(:active)) div.wrapper {
+  filter: brightness(1.05);
+  transform: perspective(12rem) translateY(-0.1rem) translateZ(0.1rem) !important;
+  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.4), 0 0.2rem 0.2rem rgba(0, 0, 0, 0.4);
+}
+
+:host(:focus) {
+  border: 0;
+  outline: 0;
+}
+
+div.wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--black);
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+  --ripple-top: 50%;
+  --ripple-left: 50%;
+}
+
+:host(:focus) div.wrapper::before,
+:host(:hover) div.wrapper::before {
+  opacity: 0.05;
+}
+
+/* The ripple. Don't worry, it's broken without JS. */
+
+div.wrapper::after {
+  content: '';
+  border-radius: 100%;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0);
+  width: 32rem;
+  height: 32rem;
+  background-color: var(--black);
+  top: var(--ripple-top);
+  left: var(--ripple-left);
+}
+
+@keyframes rippleA {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.15;
+  }
+}
+
+@keyframes rippleD {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.15;
+  }
+
+  99% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+div.wrapper.activate::after {
+  animation: rippleA 0.2s ease-in forwards;
+}
+
+div.wrapper.deactivate::after {
+  animation: rippleD 0.2s ease-out forwards;
+}
