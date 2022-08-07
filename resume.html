@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8" />
+  <!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
   <link rel="stylesheet" href="/static/css/colors.css" />
   <script src="/static/js/lib/colors.js"></script>
   <script src="/static/js/lib/events.js"></script>
@@ -11,13 +13,11 @@
   <!-- <meta name="description" content=""> -->
   <meta name="generator" content="Jordan's tiny routing/SSR engine." />
   <meta name="keywords" content="jordan,personal website,blog,programming,web design" />
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFF" />
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111" />
+  <meta name="theme-color" content="#FFF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)" />
   <meta name="color-scheme" content="light dark" />
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
   <meta name="robots" content="index,follow" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta charset="UTF-8" />
   <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
 <style>
@@ -80,7 +80,7 @@
 
 <body class="solid desktop">
   <header>
-    <a hidden="needs-css" class="face-wrapper" href="/index.html" aria-label="Return to the home page">
+    <a data-needs-css hidden class="face-wrapper" href="/index.html" aria-label="Return to the home page">
       <div class="face" role="img"
         aria-label="An expressive abstract logo with components representing an eye, nose, and outline of a face. It's reminiscent of Apple's Finder logo and Picasso's The Ladies of Avignon.">
         <svg viewBox="0 0 515 515" width="160" height="160" role="img">
@@ -100,7 +100,6 @@
         </svg>
       </div>
     </a>
-    </div>
     <h1>
       <!--{{title}}-->
 <span class="only-print" hidden="needs-js">Jordan Mann</span>
@@ -119,11 +118,12 @@
                 <li class="godango">
                   <a href="/utilities/godango.html">🔏 godango</a>
                 </li>
+              </ul>
             </div>
           </details>
         </li>
       </ul>
-      <div class="colors-switcher" hidden="needs-js" data-show>
+      <div class="colors-switcher" hidden data-needs-js data-show>
         <input title="Use light color scheme" type="radio" class="light" id="colors-input-light" name="colors"
           value="light" />
         <input title="Match system color scheme" type="radio" class="auto" id="colors-input-auto" name="colors"
@@ -263,7 +263,7 @@
       <noscript> &nbsp;Copyright 2022. </noscript>
     </small>
   </footer>
-  <script async defer type="module" src="/static/js/layout.js"></script>
+  <script async type="module" src="/static/js/layout.js"></script>
 </body>
 
 </html>
