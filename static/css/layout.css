@@ -1,16 +1,16 @@
-@import './josh.css';
-@import './layout-desktop.css'(min-aspect-ratio: 30001/40000);
-@import './layout-mobile.css'(max-aspect-ratio: 30000/40000);
-@import './colors-switcher.css';
-@import './face.css';
-@import './interactive.css';
+@import './lib/josh.css';
+@import './layout-desktop.css' (min-aspect-ratio: 30001/40000);
+@import './layout-mobile.css' (max-aspect-ratio: 30000/40000);
+@import './lib/colors-switcher.css';
+@import './lib/face.css';
+@import './lib/interactive.css';
 
 body {
   display: flex;
   flex-direction: column;
   font-size: 1rem;
   max-width: 100rem;
-  margin: 0
+  margin: 0;
 }
 
 main {
@@ -25,6 +25,8 @@ footer {
 header {
   font-size: 1.2em;
   border-bottom: 0.1rem solid var(--black);
+  z-index: 1;
+  /* for popover menus */
 }
 
 /* todo always accent or black */
@@ -49,7 +51,7 @@ header .face-wrapper .face svg {
   stroke: var(--white);
 }
 
-html[data-color-scheme="dark"] .face-wrapper {
+html[data-color-scheme='dark'] .face-wrapper {
   background-color: var(--accent);
 }
 
@@ -72,7 +74,7 @@ header nav li {
   /* checkme this clicks without variable fonts */
 }
 
-header nav>ul {
+header nav > ul {
   display: inline-flex;
   gap: 0.5rem;
 }
@@ -101,16 +103,15 @@ header nav details summary {
   color: var(--accent);
 }
 
-header nav li>details[open]>summary {
+header nav li > details[open] > summary {
   font-weight: 600;
-  ;
 }
 
-header nav details>summary::after {
+header nav details > summary::after {
   content: ' [+]';
 }
 
-header nav details[open]>summary::after {
+header nav details[open] > summary::after {
   content: ' [-]';
 }
 
