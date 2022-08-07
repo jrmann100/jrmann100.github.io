@@ -5,7 +5,7 @@
 <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
 <style>
-  header>nav>ul>li.resume {
+  header > nav > ul > li.resume {
     font-weight: 900;
   }
 
@@ -83,7 +83,8 @@
   <br />
   <figure>
     <figcaption>
-      <b>Freelance Software Development</b><span class="date">2017 - Present</span>
+      <b>Freelance Software Development</b>
+      <span class="date">2017 - Present</span>
     </figcaption>
     <ul>
       <li>
@@ -101,7 +102,11 @@
           iOS Hacker News reader
         </ul>
         <ul>
-          <b><a href="https://apps.apple.com/sa/app/dartmouth-directory/id1609884875">Dartmouth Directory</a></b>
+          <b
+            ><a href="https://apps.apple.com/sa/app/dartmouth-directory/id1609884875"
+              >Dartmouth Directory</a
+            ></b
+          >
           iOS directory and contacts search
         </ul>
         <ul>
@@ -167,7 +172,8 @@
   <br />
   <figure>
     <figcaption>
-      <b>National Art Honor Society,</b> Redwood High School branch<span class="date">2017 - 2021</span>
+      <b>National Art Honor Society,</b> Redwood High School branch
+      <span class="date">2017 - 2021</span>
     </figcaption>
     <ul>
       <li>Co-president (2019) and vice-president (2020)</li>

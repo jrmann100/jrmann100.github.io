@@ -1,8 +1,10 @@
 /**
- * @file Replaces standard navigation with dynamic content injection.
- * @module routing
+ * @file Routing module. Dynamically updates page content from fragments, replacing standard nagivation.
  * @author Jordan Mann
+ * @license MIT
  */
+
+import { nextEventLoop } from './util.js';
 
 /**
  * Matches a label comment's content, i.e. {{/label}}.
@@ -52,6 +54,10 @@ async function locateRegions(root) {
  * @todo error handling
  */
 async function load(path) {
+  document.dispatchEvent(new CustomEvent('beforenavigate', { detail: { destination: path } }));
+  // checkme we are trying to wait for event listeners to these functions to finish
+  await nextEventLoop();
+
   // fetch the fragment text.
   let text = await (await fetch('/fragments/' + path)).text(); // todo fallback
   // turn the fragment into DOM content.
@@ -60,8 +66,10 @@ async function load(path) {
   // find existing document regions on the page.
   const docRegions = await locateRegions(document.documentElement);
 
-  // clear all document regions.
   docRegions.forEach((range) => range.deleteContents());
+
+  document.dispatchEvent(new CustomEvent('navigate', { detail: { destination: path } }));
+  await nextEventLoop();
 
   // match the new fragment regions to cleared document regions with the same label.
   const fragmentRegions = await locateRegions(contextualFragment);
@@ -71,9 +79,8 @@ async function load(path) {
     }
     docRegions.get(label)?.insertNode(dynamify(range.cloneContents()));
   });
-  document.documentElement.dispatchEvent(
-    new CustomEvent('navigate', { detail: { destination: path } })
-  );
+
+  document.dispatchEvent(new CustomEvent('endnavigate', { detail: { destination: path } }));
 }
 
 /**
@@ -87,7 +94,11 @@ function dynamify(parent) {
     // only make relative links dynamic.
     // todo: maybe stat the fragment here?
     if (new URL(el.href).origin === window.location.origin) {
-      window.layoutAddEventListener.call(el, 'click', async (ev) => {
+      el.layoutAddEventListener('click', async (ev) => {
+        // fixme
+        if (!(ev instanceof MouseEvent)) {
+          return;
+        }
         if (ev.ctrlKey || ev.metaKey) {
           return;
         }
@@ -114,13 +125,18 @@ function dynamify(parent) {
 
 // handle history navigation (back, forward).
 window.layoutAddEventListener('popstate', (e) => {
+  // fixme
+  if (!(e instanceof PopStateEvent)) {
+    return;
+  }
   console.log(`🔀 popstate ${window.location.pathname}`);
   load(window.location.pathname);
-  const scrollOptions = Reflect.get(e.state, 'scroll');
-  if (scrollOptions !== undefined) {
-    window.scroll(scrollOptions);
+  if (e.state !== null) {
+    const scrollOptions = Reflect.get(e.state, 'scroll');
+    if (scrollOptions !== undefined) {
+      window.scroll(scrollOptions);
+    }
   }
-  // window.scroll()
 });
 
 // make all links dynamic, enabling routing.

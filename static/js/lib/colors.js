@@ -1,8 +1,6 @@
 /**
  * @file Document properties manager; primarily, a color scheme manager.
  * @author Jordan Mann
- * @copyright 2022
- * @license MIT
  * This script must be run synchronously (not as a module) before CSS is loaded to prevent flashing.
  */
 
@@ -170,11 +168,12 @@ function getPreference() {
  * Choose and apply a new color palette, if necessary, as according to the color scheme preference.
  *
  * @param {boolean} newPalette if a new palette should be used.
+ * @returns {string[] | null} palette the palette.
  */
 function updatePalette(newPalette = false) {
   const preference = getPreference();
   if (preference === lastSetPreference && !newPalette) {
-    return;
+    return null;
   }
   lastSetPreference = preference;
   const set = palettes[preference];
@@ -186,11 +185,15 @@ function updatePalette(newPalette = false) {
   document.documentElement.style.setProperty('--p-black', palette[1]);
   document.documentElement.style.setProperty('--p-accent', palette[2]);
   document.documentElement.setAttribute('data-color-scheme', preference);
+
+  document.querySelector(`meta[name="theme-color"]`)?.setAttribute('content', palette[0]);
+
+  return palette;
 }
 
 updatePalette();
 
-// document.documentElement.addEventListener("navigate", () => {
+// document.addEventListener("navigate", () => {
 //     updatePalette(true);
 // });
 
@@ -200,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .querySelector('.colors-switcher')
     ?.querySelectorAll('input')
     .forEach((el) => {
-      window.layoutAddEventListener.call(el, 'change', () => {
+      el.layoutAddEventListener('change', () => {
         localStorage.setItem('color-scheme', el.value);
         updatePalette();
       });
