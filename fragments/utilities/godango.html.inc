@@ -18,10 +18,6 @@
     row-gap: 1rem;
   }
 
-  textarea {
-    padding: 0.5rem;
-  }
-
   fieldset[name='result'] {
     display: flex;
     flex-wrap: wrap;
@@ -34,20 +30,12 @@
     flex: 1;
   }
 
-  details.options>summary::before {
+  details.options > summary::before {
     content: 'show ';
   }
 
-  details.options[open]>summary::before {
+  details.options[open] > summary::before {
     content: 'hide ';
-  }
-
-
-  input,
-  textarea {
-    /* todo move to layout */
-    color: inherit;
-    background-color: inherit;
   }
 
   textarea,
@@ -59,25 +47,30 @@
 </style>
 <!--{{/head}}-->
 <!--{{title}}-->
-<small style="font-weight: normal;">utilities/</small>godango
+<small style="font-weight: normal">utilities/</small>godango
 <!--{{/title}}-->
 <!--{{main}}-->
 <form>
   <p class="stats">
-    <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</span>
-      <label>length <input type="text" size="3" name="length" disabled /> chars</span>
+    <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
+    <label>length <input type="text" size="3" name="length" disabled /> chars</label>
   </p>
   <fieldset name="result">
     <input name="copy" type="button" value="copy" />
     <input name="new" type="submit" value="new" />
-    <input name="output" size="20" readonly type="text" /> <!-- todo width !-->
+    <input name="output" size="20" readonly type="text" />
+    <!-- todo width !-->
   </fieldset>
   <textarea style="resize: none; line-height: 200%" cols="40" rows="8" readonly></textarea>
   <details class="options" open>
-    <summary style="font-weight: bold;"></span>options</summary>
+    <summary style="font-weight: bold">options</summary>
     <fieldset>
-      <label style="display: inline-block"><input name="count" type="number" min="1" max="999" /> word(s)</label>,
-      <label style="display: inline-block">separator <input name="separator" type="text" size="1" /></label>
+      <label style="display: inline-block"
+        ><input name="count" type="number" min="1" max="999" /> word(s)</label
+      >,
+      <label style="display: inline-block"
+        >separator <input name="separator" type="text" size="1"
+      /></label>
       <fieldset name="sauce">
         <legend>suffix</legend>
         <input id="sauce-random" type="radio" name="sauce-type" value="random" />
@@ -98,16 +91,17 @@
       </fieldset>
     </fieldset>
   </details>
-  <small>This is a passphrase generator based on
+  <small
+    >This is a passphrase generator based on
     <a href="https://www.eff.org/dice">EFF Dice-Generated Passphrases</a>, with added options
     including custom suffixes. It uses
     <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues">Web Crypto</a>
     to randomize passwords.<br /><br />Everything runs in your browser. Check out the source on
-    <a href="https://github.com/jrmann100/godango">GitHub.</a></small>
+    <a href="https://github.com/jrmann100/godango">GitHub.</a></small
+  >
 </form>
-<script type="module" src="/static/js/godango.js"></script>
 <script type="module">
-  import { main } from "/static/js/godango.js"
+  import { main } from '/static/js/godango.js';
   main();
 </script>
 <!--{{/main}}-->

@@ -1,8 +1,11 @@
 <!--{{head}}-->
 <title>Welcome to Jordan's Website</title>
-<meta name="description" content="Jordan made a little routing website and wants you to check it out!" />
+<meta
+  name="description"
+  content="Jordan made a little routing website and wants you to check it out!"
+/>
 <style>
-  header>nav>ul>li.home {
+  header > nav > ul > li.home {
     font-weight: 900;
   }
 
@@ -29,7 +32,6 @@
       float: right;
     } */
   }
-
 
   figure.profile-figure {
     margin: auto;
@@ -69,8 +71,9 @@ jordan mann
   <br />
   <h2>what?</h2>
   <p>
-    You're looking at it! I designed and developed nearly 100% of this website from scratch.<sup><a
-        href="https://github.com/jrmann100/jrmann100.github.io">[source]</a></sup>
+    You're looking at it! I designed and developed nearly 100% of this website from scratch.<sup
+      ><a href="https://github.com/jrmann100/jrmann100.github.io">[source]</a></sup
+    >
   </p>
   <p>
     <b>Also: see my <a href="/resume.html">résumé.</a></b>
@@ -95,8 +98,8 @@ jordan mann
   <h2>how?</h2>
   <p>I teach myself through projects that make a difference in the world.</p>
   <p>
-    Whether I'm working with code or with my hands, I design in my sketchbook before
-    realizing products with visuals, sounds, and movements.
+    Whether I'm working with code or with my hands, I design in my sketchbook before realizing
+    products with visuals, sounds, and movements.
   </p>
   <br />
 </section>
@@ -109,8 +112,13 @@ jordan mann
 </section>
 <section>
   <figure class="profile-figure">
-    <img class="profile-photo" src="/static/img/jordan.webp" height="420" width="280"
-      alt="Photo of Jordan, looking handsome in a maroon shirt." />
+    <img
+      class="profile-photo"
+      src="/static/img/jordan.webp"
+      height="420"
+      width="280"
+      alt="Photo of Jordan, looking handsome in a maroon shirt."
+    />
     <figcaption>that's me!</figcaption>
   </figure>
 </section>
