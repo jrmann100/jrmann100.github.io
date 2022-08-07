@@ -2,9 +2,24 @@
   "files.associations": {
     "*.html.inc": "html"
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "liveServer.settings.root": "build/",
   "todo-tree.tree.scanMode": "workspace",
   "liveServer.settings.multiRootWorkspaceName": "routing",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "liveServer.settings.https": {
+    "enable": true,
+    "cert": "/Users/jordan/proj/self-signed-cert/public.crt",
+    "key": "/Users/jordan/proj/self-signed-cert/private.key",
+    "passphrase": "liveserver"
+  },
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.host": "0.0.0.0",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "todo-tree.regex.regexCaseSensitive": false,
+  "todo-tree.general.tags": ["FIXME", "TODO", "[ ]", "CHECKME", "DELME"],
+  "todo-tree.regex.regex": "(^'\\s|^\\s*\\*\\s*@|^\"\\s|//|#|<!--|;|(/|\\s)\\*+|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
+  "todo-tree.general.statusBar": "total",
+  "todo-tree.highlights.highlightDelay": 250,
+  "eslint.lintTask.enable": false
 }
