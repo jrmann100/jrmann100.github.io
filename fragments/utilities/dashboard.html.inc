@@ -78,7 +78,4 @@
   import { main } from '/static/js/dashboard.js';
   main();
 </script>
-<script type="module">
-  new Error(error.error);
-</script>
 <!--{{/main}}-->
