@@ -1,5 +1,5 @@
 <!--{{head}}-->
-<title>godango</title>
+<title>~jordan/utilities/godango</title>
 <meta name="description" content="Dice-Based Passphrase Generator by Jordan Mann" />
 <style>
   header nav li.godango {
@@ -59,6 +59,7 @@
     <input name="copy" type="button" value="copy" />
     <input name="new" type="submit" value="new" />
     <input name="output" size="20" readonly type="text" />
+    <input name="edit" type="button" value="edit" />
     <!-- todo width !-->
   </fieldset>
   <textarea style="resize: none; line-height: 200%" cols="40" rows="8" readonly></textarea>

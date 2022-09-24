@@ -149,6 +149,8 @@ export async function main() {
   const lengthBox = form.querySelector('input[name=length]');
   /** @type {HTMLInputElement | null} */
   const copyButton = form.querySelector('input[name=copy]');
+  /** @type {HTMLInputElement | null} */
+  const editButton = form.querySelector('input[name=edit]');
   const lastBox = document.querySelector('textarea');
   /**
    * @type {string[]}
@@ -175,6 +177,46 @@ export async function main() {
     document.querySelector('main')?.insertAdjacentElement('afterbegin', warning);
   }
 
+  if (editButton === null) {
+    throw new Error('could not find the edit button');
+  }
+
+  editButton.addEventListener('click', () => setEditMode());
+
+  /**
+   * Return whether the output box is editable.
+   *
+   * @returns {boolean} edit mode.
+   */
+  function getEditMode() {
+    if (outputBox === null) {
+      throw new Error('could not find output box');
+    }
+    return !outputBox.readOnly;
+  }
+
+  /**
+   * Set whether the output box is editable.
+   *
+   * @param {boolean} on edit mode.
+   */
+  function setEditMode(on = true) {
+    if (editButton === null || outputBox === null) {
+      throw new Error('could not find required status element(s)');
+    }
+    editButton.disabled = on;
+    outputBox.readOnly = !on;
+    if (on) {
+      outputBox.focus();
+      const end =
+        outputBox.value.length -
+        (defaults.SAUCE_TYPE !== 'none'
+          ? defaults.SAUCE_VALUE.length + defaults.SEPARATOR.length
+          : 0);
+      outputBox.setSelectionRange(end, end);
+    }
+  }
+
   /**
    * Generate a word dumpling and update the UI to display it.
    */
@@ -182,6 +224,7 @@ export async function main() {
     if (outputBox == null || entropyBox == null || lengthBox == null || lastBox == null) {
       throw new Error('could not find required status element(s)');
     }
+    setEditMode(false);
     outputBox.value = godango(words);
     entropyBox.value = entropy().toString();
     lengthBox.value = outputBox.value.length.toString();
@@ -277,7 +320,12 @@ export async function main() {
     throw new Error('could not find the output box');
   }
 
-  outputBox.addEventListener('click', () => outputBox.select());
+  outputBox.addEventListener('click', () => {
+    if (!getEditMode()) {
+      outputBox.select();
+    }
+  });
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     create();
@@ -292,4 +340,14 @@ export async function main() {
     document.execCommand('copy');
   });
   create();
+
+  outputBox.addEventListener('input', () => {
+    if (entropyBox == null || lengthBox == null) {
+      throw new Error('could not find required status element(s)');
+    }
+    if (getEditMode()) {
+      entropyBox.value = '???';
+      lengthBox.value = outputBox.value.length.toString();
+    }
+  });
 }
