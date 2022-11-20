@@ -1,5 +1,4 @@
 html {
-  height: 100%;
   --white: #fff;
   --black: #222;
   --good: darkseagreen;
@@ -28,10 +27,10 @@ body {
   accent-color: var(--accent);
 }
 
-.solid {
+.solid,
+body {
   background-color: var(--white);
   background-image: var(--noise);
-  transition: background-color 0.5s;
 }
 
 *:focus-visible {
@@ -65,7 +64,7 @@ a:hover {
 
 @media (prefers-reduced-motion) {
   * {
-    animation: none !important;
+    animation: none !important; /* checkme could be harmful for visible */
     transition: none !important;
   }
 }

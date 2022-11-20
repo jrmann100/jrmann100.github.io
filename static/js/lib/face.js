@@ -12,7 +12,10 @@ const loadingAnimation = document.querySelector('header .eye path')?.animate(
     strokeDasharray: ['343, 343, 343', '0, 343, 343'],
     strokeDashoffset: [0, 340]
   },
-  1500
+  {
+    duration: 1500,
+    easing: 'ease-in'
+  }
 );
 
 // Don't play the loading animation on first load.

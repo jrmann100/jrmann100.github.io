@@ -6,17 +6,15 @@ sometimes at the end of navigation, all the way back, we get critical null for t
 
 using --accent as :focus { outline } is fine until it's red and you think something is wrong
 
-We should probably "bubble bold"... with... :has()? up to folders
+We should probably "bubble bold"... with... :has()? up to folders (update: I don't think this works as :has requires direct selectors)
 
-It'd be cool if building inserted a checksum into the service worker which would invalidate the cache automatically by version.
+It'd be cool if building inserted a checksum into the service worker which would invalidate the cache automatically by version. (maybe use workbox?)
 
-I think I want custom animations for everything in the logo. battery charge state change is a little boost, blinking/shaking when the lights come on, etc.
-
-gotta be a way to detect text-only mode and hide the theme switcher.
+I think I want custom animations for everything in the logo. battery charge state change is a little boost, blinking/shaking when the lights come on, etc. _update: see utilities/dashboard_
 
 safari godango options ::before shows as show > options
 
-selection color is wrong blue I think
+selection color is wrong blue in Chrome I think
 
 the cloud icon is extremely unclear
 
@@ -35,3 +33,17 @@ hide menu on click <main>? this would require a js event
 https://www.npmjs.com/package/eslint-plugin-jsdoc#:~:text=quotes%20%2D%20Will%20insist%20on%20%22double%22.
 
 require jsdoc on class methods i.e. in RipplingCard
+
+require signed commits once ssh drops https://github.com/community/community/discussions/7744
+
+README.md - and maybe mark jrmann100/routing as stale
+
+double check pages that need js/css and mark data-needs-X and <noscript> as necessary
+
+uh oh 404
+
+wait a minute links are supposed to get some sort of :active when they match the url right? which would fix a lot of the complications with bolding
+
+maybe we want to fix the <header> height so it can scroll over into <main> with menus by making <body> a display: grid? worried about <detail> menus spilling off the page.
+
+godango remove defaults.wordlist

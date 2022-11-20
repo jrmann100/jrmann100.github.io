@@ -14,7 +14,7 @@
 
   form {
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
     row-gap: 1rem;
   }
 
@@ -47,7 +47,7 @@
 </style>
 <!--{{/head}}-->
 <!--{{title}}-->
-<small style="font-weight: normal">utilities/</small>godango
+<small style="font-weight: normal; display: inline-block">utilities/</small>godango
 <!--{{/title}}-->
 <!--{{main}}-->
 <form>

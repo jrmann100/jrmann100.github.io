@@ -5,7 +5,7 @@
   content="Jordan made a little routing website and wants you to check it out!"
 />
 <style>
-  header > nav > ul > li.home {
+  header li.home {
     font-weight: 900;
   }
 
@@ -20,7 +20,7 @@
     main {
       column-count: 2;
       column-gap: 5rem;
-      max-width: 70rem;
+      /* max-width: 70rem; */ /* made more opinionated to 40rem in layout.css */
       margin: 0 auto;
     }
 

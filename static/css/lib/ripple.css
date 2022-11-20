@@ -25,8 +25,7 @@ div.wrapper {
   display: flex;
   align-content: center;
   justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
