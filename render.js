@@ -6,6 +6,19 @@
  */
 
 import * as fs from 'fs/promises';
+import { execSync } from 'child_process';
+
+/**
+ * Get the build version ID (use the current commit hash)
+ *
+ * @returns {string} the build version ID.
+ */
+function getBuildVersion() {
+  if (process.env.mode === 'dev') {
+    return 'dev';
+  }
+  return execSync('git rev-parse @');
+}
 
 /**
  * Matches a region of format <!--{{name}}-->[content]<!--{{/name}}-->
@@ -82,6 +95,14 @@ async function transform(path, layoutSections) {
         );
       }
     }
+    if (sections.has('debug')) {
+      sections.set(
+        'debug',
+        `<!--{{debug}}-->
+<meta name="build-version" content="${getBuildVersion()}">
+<!--{{/debug}}-->`
+      );
+    }
     await fs.writeFile(path.replace('.html.inc', '.html'), [...sections.values()].join(''), 'utf8');
     await fs.rm(path);
   } else if (stat.isDirectory()) {
@@ -117,7 +138,8 @@ async function removeInc(path) {
  * Transform fragments/ using layout.html; copy static/ and fragments/ into the build/ folder.
  */
 async function main() {
-  console.time('build');
+  const buildType = process.env.mode === 'dev' ? 'dev build' : 'prod build';
+  console.time(buildType);
   // console.time('- clean');
   // remove existing build folder
   try {
@@ -144,6 +166,6 @@ async function main() {
   await fs.cp('static', 'build/static', { recursive: true });
   // console.timeEnd('- assets');
 
-  console.timeEnd('build');
+  console.timeEnd(buildType);
 }
 main();
