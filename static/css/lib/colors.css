@@ -39,6 +39,18 @@ body {
   outline-style: solid;
 }
 
+@media print {
+  [data-only-screen] {
+    display: none !important;
+  }
+}
+
+@media not print {
+  [data-only-print] {
+    display: none !important;
+  }
+}
+
 @media print, (prefers-contrast: more), (forced-colors: active) {
   html,
   html[data-color-scheme] {

@@ -17,7 +17,7 @@ function getBuildVersion() {
   if (process.env.mode === 'dev') {
     return 'dev';
   }
-  return execSync('git rev-parse @');
+  return execSync('git rev-parse @').toString().trim();
 }
 
 /**

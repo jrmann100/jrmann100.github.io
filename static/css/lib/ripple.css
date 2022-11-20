@@ -1,7 +1,7 @@
-:host,
+/* :host,
 div.wrapper {
   border-radius: 0.5rem;
-}
+} */
 
 :host {
   -webkit-tap-highlight-color: transparent;
