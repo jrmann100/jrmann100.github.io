@@ -5,7 +5,7 @@
 <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
 <style>
-  header li.resume {
+  header nav li.resume {
     font-weight: 900;
   }
 

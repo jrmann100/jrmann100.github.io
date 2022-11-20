@@ -5,7 +5,7 @@
   content="Jordan made a little routing website and wants you to check it out!"
 />
 <style>
-  header li.home {
+  header nav li.home {
     font-weight: 900;
   }
 
