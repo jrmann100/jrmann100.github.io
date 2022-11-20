@@ -50,7 +50,8 @@
 <small style="font-weight: normal; display: inline-block">utilities/</small>godango
 <!--{{/title}}-->
 <!--{{main}}-->
-<form>
+<noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
+<form data-needs-js hidden>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
     <label>length <input type="text" size="3" name="length" disabled /> chars</label>

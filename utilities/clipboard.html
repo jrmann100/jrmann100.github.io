@@ -2,8 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="45f7cb01eb9a58a88b1c72610e834df17f90ad3b
-">
+<meta name="build-version" content="b61ffa7e30f4e11c18758ec439fdd3607f74906b">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
@@ -78,8 +77,8 @@
           <li class="home"><a href="/index.html">👋 home</a></li>
           <li class="resume"><a href="/resume.html">📄 résumé</a></li>
           <li class="has-dropdown">
-            <details>
-              <summary>🔨 utilities</summary>
+            <div class="fake-details" tabindex="0">
+              <span class="fake-summary">🔨 utilities</span>
               <div class="nav-dropdown solid">
                 <ul>
                   <li class="godango">
@@ -87,12 +86,12 @@
                   </li>
                 </ul>
               </div>
-            </details>
+            </div>
           </li>
-          <li class="options has-dropdown">
-            <details>
-              <summary>🎨 theme</summary>
-              <div class="centering nav-dropdown solid" hidden data-needs-js>
+          <li class="options has-dropdown" hidden data-needs-js>
+            <div class="fake-details" tabindex="0">
+              <span class="fake-summary"><i>🎨 theme</i></span>
+              <div class="centering nav-dropdown solid">
                 <div class="colors-switcher">
                   <input
                     title="Use light color scheme"
@@ -119,12 +118,12 @@
                     value="dark"
                   />
                   <div class="indicator"></div>
-                  <label for="colors-input-light" class="label light">☀️</label>
-                  <label for="colors-input-auto" class="label auto">☁️</label>
-                  <label for="colors-input-dark" class="label dark">🌙</label>
+                  <label for="colors-input-light" class="label light">☀️ light</label>
+                  <label for="colors-input-auto" class="label auto">☁️ auto</label>
+                  <label for="colors-input-dark" class="label dark">🌙 dark</label>
                 </div>
               </div>
-            </details>
+            </div>
           </li>
         </ul>
       </nav>
@@ -182,11 +181,13 @@
         </script>
         <noscript> &nbsp;Copyright 2022. </noscript>
         Made entirely by Jordan.<sup
-          >[<a
-            href="https://github.com/jrmann100/jrmann100.github.io"
-            style="text-decoration: inherit"
-            >source</a
-          >]</sup
+          ><span data-only-screen
+            >[<a
+              href="https://github.com/jrmann100/jrmann100.github.io"
+              style="text-decoration: inherit"
+              >source</a
+            >]</span
+          ></sup
         >
       </small>
     </footer>

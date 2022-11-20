@@ -1,32 +1,12 @@
 <!--{{title}}-->
-<span class="only-print" hidden="needs-js">Jordan Mann</span>
-<span class="only-screen">résumé</span>
+<span data-only-print>Jordan Mann</span>
+<span data-only-screen>résumé</span>
 <!--{{/title}}-->
 <!--{{head}}-->
 <title>Jordan Mann - Résumé</title>
 <style>
   header nav li.resume {
     font-weight: 900;
-  }
-
-  @media print {
-    header span.only-screen {
-      display: none;
-    }
-
-    header span.only-print {
-      display: initial;
-    }
-  }
-
-  @media not print {
-    header span.only-screen {
-      display: initial;
-    }
-
-    header span.only-print {
-      display: none;
-    }
   }
 
   h2 {

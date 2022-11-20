@@ -5,6 +5,10 @@
 @import './lib/face.css';
 @import './lib/interactive.css';
 
+[data-needs-js][hidden] {
+  display: none !important;
+}
+
 body {
   display: flex;
   flex-flow: column;
@@ -119,19 +123,28 @@ header nav > ul > li > a {
 }
 
 header nav > ul > li > a,
-header nav > ul > li > details > summary {
+header nav > ul > li > .fake-details > .fake-summary {
   transition: font-weight 0.2s;
   /* checkme this clicks without variable fonts */
 }
 
 header nav ul > li > a,
-header nav > ul > li > details > summary {
+header nav > ul > li > .fake-details > .fake-summary {
   white-space: nowrap; /* checkme */
   text-align: center;
   width: 100%;
 }
 
-header nav li > details[open] > summary::before {
+/* fixme indicate openable */
+/* header nav li > .fake-details > .fake-summary::before {
+  content: '📁';
+}
+
+header nav li > .fake-details:focus-within > .fake-summary::before {
+  content: '📂';
+} */
+
+header nav li > .fake-details:focus-within > .fake-summary::after {
   width: 0;
   height: 0;
   border-left: 0.6rem solid transparent;
@@ -142,6 +155,7 @@ header nav li > details[open] > summary::before {
   position: absolute;
   top: 100%;
   display: block;
+  pointer-events: none;
 }
 
 header nav a:not(:hover) {
@@ -152,39 +166,34 @@ header nav a:hover {
   text-decoration: underline;
 }
 
-header nav details summary {
+header nav .fake-details .fake-summary {
   cursor: pointer;
   display: inline-block;
   color: var(--accent);
 }
 
-header nav li > details[open] > summary {
+header nav li > .fake-details:focus-within > .fake-summary {
   color: var(--white);
   background-color: var(--black);
-}
-
-header nav details > summary::after {
-  /* content: ' [+]'; */
-  width: 3ch;
-  display: inline-block;
-}
-
-header nav details[open] > summary::after {
-  /* content: ' [–]'; */
 }
 
 header {
   position: relative;
 }
 
-@media (min-aspect-ratio: 3/4) {
+/* @media (min-aspect-ratio: 3/4) { */
+@media (width > 40rem) {
   /* fixme */
   header nav > ul {
     position: relative;
   }
 }
 
-header nav details div.nav-dropdown {
+header nav li > .fake-details:not(:focus-within) div.nav-dropdown {
+  display: none;
+}
+
+header nav .fake-details div.nav-dropdown {
   position: absolute;
   left: 1rem;
   right: 1rem;
