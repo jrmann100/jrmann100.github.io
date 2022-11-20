@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!--{{debug}}-->
+<meta name="build-version" content="47a7a27b950aa04adaf670f12a938e36c7804ce6
+">
+<!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
     <meta name="theme-color" content="#111" />
@@ -18,7 +22,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
     <meta name="robots" content="index,follow" />
     <!--{{head}}-->
-<title>godango</title>
+<title>~jordan/utilities/godango</title>
 <meta name="description" content="Dice-Based Passphrase Generator by Jordan Mann" />
 <style>
   header nav li.godango {
@@ -33,7 +37,7 @@
 
   form {
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
     row-gap: 1rem;
   }
 
@@ -67,12 +71,12 @@
 <!--{{/head}}-->
   </head>
 
-  <body class="solid desktop">
+  <body class="desktop">
     <header>
       <a
         data-needs-css
         hidden
-        class="face-wrapper"
+        class="centering logo"
         href="/index.html"
         aria-label="Return to the home page"
       >
@@ -101,18 +105,19 @@
           </svg>
         </div>
       </a>
-      <h1>
-        <!--{{title}}-->
-<small style="font-weight: normal">utilities/</small>godango
-<!--{{/title}}-->
-      </h1>
       <nav>
+        <!-- todo utilities should have its own menu -->
+        <h1>
+          <!--{{title}}-->
+<small style="font-weight: normal; display: inline-block">utilities/</small>godango
+<!--{{/title}}-->
+        </h1>
         <ul>
-          <li class="home"><a href="/index.html">home</a></li>
-          <li class="resume"><a href="/resume.html">résumé</a></li>
-          <li>
+          <li class="home"><a href="/index.html">👋 home</a></li>
+          <li class="resume"><a href="/resume.html">📄 résumé</a></li>
+          <li class="has-dropdown">
             <details>
-              <summary>utilities</summary>
+              <summary>🔨 utilities</summary>
               <div class="nav-dropdown solid">
                 <ul>
                   <li class="godango">
@@ -122,37 +127,44 @@
               </div>
             </details>
           </li>
+          <li class="options has-dropdown">
+            <details>
+              <summary>🎨 theme</summary>
+              <div class="centering nav-dropdown solid" hidden data-needs-js>
+                <div class="colors-switcher">
+                  <input
+                    title="Use light color scheme"
+                    type="radio"
+                    class="light"
+                    id="colors-input-light"
+                    name="colors"
+                    value="light"
+                  />
+                  <input
+                    title="Match system color scheme"
+                    type="radio"
+                    class="auto"
+                    id="colors-input-auto"
+                    name="colors"
+                    value="auto"
+                  />
+                  <input
+                    title="Use dark color scheme"
+                    type="radio"
+                    class="dark"
+                    id="colors-input-dark"
+                    name="colors"
+                    value="dark"
+                  />
+                  <div class="indicator"></div>
+                  <label for="colors-input-light" class="label light">☀️</label>
+                  <label for="colors-input-auto" class="label auto">☁️</label>
+                  <label for="colors-input-dark" class="label dark">🌙</label>
+                </div>
+              </div>
+            </details>
+          </li>
         </ul>
-        <div class="colors-switcher" hidden data-needs-js data-show>
-          <input
-            title="Use light color scheme"
-            type="radio"
-            class="light"
-            id="colors-input-light"
-            name="colors"
-            value="light"
-          />
-          <input
-            title="Match system color scheme"
-            type="radio"
-            class="auto"
-            id="colors-input-auto"
-            name="colors"
-            value="auto"
-          />
-          <input
-            title="Use dark color scheme"
-            type="radio"
-            class="dark"
-            id="colors-input-dark"
-            name="colors"
-            value="dark"
-          />
-          <div class="indicator"></div>
-          <label for="colors-input-light" class="label light">☀️</label>
-          <label for="colors-input-auto" class="label auto">☁️</label>
-          <label for="colors-input-dark" class="label dark">🌙</label>
-        </div>
       </nav>
     </header>
     <main id="layout">
@@ -166,6 +178,7 @@
     <input name="copy" type="button" value="copy" />
     <input name="new" type="submit" value="new" />
     <input name="output" size="20" readonly type="text" />
+    <input name="edit" type="button" value="edit" />
     <!-- todo width !-->
   </fieldset>
   <textarea style="resize: none; line-height: 200%" cols="40" rows="8" readonly></textarea>
@@ -215,11 +228,17 @@
     </main>
     <footer>
       <small>
-        Made entirely by Jordan.
         <script data-value="`Copyright ${new Date().getUTCFullYear()}.`">
           document.currentScript.outerHTML = eval(document.currentScript.dataset.value);
         </script>
         <noscript> &nbsp;Copyright 2022. </noscript>
+        Made entirely by Jordan.<sup
+          >[<a
+            href="https://github.com/jrmann100/jrmann100.github.io"
+            style="text-decoration: inherit"
+            >source</a
+          >]</sup
+        >
       </small>
     </footer>
     <script async type="module" src="/static/js/layout.js"></script>

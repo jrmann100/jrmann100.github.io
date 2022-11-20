@@ -1,5 +1,5 @@
 <!--{{head}}-->
-<title>dashboard</title>
+<title>~jordan/utilities/dashboard</title>
 <meta name="description" content="Simple daily dashboard" /><!-- todo -->
 <style>
   header nav li.dashboard {
@@ -54,10 +54,14 @@
 </style>
 <!--{{/head}}-->
 <!--{{title}}-->
-<small style="font-weight: normal">utilities/</small>dashboard
+<small style="font-weight: normal; display: inline-block">utilities/</small>dashboard
 <!--{{/title}}-->
 <!--{{main}}-->
-<div class="wrapper">
+<noscript
+  >This is a live-updating dashboard; as such, you need to enable JavaScript for it to
+  work.</noscript
+>
+<div class="wrapper" data-needs-js hidden>
   <fieldset name="date">
     <legend>date</legend>
     <h1><span class="icon">🗓</span><span class="value">????</span></h1>

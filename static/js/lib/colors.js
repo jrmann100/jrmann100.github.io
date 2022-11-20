@@ -39,7 +39,6 @@ const palettes = {
     ['#fafdf9', '#080502', '#566cd2'],
     ['#fefefc', '#101112', '#d73230'],
     ['#edfaff', '#0d1633', '#d84c80'],
-    ['#e1e4e5', '#141926', '#c22829'],
     ['#f4ede4', '#1a2236', '#b93556'],
     ['#ebf1ef', '#020709', '#d45749'],
     ['#eef1ef', '#080b08', '#f5141c'],
@@ -198,6 +197,7 @@ updatePalette();
 // });
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.body.style.setProperty('transition', 'background-color 0.5s');
   const storedPreference = getStoredPreference();
   document
     .querySelector('.colors-switcher')

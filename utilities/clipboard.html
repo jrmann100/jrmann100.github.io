@@ -22,57 +22,12 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
     <meta name="robots" content="index,follow" />
     <!--{{head}}-->
-<title>~jordan/utilities/dashboard</title>
+<title>~jordan/utilities/clipboard</title>
 <meta name="description" content="Simple daily dashboard" /><!-- todo -->
 <style>
-  header nav li.dashboard {
-    font-weight: 900;
-  }
-
-  div.wrapper {
-    align-items: center;
-    justify-content: center;
-  }
-
-  fieldset {
-    display: inline-block;
-  }
-
-  fieldset[hidden] {
-    display: none;
-  }
-
-  progress {
-    /* checkme move to interactivity.css? */
-    appearance: none;
-    border: 0.1rem solid var(--black);
-    padding: 0.1rem;
-    width: 100%;
-  }
-
-  h1 {
-    font-size: 5rem;
-  }
-
-  progress::-webkit-progress-bar {
-    background-image: repeating-linear-gradient(
-      to right,
-      transparent,
-      transparent 1%,
-      var(--black) 1%,
-      var(--black) 10% /* checkme aesthetic */
-    );
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
-  }
-
-  progress::-webkit-progress-value {
-    background-color: var(--accent);
-  }
-
-  fieldset[name='time'] progress::-webkit-progress-value {
-    transition: width 1s ease;
+  iframe {
+    all: revert;
+    background: canvas;
   }
 </style>
 <!--{{/head}}-->
@@ -116,7 +71,7 @@
         <!-- todo utilities should have its own menu -->
         <h1>
           <!--{{title}}-->
-<small style="font-weight: normal; display: inline-block">utilities/</small>dashboard
+<small style="font-weight: normal">utilities/</small>clipboard
 <!--{{/title}}-->
         </h1>
         <ul>
@@ -180,26 +135,43 @@
   >This is a live-updating dashboard; as such, you need to enable JavaScript for it to
   work.</noscript
 >
-<div class="wrapper" data-needs-js hidden>
-  <fieldset name="date">
-    <legend>date</legend>
-    <h1><span class="icon">🗓</span><span class="value">????</span></h1>
-    <progress></progress>
-  </fieldset>
-  <fieldset name="time">
-    <legend>time</legend>
-    <h1><span class="icon">🕛</span> <span class="value">????</span></h1>
-    <progress></progress>
-  </fieldset>
-  <fieldset name="battery" hidden>
-    <legend>battery</legend>
-    <h1><span class="icon">🔌</span> <span class="value">???</span></h1>
-    <progress></progress>
-  </fieldset>
-</div>
-<script type="module">
-  import { main } from '/static/js/dashboard.js';
-  main();
+<input type="text" placeholder="paste here" id="pasteboard" maxlength="0" autofocus />
+<div id="outputs"></div>
+<script>
+  document.querySelector('#pasteboard').addEventListener('paste', (ev) => {
+    ev.preventDefault();
+    const outputs = document.querySelector('#outputs');
+    outputs.replaceChildren();
+    for (const item of ev.clipboardData.items) {
+      console.log(item);
+      const figure = document.createElement('figure');
+      let data = [];
+      const caption = document.createElement('figcaption');
+      caption.textContent = item.kind + ': ' + item.type;
+      if (item.kind === 'string') {
+        let frame;
+        if (item.type === 'text/html') {
+          frame = document.createElement('iframe');
+          data.push(frame);
+        }
+        const ta = document.createElement('textarea');
+        new Promise((res) => item.getAsString(res)).then((string) => {
+          if (frame instanceof HTMLIFrameElement) {
+            frame.src = 'data:text/html;charset=utf-8,' + encodeURI(string);
+          }
+          ta.textContent = string;
+        });
+        data.push(ta);
+      } else if (item.kind === 'file' && item.type.startsWith('image/')) {
+        img = document.createElement('img');
+        // todo alt
+        img.src = URL.createObjectURL(item.getAsFile());
+        data.push(img);
+      }
+      figure.append(...data, caption);
+      outputs.append(figure);
+    }
+  });
 </script>
 <!--{{/main}}-->
     </main>

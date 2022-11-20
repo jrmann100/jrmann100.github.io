@@ -11,7 +11,8 @@ input:invalid {
 
 input,
 button,
-textarea {
+textarea,
+input[type='checkbox']::after {
   border-radius: 0;
   border: 0.1rem solid var(--black);
   background-color: transparent;
@@ -31,21 +32,21 @@ button {
   transition: box-shadow 0.2s;
 }
 
-input[type='button'],
-input[type='submit'],
-button {
+input[type='button']:not(:disabled),
+input[type='submit']:not(:disabled),
+button:not(:disabled) {
   cursor: pointer;
 }
 
-input[type='submit']:hover,
-input[type='button']:hover,
-button:hover {
+input[type='submit']:not(:disabled):hover,
+input[type='button']:not(:disabled):hover,
+button:not(:disabled):hover {
   box-shadow: 0 0.2rem 0 var(--black), 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
 }
 
-form:valid input[type='submit']:active,
-input[type='button']:active,
-button:active {
+form:valid input[type='submit']:active:not(:disabled),
+input[type='button']:active:not(:disabled),
+button:active:not(:disabled) {
   box-shadow: inset 0 0.1rem 0 var(--black), inset 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
 }
 
@@ -64,14 +65,15 @@ form:valid > input[type='submit'] {
   --status: var(--good);
 }
 
-form:invalid > input[type='submit'] {
+form:invalid > input[type='submit'],
+input:disabled {
   opacity: 0.5;
 }
 
-input[type='text']:not([readonly]):not([disabled]) {
+input[type='text']:not([readonly]):not(:disabled) {
   box-shadow: inset -0.5rem 0 0 var(--status);
 }
 
-input[type='text']:not([readonly]):not([disabled]):focus {
+input[type='text']:not([readonly]):not(:disabled):focus {
   box-shadow: inset -0.8rem 0 0 var(--status);
 }

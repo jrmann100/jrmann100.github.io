@@ -1,20 +1,16 @@
 @import './lib/josh.css';
-@import './layout-desktop.css' (min-aspect-ratio: 30001/40000);
-@import './layout-mobile.css' (max-aspect-ratio: 30000/40000);
+/* @import './layout-desktop.css' (min-aspect-ratio: 30001/40000); */
+/* @import './layout-mobile.css' (max-aspect-ratio: 30000/40000); */
 @import './lib/colors-switcher.css';
 @import './lib/face.css';
 @import './lib/interactive.css';
 
 body {
   display: flex;
-  flex-direction: column;
+  flex-flow: column;
   font-size: 1rem;
-  max-width: 100rem;
-  margin: 0;
-}
-
-main {
-  flex-grow: 1;
+  max-width: 60rem;
+  margin: 0 auto;
 }
 
 main,
@@ -23,23 +19,32 @@ footer {
 }
 
 header {
+  width: 100%;
   font-size: 1.2em;
-  border-bottom: 0.1rem solid var(--black);
-  z-index: 1;
   /* for popover menus */
+  z-index: 1;
+  display: flex;
+  /* gap: 2rem; */
+  border-bottom: 0.1rem solid var(--black);
+  /* todo */
+  /* position: sticky;
+  top: -3rem; */
 }
 
-/* todo always accent or black */
-header .face-wrapper {
-  grid-area: face;
-  width: 100%;
+.centering {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0rem;
 }
 
-header .face-wrapper {
+/* todo always accent or black */
+header .logo {
+  width: 5rem;
+  padding: 0.5rem 0rem;
+  flex-shrink: 0;
+}
+
+header .logo {
   background-color: var(--black);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
@@ -47,42 +52,96 @@ header .face-wrapper {
   forced-color-adjust: none;
 }
 
-header .face-wrapper .face svg {
+header .logo .face svg {
   stroke: var(--white);
-}
-
-html[data-color-scheme='dark'] .face-wrapper {
-  background-color: var(--accent);
 }
 
 header nav {
   display: flex;
-  flex-wrap: wrap-reverse;
-  gap: 0.5rem;
+  flex-flow: wrap;
+  justify-content: space-between;
   align-items: center;
-  grid-area: nav;
+  flex-grow: 1;
+  padding: 0 2rem;
+  column-gap: 2rem;
 }
 
-@media print {
+/* html[data-color-scheme='dark'] .logo {
+  background-color: var(--accent);
+} */
+
+header h1 {
+  flex: 1;
+}
+
+header nav > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  padding: 0.3rem 0;
+}
+
+header nav > ul {
+  /* height: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  column-gap: 0.5rem;
+  flex-flow: wrap;
+}
+
+@media (max-aspect-ratio: 1/2) {
   header nav {
-    display: none;
+    flex-direction: column;
+    align-items: start;
+  }
+  header nav > ul {
+    justify-content: start;
   }
 }
 
-header nav li {
+@media print {
+  header nav > ul {
+    display: none !important;
+  }
+}
+
+header nav > ul > li {
+  flex: 0 0 7rem;
+  width: 7rem;
+  text-align: left;
+  user-select: none; /* checkme */
+}
+
+header nav > ul > li > a {
+  display: block;
+}
+
+header nav > ul > li > a,
+header nav > ul > li > details > summary {
   transition: font-weight 0.2s;
   /* checkme this clicks without variable fonts */
 }
 
-header nav > ul {
-  display: inline-flex;
-  gap: 0.5rem;
+header nav ul > li > a,
+header nav > ul > li > details > summary {
+  white-space: nowrap; /* checkme */
+  text-align: center;
+  width: 100%;
 }
 
-header nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+header nav li > details[open] > summary::before {
+  width: 0;
+  height: 0;
+  border-left: 0.6rem solid transparent;
+  border-right: 0.6rem solid transparent;
+  border-bottom: 1rem solid var(--black);
+  transform: translate(-50%, 0%) translateX(3.5rem);
+  content: '';
+  position: absolute;
+  top: 100%;
+  display: block;
 }
 
 header nav a:not(:hover) {
@@ -93,10 +152,6 @@ header nav a:hover {
   text-decoration: underline;
 }
 
-header nav details {
-  position: relative;
-}
-
 header nav details summary {
   cursor: pointer;
   display: inline-block;
@@ -104,23 +159,39 @@ header nav details summary {
 }
 
 header nav li > details[open] > summary {
-  font-weight: 600;
+  color: var(--white);
+  background-color: var(--black);
 }
 
 header nav details > summary::after {
-  content: ' [+]';
+  /* content: ' [+]'; */
+  width: 3ch;
+  display: inline-block;
 }
 
 header nav details[open] > summary::after {
-  content: ' [-]';
+  /* content: ' [–]'; */
+}
+
+header {
+  position: relative;
+}
+
+@media (min-aspect-ratio: 3/4) {
+  /* fixme */
+  header nav > ul {
+    position: relative;
+  }
 }
 
 header nav details div.nav-dropdown {
   position: absolute;
-  top: 2rem;
-  height: 5rem;
+  left: 1rem;
+  right: 1rem;
+  top: 100%;
+  transform: translateY(15px);
+  /* min-height: 5rem; */
   border: 0.1rem solid var(--black);
-  width: max-content;
   padding: 0.2rem;
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
 }
@@ -129,7 +200,6 @@ header h1 {
   font-size: 1.5em;
   background-clip: text;
   grid-area: title;
-  white-space: nowrap;
   max-width: fit-content;
 }
 

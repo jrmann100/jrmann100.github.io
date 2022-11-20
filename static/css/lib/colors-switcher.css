@@ -1,5 +1,8 @@
+.colors-switcher[hidden] {
+  display: none;
+}
+
 .colors-switcher {
-  display: inline-block;
   position: relative;
   width: fit-content;
   height: fit-content;
