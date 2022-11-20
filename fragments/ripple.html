@@ -1,5 +1,6 @@
 <!--{{title}}-->
 rippling card test
+<!-- delme -->
 <!--{{/title}}-->
 <!--{{main}}-->
 <rippling-card

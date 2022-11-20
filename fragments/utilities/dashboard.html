@@ -7,11 +7,15 @@
   }
 
   div.wrapper {
+    display: flex;
+    flex-flow: wrap;
     align-items: center;
     justify-content: center;
+    gap: 2rem;
   }
 
   fieldset {
+    flex: 1;
     display: inline-block;
   }
 
@@ -64,7 +68,7 @@
 <div class="wrapper" data-needs-js hidden>
   <fieldset name="date">
     <legend>date</legend>
-    <h1><span class="icon">🗓</span><span class="value">????</span></h1>
+    <h1><span class="icon">🗓</span> <span class="value">????</span></h1>
     <progress></progress>
   </fieldset>
   <fieldset name="time">

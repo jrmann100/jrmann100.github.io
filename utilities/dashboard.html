@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="47a7a27b950aa04adaf670f12a938e36c7804ce6
+<meta name="build-version" content="45f7cb01eb9a58a88b1c72610e834df17f90ad3b
 ">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
@@ -30,11 +30,15 @@
   }
 
   div.wrapper {
+    display: flex;
+    flex-flow: wrap;
     align-items: center;
     justify-content: center;
+    gap: 2rem;
   }
 
   fieldset {
+    flex: 1;
     display: inline-block;
   }
 
@@ -183,7 +187,7 @@
 <div class="wrapper" data-needs-js hidden>
   <fieldset name="date">
     <legend>date</legend>
-    <h1><span class="icon">🗓</span><span class="value">????</span></h1>
+    <h1><span class="icon">🗓</span> <span class="value">????</span></h1>
     <progress></progress>
   </fieldset>
   <fieldset name="time">
