@@ -70,7 +70,7 @@ function setupClock() {
  * Set up the battery widget.
  */
 function setupBattery() {
-  if (navigator.getBattery === undefined) {
+  if (navigator.getBattery !== undefined) {
     batteryE?.removeAttribute('hidden');
     navigator.getBattery().then((battery) => {
       battery.addEventListener('chargingchange', () => {
