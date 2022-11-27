@@ -133,7 +133,7 @@ export async function main() {
     [...text.matchAll(/(\d+)\t(\w+)\n/g)].map(([, number, word]) => [number, word])
   );
 
-  const form = document.querySelector('form');
+  const form = document.querySelector('form.godango');
   if (form === null) {
     throw new Error('could not find form');
   }
