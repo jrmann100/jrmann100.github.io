@@ -11,7 +11,6 @@ document.querySelectorAll('[data-needs-js]').forEach((el) => el.removeAttribute(
 
 document.querySelectorAll('.fake-summary').forEach((el) => {
   el.layoutAddEventListener('mousedown', (ev) => {
-    console.log('click');
     ev.preventDefault();
     if (el.parentElement.matches(':focus-within')) {
       el.parentElement.blur();
