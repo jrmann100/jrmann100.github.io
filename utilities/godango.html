@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="406b1c122380d649031086e8fa08ea6b7e9f6698">
+<meta name="build-version" content="2a0672ed7e1660f737a90e84f22795ea2f60c74e">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
@@ -33,7 +33,7 @@
     cursor: pointer;
   }
 
-  form {
+  form.godango {
     display: flex;
     flex-flow: column;
     row-gap: 1rem;
@@ -175,7 +175,7 @@
     <main id="layout">
       <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
-<form data-needs-js hidden>
+<form class="godango" data-needs-js hidden>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
     <label>length <input type="text" size="3" name="length" disabled /> chars</label>

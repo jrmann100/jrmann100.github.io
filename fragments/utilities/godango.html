@@ -12,7 +12,7 @@
     cursor: pointer;
   }
 
-  form {
+  form.godango {
     display: flex;
     flex-flow: column;
     row-gap: 1rem;
@@ -51,7 +51,7 @@
 <!--{{/title}}-->
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
-<form data-needs-js hidden>
+<form class="godango" data-needs-js hidden>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
     <label>length <input type="text" size="3" name="length" disabled /> chars</label>
