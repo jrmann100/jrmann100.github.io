@@ -123,7 +123,7 @@ const palettes = {
 function load() {
   const saved = JSON.parse(localStorage.getItem('colorScheme')) ?? {
     pref: 'auto',
-    set: undefined,
+    set: null,
     colors: []
   };
   current.pref = saved.pref;
@@ -147,6 +147,11 @@ const media = window.matchMedia('(prefers-color-scheme: light)');
  * @param set
  */
 function newColors() {
+  if (current.set === null) {
+    // checkme
+    return;
+  }
+  console.log(current);
   const setL = palettes[current.set];
   current.colors = setL[Math.floor(Math.random() * setL.length)]; // checkme
 }
@@ -176,9 +181,6 @@ let current = new Proxy(
           targetSet = newValue;
         }
         if (targetSet !== undefined && current.set !== targetSet) {
-          if (targetSet === 'auto') {
-            throw Error('why?');
-          }
           current.set = targetSet;
         }
       } else if (prop === 'colors') {
