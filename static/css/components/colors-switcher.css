@@ -157,35 +157,15 @@ html[data-color-scheme='light'] .colors-switcher .indicator {
   content: '🔒 ';
 }
 
-/* 
-.colors-switcher input.light:not(:checked):not(:hover) ~ label.light {
-  opacity: 0.8;
+.colors-switcher label.lock {
+  position: relative;
 }
 
-.colors-switcher input.auto:not(:checked):not(:hover) ~ label.auto {
-  opacity: 0.8;
-}
-
-.colors-switcher input.dark:not(:checked):not(:hover) ~ label.dark {
-  opacity: 0.8;
-}
-
-.colors-switcher input.light:focus-visible ~ label.light {
-  background-color: var(--b);
-}
-
-.colors-switcher input.auto:focus-visible ~ label.auto {
-  background-color: var(--b);
-}
-
-.colors-switcher input.dark:focus-visible ~ label.dark {
-  background-color: var(--b);
+/* .colors-switcher label.lock::after {
+  content: '';
+  position: absolute;
+  left: -0.05rem;
+  top: 0;
+  height: 100%;
+  border-left: var(--default-border);
 } */
-
-label:has(#colors-lock)::before {
-  content: '🔓 ';
-}
-
-label:has(#colors-lock:checked)::before {
-  content: '🔒 ';
-}
