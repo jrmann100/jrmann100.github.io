@@ -118,74 +118,91 @@ const palettes = {
 };
 
 /**
- * @type {'light' | 'dark'}
+ *
  */
-let currentSetName;
+function load() {
+  const saved = JSON.parse(localStorage.getItem('colorScheme')) ?? {
+    pref: 'auto',
+    set: undefined,
+    colors: []
+  };
+  current.pref = saved.pref;
+  current.set = saved.set;
+  if (saved.pref === 'lock') {
+    current.colors = saved.colors;
+  }
+}
 
 /**
- * @type {string[] | undefined}
+ *
  */
-let currentColors = undefined;
+function save() {
+  localStorage.setItem('colorScheme', JSON.stringify(current));
+}
 
 const media = window.matchMedia('(prefers-color-scheme: light)');
 
 /**
  *
- * @param {'light' | 'dark'} setName
- * @param refresh
+ * @param set
  */
-function selectPalette(setName, refresh = false) {
-  if (setName === currentSetName && !refresh) {
-    return false;
-  }
-  currentSetName = setName;
-  const set = palettes[setName];
-  currentColors = set[Math.floor(Math.random() * set.length)]; // checkme
-  return true;
+function newColors() {
+  const setL = palettes[current.set];
+  current.colors = setL[Math.floor(Math.random() * setL.length)]; // checkme
 }
-
-/**
- *
- */
-function applyColors() {
-  if (currentColors === undefined) {
-    return;
+/** @type {ColorScheme} */
+let current = new Proxy(
+  {
+    pref: null,
+    set: null,
+    colors: []
+  },
+  {
+    set(target, prop, newValue) {
+      if (prop === 'set' && newValue !== target.set) {
+        Reflect.set(target, prop, newValue);
+        newColors(newValue);
+        document.documentElement.setAttribute('data-color-scheme', newValue);
+      } else if (prop === 'pref') {
+        // if (target.pref === 'lock') {
+        //   newColors();
+        // }
+        Reflect.set(target, prop, newValue);
+        document.querySelector('.colors-shuffle')?.toggleAttribute('disabled', newValue === 'lock');
+        let targetSet = undefined;
+        if (newValue === 'auto') {
+          targetSet = media.matches ? 'light' : 'dark';
+        } else if (newValue === 'light' || newValue === 'dark') {
+          targetSet = newValue;
+        }
+        if (targetSet !== undefined && current.set !== targetSet) {
+          if (targetSet === 'auto') {
+            throw Error('why?');
+          }
+          current.set = targetSet;
+        }
+      } else if (prop === 'colors') {
+        Reflect.set(target, prop, newValue);
+        document.documentElement.style.setProperty('--p-white', newValue[0]);
+        document.documentElement.style.setProperty('--p-black', newValue[1]);
+        document.documentElement.style.setProperty('--p-accent', newValue[2]);
+        document
+          .querySelector(`meta[name="theme-color"]`)
+          ?.setAttribute('content', current.colors[0]);
+      }
+      save();
+    }
   }
-  document.documentElement.style.setProperty('--p-white', currentColors[0]);
-  document.documentElement.style.setProperty('--p-black', currentColors[1]);
-  document.documentElement.style.setProperty('--p-accent', currentColors[2]);
-  document.documentElement.setAttribute('data-color-scheme', currentSetName);
-  document.querySelector(`meta[name="theme-color"]`)?.setAttribute('content', currentColors[0]);
-  localStorage.setItem('colors', JSON.stringify(currentColors));
-}
-
-/**
- * @param {'light' | 'dark' | 'auto' | 'lock'} pref
- */
-function setPref(pref) {
-  localStorage.setItem('colors-pref', pref);
-  if (pref === 'light' || pref === 'dark') {
-    selectPalette(pref);
-  } else if (pref === 'auto') {
-    selectPalette(media.matches ? 'light' : 'dark');
-  } else if (pref === 'lock') {
-    currentColors = JSON.parse(localStorage.getItem('colors')); // checkme
-  }
-  document.querySelector('.colors-shuffle')?.toggleAttribute('disabled', pref === 'lock');
-  applyColors();
-}
+);
 
 document.addEventListener('DOMContentLoaded', () => {
-  storedPref = localStorage.getItem('colors-pref') ?? 'auto';
-  setPref(storedPref);
+  load();
   document.querySelectorAll('.colors-switcher input').forEach((el) => {
-    el.addEventListener('change', () => setPref(el.value));
-    if (el.value === storedPref) {
+    el.addEventListener('change', () => (current.pref = el.value));
+    if (el.value === current.pref) {
       el.checked = true;
     }
   });
-  document
-    .querySelector('.colors-shuffle')
-    ?.addEventListener('click', () => selectPalette(currentSetName, true) && applyColors());
-  setTimeout(() => document.body.style.setProperty('transition', 'background-color 0.5s'), 0);
+  document.querySelector('.colors-shuffle')?.addEventListener('click', () => newColors());
+  setTimeout(() => document.body.style.setProperty('transition', 'background-color 0.3s'), 0);
 });

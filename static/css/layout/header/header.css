@@ -1,5 +1,5 @@
-@import './face.css' layer(components);
-@import './nav.css' layer(components);
+@import './face.css' layer(face);
+@import './nav.css' layer(nav);
 
 header {
   width: 100%;

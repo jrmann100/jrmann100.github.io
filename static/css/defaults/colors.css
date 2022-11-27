@@ -1,0 +1,58 @@
+html {
+  --white: #fff;
+  --black: #222;
+  --good: darkseagreen;
+  --bad: lightcoral;
+  --accent: mediumslateblue;
+  --noise: url('/static/img/noise.png');
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --black: #eee;
+    --white: #222;
+    --accent: plum;
+  }
+}
+
+html[data-color-scheme] {
+  --black: var(--p-black);
+  --white: var(--p-white);
+  --accent: var(--p-accent);
+}
+
+body {
+  color: var(--black);
+  accent-color: var(--accent);
+}
+
+.solid,
+body {
+  background-color: var(--white);
+  /* background-image: var(--noise); */ /* checkme */
+}
+
+*:focus-visible {
+  outline-color: var(--accent);
+  outline-width: 0.1rem;
+  outline-style: solid;
+}
+
+@media print, (prefers-contrast: more), (forced-colors: active) {
+  html,
+  html[data-color-scheme] {
+    --black: black;
+    --white: white;
+    --accent: mediumslateblue;
+  }
+
+  body {
+    background-image: none;
+  }
+}
+
+/* todo unvisited link? */
+
+a {
+  color: var(--accent);
+}
