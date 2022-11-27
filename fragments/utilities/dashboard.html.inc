@@ -26,7 +26,7 @@
   progress {
     /* checkme move to interactivity.css? */
     appearance: none;
-    border: 0.1rem solid var(--black);
+    border: var(--default-border);
     padding: 0.1rem;
     width: 100%;
   }

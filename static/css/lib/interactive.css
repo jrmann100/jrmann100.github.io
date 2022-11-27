@@ -14,7 +14,7 @@ button,
 textarea,
 input[type='checkbox']::after {
   border-radius: 0;
-  border: 0.1rem solid var(--black);
+  border: var(--default-border);
   background-color: transparent;
   color: inherit;
 }
@@ -32,6 +32,11 @@ button {
   transition: box-shadow 0.2s;
 }
 
+.buttonsize,
+input,
+button {
+  padding: 0.5rem 0.7rem;
+}
 input[type='button']:not(:disabled),
 input[type='submit']:not(:disabled),
 button:not(:disabled) {

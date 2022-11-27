@@ -200,8 +200,8 @@ header nav .fake-details div.nav-dropdown {
   top: 100%;
   transform: translateY(15px);
   /* min-height: 5rem; */
-  border: 0.1rem solid var(--black);
-  padding: 0.2rem;
+  border: var(--default-border);
+  padding: 0.5rem;
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
 }
 
