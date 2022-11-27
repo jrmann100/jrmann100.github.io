@@ -143,7 +143,7 @@
   </figure>
   <br />
   <figure>
-    <figcaption><b>Scouts BSA</b><span class="date">2009 - 2021</span></figcaption>
+    <figcaption><b>Scouts BSA</b> <span class="date">2009 - 2021</span></figcaption>
     <ul>
       <li><b>Eagle Scout</b> Troop 59, Larkspur, CA</li>
       <li><b>National Youth Leadership Training</b> staff (2019)</li>
