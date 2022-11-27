@@ -96,10 +96,6 @@ header nav > ul {
 }
 
 @media (max-aspect-ratio: 1/2) {
-  header nav {
-    flex-direction: column;
-    align-items: start;
-  }
   header nav > ul {
     justify-content: start;
   }
@@ -203,6 +199,9 @@ header nav .fake-details div.nav-dropdown {
   border: var(--default-border);
   padding: 0.5rem;
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5rem;
 }
 
 header h1 {
