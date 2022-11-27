@@ -34,7 +34,7 @@ export class RipplingCard extends HTMLElement {
     // When that happens, should it load here or with the script?
     var style = document.createElement('link');
     style.setAttribute('rel', 'stylesheet');
-    style.setAttribute('href', '/static/css/lib/ripple.css');
+    style.setAttribute('href', '/static/css/components/ripple.css');
     // Add all the elements we're going to need:
     // an SVG icon and a title inside a wrapper.
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

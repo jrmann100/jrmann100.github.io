@@ -52,3 +52,13 @@ interface BatteryManagerEventTarget extends EventTarget {
     useCapture?: boolean
   ): void;
 }
+
+interface ColorScheme {
+  pref: 'light' | 'auto' | 'dark' | 'lock' | null;
+  set: 'light' | 'dark' | null;
+  colors: string[];
+}
+
+interface LocalStore {
+  colorScheme: ColorScheme;
+}

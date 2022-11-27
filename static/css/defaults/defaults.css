@@ -1,0 +1,35 @@
+@import './josh.css' layer(reset);
+@import './colors.css' layer(colors);
+@import './interactive.css' layer(interactive);
+
+@layer reset {
+  [hidden][data-needs-css] {
+    display: revert;
+  }
+}
+
+body {
+  font-family: system-ui, Helvetica, Arial, sans-serif;
+  --default-border: 0.1rem solid var(--black);
+}
+
+.bordered {
+  border: var(--default-border);
+}
+
+.centering {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion) {
+  * {
+    animation: none !important; /* checkme could be harmful for visible */
+    transition: none !important;
+  }
+}

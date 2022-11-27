@@ -1,0 +1,24 @@
+@import './header/header.css' layer(header);
+body {
+  display: flex;
+  flex-flow: column;
+  font-size: 1rem;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+main,
+footer {
+  padding: 1rem 1rem;
+}
+
+/* The footer is stuck to the bottom of the page. */
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
