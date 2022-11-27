@@ -85,11 +85,10 @@
             <div class="fake-details" tabindex="0">
               <span class="fake-summary"><i>🎨 theme</i></span>
               <div class="centering nav-dropdown solid">
-                <div class="colors-switcher">
+                <form class="colors-switcher" style="--cells: 4; --cell-width: 5rem">
                   <input
                     title="Use light color scheme"
                     type="radio"
-                    class="light"
                     id="colors-input-light"
                     name="colors"
                     value="light"
@@ -97,7 +96,6 @@
                   <input
                     title="Match system color scheme"
                     type="radio"
-                    class="auto"
                     id="colors-input-auto"
                     name="colors"
                     value="auto"
@@ -105,16 +103,25 @@
                   <input
                     title="Use dark color scheme"
                     type="radio"
-                    class="dark"
                     id="colors-input-dark"
                     name="colors"
                     value="dark"
                   />
+                  <input
+                    title="Use dark color scheme"
+                    type="radio"
+                    class="lock"
+                    id="colors-input-lock"
+                    name="colors"
+                    value="lock"
+                  />
                   <div class="indicator"></div>
-                  <label for="colors-input-light" class="label light">☀️ light</label>
-                  <label for="colors-input-auto" class="label auto">☁️ auto</label>
-                  <label for="colors-input-dark" class="label dark">🌙 dark</label>
-                </div>
+                  <label for="colors-input-light">☀️ light</label>
+                  <label for="colors-input-auto">☁️ auto</label>
+                  <label for="colors-input-dark">🌙 dark</label>
+                  <label class="lock" for="colors-input-lock">lock</label>
+                </form>
+                <button class="colors-shuffle">🔄 shuffle</button>
               </div>
             </div>
           </li>

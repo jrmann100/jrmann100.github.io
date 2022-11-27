@@ -2,6 +2,7 @@
  * @file Document properties manager; primarily, a color scheme manager.
  * @author Jordan Mann
  * This script must be run synchronously (not as a module) before CSS is loaded to prevent flashing.
+ * todo redo comments
  */
 
 /**
@@ -117,97 +118,74 @@ const palettes = {
 };
 
 /**
- * Whether the current browser-preferred color scheme is light.
+ * @type {'light' | 'dark'}
  */
-const query = window.matchMedia('(prefers-color-scheme: light)');
+let currentSetName;
 
 /**
- * The currently-used color scheme preference, or null if not yet set.
- * We check against this value to prevent switching colors
- * when going from auto light to light or auto dark to dark.
- *
- * @type {'light' | 'dark' | null}
+ * @type {string[] | undefined}
  */
-let lastSetPreference = null;
+let currentColors = undefined;
 
-query.addEventListener('change', () => {
-  updatePalette();
-});
+const media = window.matchMedia('(prefers-color-scheme: light)');
 
 /**
- * Get the memorized color setting.
  *
- * @returns {'light' | 'dark' | 'auto'} the memorized color scheme setting (auto if not defined).
+ * @param {'light' | 'dark'} setName
+ * @param refresh
  */
-function getStoredPreference() {
-  const memorizedValue = localStorage.getItem('color-scheme') ?? 'auto';
-  if (memorizedValue === 'light' || memorizedValue === 'dark' || memorizedValue === 'auto') {
-    return memorizedValue;
-  } else {
-    throw Error(`Unexpected memorized color scheme '${memorizedValue}'`);
+function selectPalette(setName, refresh = false) {
+  if (setName === currentSetName && !refresh) {
+    return false;
   }
+  currentSetName = setName;
+  const set = palettes[setName];
+  currentColors = set[Math.floor(Math.random() * set.length)]; // checkme
+  return true;
 }
 
 /**
- * Reduce light/dark/auto setting to light/dark preference, depending on browser preference if auto.
  *
- * @returns {'light' | 'dark'} the color scheme preference.
  */
-function getPreference() {
-  const storedPreference = getStoredPreference();
-  if (storedPreference === 'auto') {
-    return query.matches ? 'light' : 'dark';
-  } else {
-    return storedPreference;
+function applyColors() {
+  if (currentColors === undefined) {
+    return;
   }
+  document.documentElement.style.setProperty('--p-white', currentColors[0]);
+  document.documentElement.style.setProperty('--p-black', currentColors[1]);
+  document.documentElement.style.setProperty('--p-accent', currentColors[2]);
+  document.documentElement.setAttribute('data-color-scheme', currentSetName);
+  document.querySelector(`meta[name="theme-color"]`)?.setAttribute('content', currentColors[0]);
+  localStorage.setItem('colors', JSON.stringify(currentColors));
 }
 
 /**
- * Choose and apply a new color palette, if necessary, as according to the color scheme preference.
- *
- * @param {boolean} newPalette if a new palette should be used.
- * @returns {string[] | null} palette the palette.
+ * @param {'light' | 'dark' | 'auto' | 'lock'} pref
  */
-function updatePalette(newPalette = false) {
-  const preference = getPreference();
-  if (preference === lastSetPreference && !newPalette) {
-    return null;
+function setPref(pref) {
+  localStorage.setItem('colors-pref', pref);
+  if (pref === 'light' || pref === 'dark') {
+    selectPalette(pref);
+  } else if (pref === 'auto') {
+    selectPalette(media.matches ? 'light' : 'dark');
+  } else if (pref === 'lock') {
+    currentColors = JSON.parse(localStorage.getItem('colors')); // checkme
   }
-  lastSetPreference = preference;
-  const set = palettes[preference];
-  if (set === undefined) {
-    throw Error(`palette set '${preference}' not found`);
-  }
-  const palette = set[Math.floor(Math.random() * set.length)];
-  document.documentElement.style.setProperty('--p-white', palette[0]);
-  document.documentElement.style.setProperty('--p-black', palette[1]);
-  document.documentElement.style.setProperty('--p-accent', palette[2]);
-  document.documentElement.setAttribute('data-color-scheme', preference);
-
-  document.querySelector(`meta[name="theme-color"]`)?.setAttribute('content', palette[0]);
-
-  return palette;
+  document.querySelector('.colors-shuffle')?.toggleAttribute('disabled', pref === 'lock');
+  applyColors();
 }
-
-updatePalette();
-
-// document.addEventListener("navigate", () => {
-//     updatePalette(true);
-// });
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.style.setProperty('transition', 'background-color 0.5s');
-  const storedPreference = getStoredPreference();
+  storedPref = localStorage.getItem('colors-pref') ?? 'auto';
+  setPref(storedPref);
+  document.querySelectorAll('.colors-switcher input').forEach((el) => {
+    el.addEventListener('change', () => setPref(el.value));
+    if (el.value === storedPref) {
+      el.checked = true;
+    }
+  });
   document
-    .querySelector('.colors-switcher')
-    ?.querySelectorAll('input')
-    .forEach((el) => {
-      el.layoutAddEventListener('change', () => {
-        localStorage.setItem('color-scheme', el.value);
-        updatePalette();
-      });
-      if (el.classList.contains(storedPreference)) {
-        el.checked = true;
-      }
-    });
+    .querySelector('.colors-shuffle')
+    ?.addEventListener('click', () => selectPalette(currentSetName, true) && applyColors());
+  setTimeout(() => document.body.style.setProperty('transition', 'background-color 0.5s'), 0);
 });

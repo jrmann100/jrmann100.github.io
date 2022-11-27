@@ -1,3 +1,5 @@
+@import './colors-switcher.css' layer(components);
+
 /******** interactivity module ********/
 
 input {
@@ -25,8 +27,6 @@ textarea {
 
 input,
 button {
-  padding: 0.5rem 0.8rem;
-  box-sizing: border-box;
   /* checkme inherit? */
   font-weight: bold;
   transition: box-shadow 0.2s;
@@ -37,6 +37,7 @@ input,
 button {
   padding: 0.5rem 0.7rem;
 }
+
 input[type='button']:not(:disabled),
 input[type='submit']:not(:disabled),
 button:not(:disabled) {
@@ -71,7 +72,8 @@ form:valid > input[type='submit'] {
 }
 
 form:invalid > input[type='submit'],
-input:disabled {
+input:disabled,
+button:disabled {
   opacity: 0.5;
 }
 
@@ -81,4 +83,10 @@ input[type='text']:not([readonly]):not(:disabled) {
 
 input[type='text']:not([readonly]):not(:disabled):focus {
   box-shadow: inset -0.8rem 0 0 var(--status);
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  width: 0.8em;
+  height: 0.8em; /* todo vertical align*/
 }

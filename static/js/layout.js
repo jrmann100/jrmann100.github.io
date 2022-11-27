@@ -8,14 +8,3 @@ import './lib/interactive.js';
 
 // enable components which require javascript.
 document.querySelectorAll('[data-needs-js]').forEach((el) => el.removeAttribute('hidden'));
-
-document.querySelectorAll('.fake-summary').forEach((el) => {
-  el.layoutAddEventListener('mousedown', (ev) => {
-    ev.preventDefault();
-    if (el.parentElement.matches(':focus-within')) {
-      el.parentElement.blur();
-    } else {
-      el.parentElement.focus();
-    }
-  });
-});
