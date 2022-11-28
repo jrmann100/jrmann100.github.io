@@ -151,7 +151,6 @@ function newColors() {
     // checkme
     return;
   }
-  console.log(current);
   const setL = palettes[current.set];
   current.colors = setL[Math.floor(Math.random() * setL.length)]; // checkme
 }
@@ -197,14 +196,14 @@ let current = new Proxy(
   }
 );
 
-document.addEventListener('DOMContentLoaded', () => {
+document.layoutAddEventListener('DOMContentLoaded', () => {
   load();
   document.querySelectorAll('.colors-switcher input').forEach((el) => {
-    el.addEventListener('change', () => (current.pref = el.value));
+    el.layoutAddEventListener('change', () => (current.pref = el.value));
     if (el.value === current.pref) {
       el.checked = true;
     }
   });
-  document.querySelector('.colors-shuffle')?.addEventListener('click', () => newColors());
+  document.querySelector('.colors-shuffle')?.layoutAddEventListener('click', () => newColors());
   setTimeout(() => document.body.style.setProperty('transition', 'background-color 0.3s'), 0);
 });
