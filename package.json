@@ -19,7 +19,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node render.js",
-    "build-watch": "echo '{\"env\":{\"mode\":\"dev\"}}' | nodemon render.js -i build -e js,json,html,css,html.inc",
+    "build-watch": "mode=dev nodemon render.js -i build -e js,json,html,css,html.inc",
     "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore . && tsc --noEmit",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   }
