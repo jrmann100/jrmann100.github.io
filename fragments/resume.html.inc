@@ -35,12 +35,26 @@
     font-size: 1rem;
   }
 
+  section:not(:last-of-type) {
+    margin-bottom: 1rem;
+  }
+
   span.date {
     float: right;
   }
 </style>
 <!--{{/head}}-->
 <!--{{main}}-->
+<section data-only-screen>
+  <!-- checkme not better than a link but flashier -->
+  <button
+    data-only-screen
+    onclick="window.location.href = 'https://docs.google.com/document/d/1LMeAQejdKMmpCnJWJKiW07LByC2kkj8UoMS4PSEpl68/export?format=pdf'"
+  >
+    Download a PDF
+  </button>
+  </section>
+</section>
 <section>
   <h2>education</h2>
   <p><b>Dartmouth College</b>, Hanover, NH <span class="date">06/2025</span></p>
