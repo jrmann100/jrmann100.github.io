@@ -2,13 +2,13 @@
 @import './nav.css' layer(nav);
 
 header {
+  margin-top: 1rem;
   width: 100%;
   font-size: 1.2em;
   /* for popover menus */
   z-index: 1;
   display: flex;
-  /* gap: 2rem; */
-  border-bottom: 0.1rem solid var(--black);
+  gap: 1.5rem;
   /* todo */
   /* position: sticky;
     top: -3rem; */
@@ -16,6 +16,7 @@ header {
 
 /* todo always accent or black */
 header .logo {
+  margin-left: 1rem;
   width: 5rem;
   padding: 0.5rem 0rem;
   flex-shrink: 0;
@@ -33,7 +34,7 @@ header .logo .face svg {
   stroke: var(--white);
 }
 
-/* html[data-color-scheme='dark'] .logo {
+/* :root[data-color-scheme='dark'] .logo {
     background-color: var(--accent);
   } */
 

@@ -24,7 +24,7 @@ rippling card test
   text="Grades"
 ></rippling-card>
 <script type="module">
-  import { RipplingCard } from '/static/js/lib/ripple.js';
+  import { RipplingCard } from '/static/components/ripple/ripple.js';
   if (customElements.get('rippling-card') === undefined) {
     customElements.define('rippling-card', RipplingCard);
   } // fixme stops working on navigate

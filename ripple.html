@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="69d576cc720ebc2f8a84e1a147cc9cf0f79d85cd">
+<meta name="build-version" content="dddf313b277ee4ad4f5185c80aaf8995aaf5374a">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/css/global.css" />
     <script src="/static/js/lib/events.js"></script>
     <script src="/static/js/lib/colors.js"></script>
+    <script src="/static/js/lib/components.js"></script>
     <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
     <meta name="author" content="Jordan" />
     <!-- <meta name="description" content=""> -->
@@ -80,7 +81,7 @@ rippling card test
               <div class="nav-dropdown solid">
                 <ul>
                   <li class="godango">
-                    <a href="/utilities/godango.html">🔏 godango</a>
+                    <a href="/utilities/godango.html">🔏 godango: a passwords generator</a>
                   </li>
                 </ul>
               </div>
@@ -90,42 +91,22 @@ rippling card test
             <div class="fake-details" tabindex="0">
               <span class="fake-summary"><i>🎨 theme</i></span>
               <div class="centering nav-dropdown solid">
-                <form class="colors-switcher" style="--cells: 4; --cell-width: 6rem">
-                  <input
-                    title="Use light color scheme"
-                    type="radio"
-                    id="colors-input-light"
-                    name="colors"
-                    value="light"
-                  />
-                  <input
-                    title="Match system color scheme"
-                    type="radio"
-                    id="colors-input-auto"
-                    name="colors"
-                    value="auto"
-                  />
-                  <input
-                    title="Use dark color scheme"
-                    type="radio"
-                    id="colors-input-dark"
-                    name="colors"
-                    value="dark"
-                  />
-                  <input
-                    title="Use dark color scheme"
-                    type="radio"
-                    class="lock"
-                    id="colors-input-lock"
-                    name="colors"
-                    value="lock"
-                  />
-                  <div class="indicator"></div>
-                  <label for="colors-input-light">☀️ light</label>
-                  <label for="colors-input-auto">☁️ auto</label>
-                  <label for="colors-input-dark">🌙 dark</label>
-                  <label class="lock" for="colors-input-lock">lock</label>
-                </form>
+                <switcher-component data-layout data-cell-width="5rem" data-name="colors-switcher">
+                  <style>
+                    label[for='colors-switcher-lock']::before {
+                      content: '🔓 ';
+                    }
+
+                    input#colors-switcher-lock:checked ~ label[for='colors-switcher-lock']::before {
+                      content: '🔒 ';
+                    }
+                  </style>
+                  <!-- checkme better to make this datalist/option semantically? -->
+                  <input data-label="☀️ light" title="Use light color scheme" value="light" />
+                  <input data-label="☁️ auto" title="Match system color scheme" value="auto" />
+                  <input data-label="🌙 dark" title="Use light color scheme" value="dark" />
+                  <input data-label="lock" title="Lock current color scheme" value="lock" />
+                </switcher-component>
                 <button class="colors-shuffle">🔄 change</button>
               </div>
             </div>
@@ -148,7 +129,7 @@ rippling card test
   text="Grades"
 ></rippling-card>
 <script type="module">
-  import { RipplingCard } from '/static/js/lib/ripple.js';
+  import { RipplingCard } from '/static/components/ripple/ripple.js';
   if (customElements.get('rippling-card') === undefined) {
     customElements.define('rippling-card', RipplingCard);
   } // fixme stops working on navigate
