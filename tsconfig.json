@@ -1,5 +1,5 @@
 {
-  "include": ["static/js", "types.d.ts"],
+  "include": ["static/js", "types.d.ts", "static/components"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Projects */

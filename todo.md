@@ -47,3 +47,9 @@ wait a minute links are supposed to get some sort of :active when they match the
 maybe we want to fix the <header> height so it can scroll over into <main> with menus by making <body> a display: grid? worried about <detail> menus spilling off the page.
 
 godango remove defaults.wordlist
+godango memory
+https://github.com/dropbox/zxcvbn + https://bitwarden.com/password-strength/
+
+maybe dev mode should not copy assets?? not sure how to speed it up
+
+adapt switcher to tabs

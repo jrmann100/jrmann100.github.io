@@ -4,8 +4,9 @@ header nav {
   justify-content: space-between;
   align-items: center;
   flex-grow: 1;
-  padding: 0 2rem;
+  padding-left: 0.5em;
   column-gap: 2rem;
+  border-bottom: 0.1rem solid var(--black);
 }
 
 header nav > ul {
@@ -48,6 +49,7 @@ header nav > ul > li > a {
   display: block;
 }
 
+/* todo underline like it's a link? hover effect? */
 /* todo extract fake-details to its own interactive module */
 header nav > ul > li > a,
 header nav > ul > li > .fake-details > .fake-summary {

@@ -1,5 +1,4 @@
 @layer defaults, layout, components, utilities, overrides;
 @import './defaults/defaults.css' layer(defaults);
 @import './layout/layout.css' layer(layout);
-@import './components/components.css' layer(components);
 @import './utilities/utilities.css' layer(utilities);

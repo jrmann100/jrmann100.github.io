@@ -1,4 +1,4 @@
-html {
+:root {
   --white: #fff;
   --black: #222;
   --good: darkseagreen;
@@ -8,14 +8,14 @@ html {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
+  :root {
     --black: #eee;
     --white: #222;
     --accent: plum;
   }
 }
 
-html[data-color-scheme] {
+:root[data-color-scheme] {
   --black: var(--p-black);
   --white: var(--p-white);
   --accent: var(--p-accent);
@@ -39,8 +39,8 @@ body {
 }
 
 @media print, (prefers-contrast: more), (forced-colors: active) {
-  html,
-  html[data-color-scheme] {
+  :root,
+  :root[data-color-scheme] {
     --black: black;
     --white: white;
     --accent: mediumslateblue;

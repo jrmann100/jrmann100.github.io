@@ -67,7 +67,6 @@ const palettes = {
     ['#233c4d', '#fbfdff', '#a7aea7'],
     ['#2c2a29', '#fbf7fb', '#fa7801'],
     ['#282927', '#d7d6d0', '#f39766'],
-    ['#2e2a40', '#f0eeea', '#b1883d'],
     ['#35444a', '#fdfeff', '#16bac9'],
     ['#252d49', '#eef1f4', '#ea5d18'],
     ['#000100', '#f6f2ef', '#d85724'],
@@ -92,17 +91,14 @@ const palettes = {
     ['#1e2022', '#fcfbfb', '#ad8c23'],
     ['#142140', '#f4f7f4', '#66a183'],
     ['#06214b', '#fafdfd', '#45a8b5'],
-    ['#062240', '#ece9e1', '#b0702c'],
     ['#1d2246', '#fdf6e5', '#75a7c4'],
     ['#2b204c', '#f7f6e2', '#f75a3f'],
     ['#000100', '#f0e9d4', '#e1bc1a'],
     ['#1e1c1c', '#fbf9fd', '#9fa099'],
-    ['#00103b', '#e1effd', '#f94566'],
     ['#0d151c', '#fcfbff', '#1aa488'],
     ['#000100', '#e9eaec', '#3bb1e4'],
     ['#000202', '#f7fdfd', '#d82854'],
     ['#022450', '#e5ebf5', '#98acb5'],
-    ['#171339', '#f5f7f8', '#898dff'],
     ['#0b133b', '#efefeb', '#ae9971'],
     ['#010201', '#f5faf9', '#80ab67'],
     ['#0e1011', '#f5f3f2', '#ed671f'],
@@ -127,9 +123,9 @@ function load() {
     colors: []
   };
   current.pref = saved.pref;
-  current.set = saved.set;
   if (saved.pref === 'lock') {
     current.colors = saved.colors;
+    current.set = saved.set;
   }
 }
 
@@ -144,7 +140,6 @@ const media = window.matchMedia('(prefers-color-scheme: light)');
 
 /**
  *
- * @param set
  */
 function newColors() {
   if (current.set === null) {
@@ -165,7 +160,9 @@ let current = new Proxy(
     set(target, prop, newValue) {
       if (prop === 'set' && newValue !== target.set) {
         Reflect.set(target, prop, newValue);
-        newColors(newValue);
+        if (target.pref !== 'lock') {
+          newColors();
+        }
         document.documentElement.setAttribute('data-color-scheme', newValue);
       } else if (prop === 'pref') {
         // if (target.pref === 'lock') {
@@ -198,12 +195,13 @@ let current = new Proxy(
 
 document.layoutAddEventListener('DOMContentLoaded', () => {
   load();
-  document.querySelectorAll('.colors-switcher input').forEach((el) => {
-    el.layoutAddEventListener('change', () => (current.pref = el.value));
-    if (el.value === current.pref) {
-      el.checked = true;
-    }
-  });
+  const switcher = document.querySelector("switcher-component[data-name='colors-switcher']");
+  setTimeout(() => {
+    // fixme race condition; needs to be called after component's setup() is finished
+    switcher.switch(current.pref);
+    switcher.layoutAddEventListener('switch', ({ detail: { value } }) => (current.pref = value));
+  }, 100);
   document.querySelector('.colors-shuffle')?.layoutAddEventListener('click', () => newColors());
+  media.layoutAddEventListener('change', () => (current.set = media.matches ? 'light' : 'dark'));
   setTimeout(() => document.body.style.setProperty('transition', 'background-color 0.3s'), 0);
 });
