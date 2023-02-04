@@ -13,7 +13,7 @@ input,
 button,
 textarea,
 input[type='checkbox']::after {
-  border-radius: 0;
+  border-radius: 0.2em; /* checkme. we need to indicate that elements are interactive somehow but I don't like this compromise particularly */
   border: var(--default-border);
   background-color: transparent;
   color: inherit;

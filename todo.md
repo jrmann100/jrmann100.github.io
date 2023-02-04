@@ -21,6 +21,7 @@ the cloud icon is extremely unclear
 it's inconsistent to have the face highlight and header bottom margin be different I think
 
 it'd be cool to have all utilities include some styles/files by default. i.e. a <!--{{!include}}--> or \_lib.html.inc
+-> similarly we could <!--{!include templates/snippets/nav.html.inc}-->
 
 better monospace font. all roboto?
 
