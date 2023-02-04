@@ -8,6 +8,11 @@
     display: none;
   }
 
+  form,
+  .indicator {
+    border-radius: 0.2em;
+  }
+
   form {
     --cell-width: 5rem;
     border: var(--default-border);
@@ -27,9 +32,9 @@
   }
 
   .indicator {
-    width: calc(var(--cell-width) - 0.2rem);
-    height: calc(100% - 0.2rem);
-    margin: 0.1rem;
+    width: calc(var(--cell-width));
+    height: 100%;
+    transform: scale(0.9);
     position: absolute;
     pointer-events: none;
     border: 0.1em solid var(--accent);
