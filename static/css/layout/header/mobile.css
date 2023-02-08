@@ -1,0 +1,18 @@
+header > .logo {
+  display: none;
+}
+
+header h1 {
+  /* flex: 0; */
+}
+
+header > nav {
+  justify-content: space-between;
+  padding: 0 1em;
+  flex-wrap: nowrap;
+}
+
+header nav > ul {
+  justify-content: start;
+  flex: 0;
+}

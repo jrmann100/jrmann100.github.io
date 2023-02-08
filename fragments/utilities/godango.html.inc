@@ -1,6 +1,6 @@
 <!--{{head}}-->
 <title>~jordan/utilities/godango</title>
-<meta name="description" content="Dice-Based Passphrase Generator by Jordan Mann" />
+<meta name="description" content="A dice-based passphrase generator designed by Jordan Mann" />
 <style>
   header nav li.godango {
     font-weight: 900;
@@ -40,7 +40,6 @@
 
   textarea,
   .stats input {
-    /* fixme for some reason these ghost in front of the nav dropdown menu */
     opacity: 0.5;
     padding: 0.2rem;
   }

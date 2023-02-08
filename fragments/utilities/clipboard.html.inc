@@ -1,6 +1,5 @@
 <!--{{head}}-->
 <title>~jordan/utilities/clipboard</title>
-<meta name="description" content="Simple daily dashboard" /><!-- todo -->
 <style>
   iframe {
     all: revert;

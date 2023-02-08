@@ -51,9 +51,8 @@
     data-only-screen
     onclick="window.location.href = 'https://docs.google.com/document/d/1LMeAQejdKMmpCnJWJKiW07LByC2kkj8UoMS4PSEpl68/export?format=pdf'"
   >
-  📄 Download a PDF
+    📄 Download a PDF
   </button>
-  </section>
 </section>
 <section>
   <h2>education</h2>
