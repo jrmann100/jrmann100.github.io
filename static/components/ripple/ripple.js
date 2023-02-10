@@ -17,14 +17,20 @@
  * @property {null | (MouseEvent) => void } boundButton function to handle document mouseup, bound to a single pressed component.
  */
 export class RipplingCard extends HTMLElement {
+  /**
+   * If either of these attrs are changed,
+   * we will need to re-render the button.
+   *
+   * @returns {string[]} a list of attribute names.
+   */
   static get observedAttributes() {
-    // If these are changed, we need to know
-    // so we can re-render the button.
     return ['d', 'text'];
   }
 
+  /** Instantiate, append, and wire up content. */
   constructor() {
     super();
+    /** Shadow root, into which we can insert content. */
     const shadow = this.attachShadow({
       mode: 'open'
     });
@@ -75,6 +81,11 @@ export class RipplingCard extends HTMLElement {
     this.deactivateCheckerTimeout = null;
   }
 
+  /**
+   * Getter.
+   *
+   * @returns {SVGPathElement} path of this card's icon.
+   */
   get path() {
     const path = this.shadowRoot?.querySelector('path');
     if (!(path instanceof SVGPathElement)) {
@@ -83,6 +94,11 @@ export class RipplingCard extends HTMLElement {
     return path;
   }
 
+  /**
+   * Getter.
+   *
+   * @returns {HTMLSpanElement} this card's span.
+   */
   get span() {
     const span = this.shadowRoot?.querySelector('span');
     // checkme
@@ -105,9 +121,11 @@ export class RipplingCard extends HTMLElement {
     return wrapper;
   }
 
-  // Set appropriate CSS properties for the element's
-  // attributes. The "d" corresponds to the SVG path;
-  // the title-text to the span.
+  /**
+   * Set appropriate CSS properties for the element's
+   * attributes. The "d" corresponds to the SVG path;
+   * the title-text to the span.
+   */
   updateStyle() {
     // checkme https://github.com/microsoft/TypeScript/issues/22238
     const d = this.getAttribute('d');
@@ -120,7 +138,7 @@ export class RipplingCard extends HTMLElement {
     }
   }
 
-  // Button added to page. Check for attributes.
+  /** Button added to page. Check for attributes. */
   connectedCallback() {
     this.updateStyle();
   }

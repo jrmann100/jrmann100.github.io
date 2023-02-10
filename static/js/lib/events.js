@@ -3,8 +3,9 @@
  * @author Jordan Mann
  */
 /** todo timeouts */
+
 /**
- * todo
+ * Event listeners which are local to a page fragment, and should be cleared when we change routes.
  *
  * @type {{node: EventTarget; type: string; callback: EventListenerOrEventListenerObject | null}[]}
  */
@@ -39,22 +40,30 @@ document.addEventListener('beforenavigate', () => {
 
 EventTarget.prototype.layoutAddEventListener = EventTarget.prototype.addEventListener;
 
-EventTarget.prototype.addEventListener = function (
-  /** @type {string} */ type,
-  /** @type {EventListenerOrEventListenerObject | null} */ callback,
-  /** @type {boolean | AddEventListenerOptions | undefined} */ options
-) {
+/**
+ * We override addEventListener for page-local scripts.
+ *
+ * @param {string} type event type to receive.
+ * @param {EventListenerOrEventListenerObject | null} callback event handler.
+ * @param {boolean | AddEventListenerOptions | undefined} options additional listener configuration.
+ */
+EventTarget.prototype.addEventListener = function (type, callback, options) {
   localEventListeners.push({ node: this, type, callback });
   this.layoutAddEventListener(type, callback, options);
 };
 
 console.log('💂 events module ready.');
 window.layoutSetInterval = window.setInterval;
-window.setInterval = (
-  /** @type {TimerHandler} */ handler,
-  /** @type {number | undefined} */ timeout,
-  /** @type {any[]} */ ...args
-) => {
+
+/**
+ * We override setInerval for page-local scripts.
+ *
+ * @param {TimerHandler} handler called on every pulse.
+ * @param {number | undefined} timeout milliseconds between pulses.
+ * @param {any[]} args other args used by window.setInterval().
+ * @returns {number} an interval ID.
+ */
+window.setInterval = (handler, timeout, ...args) => {
   const interval = window.layoutSetInterval(handler, timeout, ...args);
   localIntervals.push(interval);
   return interval;

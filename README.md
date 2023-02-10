@@ -6,7 +6,7 @@ I started by writing a simple static site generator, which takes a template ([la
 
 When JavaScript is available, the site turns into a single-page app, switching out those slots instead of redirecting between pages normally (which introduces all sorts of complexities regarding event listeners, timers, etc.)
 
-It's also a project in universal design and accessibility. I wanted the site to be usable without JavaScript (and, in some cases, on print) and compliant with current standards for accessibility and performance (W3C, Lighthouse) so as to be usable by everyone… who has their browser updated at least 🤭.
+It's also a project in universal design and accessibility. I wanted the site to be usable without JavaScript (and, in some cases, on print) and compliant with current standards for accessibility and performance (W3C, Lighthouse) so as to be usable by everyone… who has their browser updated.
 
 So, the goal isn't to have a content-complete, polished website—I'll simply never get there. I'm seeking novely and challenge, implementing features to get experience with new technologies (CSS cascade layers, Web Components) as much as to make everything functional. Reading the code should be as satisfying as the browsing experience… so long as I get around to document it.
 

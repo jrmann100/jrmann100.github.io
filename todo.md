@@ -1,5 +1,7 @@
 todo
 
+check pages have descriptions
+
 consistent JSDoc comments
 
 sometimes at the end of navigation, all the way back, we get critical null for the popstate state. not sure why.
@@ -35,8 +37,6 @@ https://www.npmjs.com/package/eslint-plugin-jsdoc#:~:text=quotes%20%2D%20Will%20
 
 require jsdoc on class methods i.e. in RipplingCard
 
-require signed commits once ssh drops https://github.com/community/community/discussions/7744
-
 README.md - and maybe mark jrmann100/routing as stale
 
 double check pages that need js/css and mark data-needs-X and <noscript> as necessary
@@ -54,3 +54,9 @@ https://github.com/dropbox/zxcvbn + https://bitwarden.com/password-strength/
 maybe dev mode should not copy assets?? not sure how to speed it up
 
 adapt switcher to tabs
+
+https://github.com/gajus/eslint-plugin-jsdoc/issues?q=is%3Aissue+is%3Aopen+no-undefined-types
+
+clicking body doesn't steal focus from menu on mobile
+
+we need to regulate header h1 sizes to presumably fixed width, so that there isn't inconsistent wrapping of the nav list.

@@ -2,13 +2,15 @@
  * @file Document properties manager; primarily, a color scheme manager.
  * @author Jordan Mann
  * This script must be run synchronously (not as a module) before CSS is loaded to prevent flashing.
- * todo redo comments
  */
 
 /**
  * AI-generated color palettes created using Huemint: https://huemint.com/
  */
 const palettes = {
+  /**
+   * Arrays of light colors - background, foreground, accent.
+   */
   light: [
     ['#f5fcfb', '#292563', '#f91b59'],
     ['#f6f5f6', '#262a2a', '#d72a46'],
@@ -61,6 +63,9 @@ const palettes = {
     ['#f8fcfd', '#041e40', '#eb0561'],
     ['#faf9fb', '#120d2d', '#cd6143']
   ],
+  /**
+   * Arrays of dark colors - background, foreground, accent.
+   */
   dark: [
     ['#012f32', '#f8f7f9', '#74c072'],
     ['#002a6c', '#eff5f4', '#b4a38e'],
@@ -114,14 +119,21 @@ const palettes = {
 };
 
 /**
- *
+ * Retrieve the current color scheme configuration from localStorage.
  */
 function load() {
-  const saved = JSON.parse(localStorage.getItem('colorScheme')) ?? {
-    pref: 'auto',
-    set: null,
-    colors: []
-  };
+  const raw = localStorage.getItem('colorScheme');
+  /**
+   * The color scheme configuration saved in localStorage.
+   */
+  const saved =
+    raw !== null
+      ? JSON.parse(raw)
+      : {
+          pref: 'auto',
+          set: null,
+          colors: []
+        };
   current.pref = saved.pref;
   if (saved.pref === 'lock') {
     current.colors = saved.colors;
@@ -130,25 +142,27 @@ function load() {
 }
 
 /**
- *
+ * Store the current color scheme configuration in localStorage.
  */
 function save() {
   localStorage.setItem('colorScheme', JSON.stringify(current));
 }
 
+// fixme why doesn't media expect a comment
+
 const media = window.matchMedia('(prefers-color-scheme: light)');
 
 /**
- *
+ * Select new colors from the current set.
  */
 function newColors() {
   if (current.set === null) {
-    // checkme
-    return;
+    throw new Error('No current.set was given to draw from when picking palette');
   }
   const setL = palettes[current.set];
-  current.colors = setL[Math.floor(Math.random() * setL.length)]; // checkme
+  current.colors = setL[Math.floor(Math.random() * setL.length)];
 }
+
 /** @type {ColorScheme} */
 let current = new Proxy(
   {
@@ -157,6 +171,14 @@ let current = new Proxy(
     colors: []
   },
   {
+    /**
+     * Setter.
+     *
+     * @param {*} target the color scheme being modified.
+     * @param {*} prop the property of the configuration object being changed.
+     * @param {*} newValue the updated value to reassign the prop to.
+     * @returns {boolean} whether the value was successfully set.
+     */
     set(target, prop, newValue) {
       if (prop === 'set' && newValue !== target.set) {
         Reflect.set(target, prop, newValue);
@@ -189,17 +211,30 @@ let current = new Proxy(
           ?.setAttribute('content', current.colors[0]);
       }
       save();
+      return true;
     }
   }
 );
 
 document.layoutAddEventListener('DOMContentLoaded', () => {
   load();
+  /** @type {SwitcherComponent | null} */
   const switcher = document.querySelector("switcher-component[data-name='colors-switcher']");
+  if (switcher === null) {
+    throw new Error('Could not find colors-switcher. Is the nav there?');
+  }
   setTimeout(() => {
     // fixme race condition; needs to be called after component's setup() is finished
-    switcher.switch(current.pref);
-    switcher.layoutAddEventListener('switch', ({ detail: { value } }) => (current.pref = value));
+    if (current.pref === null) {
+      // this shouldn't happen since load() is called immediately above
+      throw new Error('Current color preference was unexpectedly cleared.');
+    }
+    switcher.value = current.pref;
+    switcher.layoutAddEventListener(
+      'switch',
+      // checkme https://github.com/Microsoft/TypeScript/issues/28357
+      (/** @type {any} */ { detail: { value } }) => (current.pref = value)
+    );
   }, 100);
   document.querySelector('.colors-shuffle')?.layoutAddEventListener('click', () => newColors());
   media.layoutAddEventListener('change', () => (current.set = media.matches ? 'light' : 'dark'));

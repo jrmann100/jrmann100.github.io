@@ -19,8 +19,17 @@ const tagRegex = /^{{(\/?.+)}}$/;
  * @returns {Promise<Map<string, Range>>} located regions.
  */
 async function locateRegions(root) {
+  /**
+   * Node iterator which scans through all label comment nodes in the page.
+   */
   const commentsIterator = document.createNodeIterator(root, NodeFilter.SHOW_COMMENT, {
-    acceptNode(/** @type {Comment} */ node) {
+    /**
+     * Filter to only label nodes.
+     *
+     * @param {Comment} node the node to check.
+     * @returns { number } code corresponding to the filter result (accept or reject).
+     */
+    acceptNode(node) {
       return node.nodeValue?.match(tagRegex) !== null
         ? NodeFilter.FILTER_ACCEPT
         : NodeFilter.FILTER_REJECT;

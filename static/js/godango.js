@@ -73,6 +73,10 @@ function sauce() {
   return `${number()}${letter()}`;
 }
 
+/**
+ * Default settings, to which settings will be initialized
+ * if they are not recovered from localStorage.
+ */
 let defaults = {
   COUNT: 3,
   /** @type {'custom' | 'random' | 'none'} */
@@ -122,13 +126,18 @@ function entropy() {
  * Make UI responsive.
  */
 export async function main() {
-  // https://www.eff.org/dice
+  /**
+   * Word list. Make sure to cache this.
+   *
+   * @see {@link https://www.eff.org/dice}
+   */
   const text = await (
     await fetch('/static/data/eff_large_wordlist.txt', {
       cache: 'force-cache'
     })
   ).text();
 
+  /** Parsed wordlist, matching 6-digit numbers to words. */
   const words = Object.fromEntries(
     [...text.matchAll(/(\d+)\t(\w+)\n/g)].map(([, number, word]) => [number, word])
   );
@@ -208,6 +217,12 @@ export async function main() {
     outputBox.readOnly = !on;
     if (on) {
       outputBox.focus();
+      /**
+       * We want to insert the cursor *before* the sauce,
+       * since that should be a constant. So, figure out
+       * where the end is, and subtract the sauce length
+       * (which may be 0 if there is no sauce).
+       */
       const end =
         outputBox.value.length -
         (defaults.SAUCE_TYPE !== 'none'
