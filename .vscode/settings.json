@@ -21,5 +21,6 @@
   "todo-tree.regex.regex": "(^'\\s|^\\s*\\*\\s*@|^\"\\s|//|#|<!--|;|(/|\\s)\\*+|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
   "todo-tree.general.statusBar": "total",
   "todo-tree.highlights.highlightDelay": 250,
-  "eslint.lintTask.enable": false
+  "eslint.lintTask.enable": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

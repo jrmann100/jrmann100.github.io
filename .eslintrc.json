@@ -20,10 +20,38 @@
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
-        "argsIgnorePattern": "^_" // checkme
+        "argsIgnorePattern": "^_"
       }
     ],
     "curly": "warn",
+    "jsdoc/require-jsdoc": [
+      "warn",
+      {
+        "publicOnly": false,
+        "require": {
+          "ArrowFunctionExpression": true,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": true,
+          "MethodDefinition": true
+        },
+        "contexts": [
+          "FunctionDeclaration",
+          "FunctionExpression",
+          "MethodDefinition",
+          { "context": "Property", "minLineCount": 2 },
+          "TSDeclareFunction",
+          "TSEnumDeclaration",
+          "TSInterfaceDeclaration",
+          "TSMethodSignature",
+          "TSPropertySignature",
+          "TSTypeAliasDeclaration",
+          { "context": "VariableDeclaration", "minLineCount": 2 }
+        ],
+        "enableFixer": false
+      }
+    ],
     "jsdoc/require-description": 1,
     "jsdoc/require-file-overview": [
       "warn",

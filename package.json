@@ -1,22 +1,21 @@
 {
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "eslint": "^8.21.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jsdoc": "^39.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-jsdoc": "^39.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "express": "^4.17.1",
-    "nodemon": "^2.0.15",
-    "prettier": "^2.6.1",
-    "typescript": "^4.7.3"
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
   },
   "type": "module",
   "engines": {
     "node": ">=0.16"
   },
   "engineStrict": true,
-  "license": "MIT",
   "scripts": {
     "build": "node render.js",
     "build-watch": "mode=dev nodemon render.js -i build -e js,json,html,css,html.inc",
