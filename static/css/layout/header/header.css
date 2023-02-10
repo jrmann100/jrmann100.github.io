@@ -1,59 +1,59 @@
+@layer standard, face, nav, mobile;
 @import './face.css' layer(face);
 @import './nav.css' layer(nav);
+@import './mobile.css' layer(mobile) (max-aspect-ratio: 10001/20000);
 
-header {
-  margin-top: 1rem;
-  width: 100%;
-  font-size: 1.2em;
-  /* for popover menus */
-  z-index: 1;
-  display: flex;
-  gap: 1.5rem;
-  /* todo */
-  /* position: sticky;
+@layer standard {
+  header {
+    margin-top: 1rem;
+    width: 100%;
+    font-size: 1.2em;
+    /* for popover menus */
+    z-index: 1;
+    display: flex;
+    gap: 1.5rem;
+    /* todo */
+    /* position: sticky;
     top: -3rem; */
-}
+  }
 
-/* todo always accent or black */
-header .logo {
-  margin-left: 1rem;
-  width: 5rem;
-  padding: 0.5rem 0rem;
-  flex-shrink: 0;
-}
+  /* todo always accent or black */
+  header .logo {
+    margin-left: 1rem;
+    width: 5rem;
+    padding: 0.5rem 0rem;
+    flex-shrink: 0;
+  }
 
-header .logo {
-  background-color: var(--black);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-  /* color-adjust: exact; */
-  forced-color-adjust: none;
-}
+  header .logo {
+    background-color: var(--black);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    /* color-adjust: exact; */
+    forced-color-adjust: none;
+  }
 
-header .logo .face svg {
-  stroke: var(--white);
-}
-
-/* :root[data-color-scheme='dark'] .logo {
+  /* :root[data-color-scheme='dark'] .logo {
     background-color: var(--accent);
   } */
 
-header h1 {
-  flex: 1;
-}
-
-header h1 {
-  font-size: 1.5em;
-  background-clip: text;
-  grid-area: title;
-  max-width: fit-content;
-}
-
-@media not print {
   header h1 {
+    flex: 1;
+  }
+
+  header h1 {
+    font-size: 1.5em;
     background-clip: text;
-    -webkit-background-clip: text;
-    background-image: linear-gradient(to bottom right, var(--black), var(--accent));
-    color: transparent;
+    grid-area: title;
+    max-width: fit-content;
+  }
+
+  @media not print {
+    header h1 {
+      background-clip: text;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(to bottom right, var(--black), var(--accent));
+      color: transparent;
+    }
   }
 }

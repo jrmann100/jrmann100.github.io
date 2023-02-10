@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="4d726af64cd83064048a8f75abb4e6f2f0403e34">
+<meta name="build-version" content="53bd6a173f2d90eb1a5af03d1d9d296c85df4504">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/static/css/global.css" />
     <script src="/static/js/lib/events.js"></script>
     <script src="/static/js/lib/colors.js"></script>
-    <script src="/static/js/lib/components.js"></script>
+    <script src="/static/components/components.js"></script>
     <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon" />
     <meta name="author" content="Jordan" />
     <!-- <meta name="description" content=""> -->
@@ -117,6 +117,9 @@
                   <li class="godango">
                     <a href="/utilities/godango.html">🔏 godango</a> - a password generator
                   </li>
+                  <li class="dashboard">
+                    <a href="/utilities/dashboard.html">📊 dashboard</a> - various info widgets
+                  </li>
                 </ul>
               </div>
             </div>
@@ -135,7 +138,6 @@
                       content: '🔒 ';
                     }
                   </style>
-                  <!-- checkme better to make this datalist/option semantically? -->
                   <input data-label="☀️ light" title="Use light color scheme" value="light" />
                   <input data-label="☁️ auto" title="Match system color scheme" value="auto" />
                   <input data-label="🌙 dark" title="Use light color scheme" value="dark" />
@@ -156,9 +158,8 @@
     data-only-screen
     onclick="window.location.href = 'https://docs.google.com/document/d/1LMeAQejdKMmpCnJWJKiW07LByC2kkj8UoMS4PSEpl68/export?format=pdf'"
   >
-  📄 Download a PDF
+    📄 Download a PDF
   </button>
-  </section>
 </section>
 <section>
   <h2>education</h2>

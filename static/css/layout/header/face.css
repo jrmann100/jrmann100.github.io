@@ -10,7 +10,7 @@
   /* filter: drop-shadow(0 0 0.5rem var(--shadow-color)); */
   /* todo */
   fill: none;
-  stroke: var(--black);
+  stroke: var(--white);
   stroke-width: 25;
   /* stroke-linecap: round; */
   position: absolute;

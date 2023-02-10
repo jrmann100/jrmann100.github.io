@@ -1,6 +1,6 @@
 <!--{{head}}-->
 <title>~jordan/utilities/dashboard</title>
-<meta name="description" content="Simple daily dashboard" /><!-- todo -->
+<meta name="description" content="Various info widgets formatted neatly for your convenience" />
 <style>
   header nav li.dashboard {
     font-weight: 900;
@@ -11,7 +11,8 @@
     flex-flow: wrap;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 2em;
+    white-space: nowrap; /* checkme - otherwise there are different heights in same row */
   }
 
   fieldset {
@@ -31,17 +32,18 @@
     width: 100%;
   }
 
-  h1 {
-    font-size: 5rem;
+  h2 {
+    font-size: 5em;
   }
 
+  /* I am so proud of this */
   progress::-webkit-progress-bar {
     background-image: repeating-linear-gradient(
       to right,
       transparent,
       transparent 1%,
       var(--black) 1%,
-      var(--black) 10% /* checkme aesthetic */
+      var(--black) 10%
     );
     background-repeat: no-repeat;
     background-position: center;
@@ -68,17 +70,17 @@
 <div class="wrapper" data-needs-js hidden>
   <fieldset name="date">
     <legend>date</legend>
-    <h1><span class="icon">🗓</span> <span class="value">????</span></h1>
+    <h2><span class="icon">🗓</span> <span class="value">????</span></h2>
     <progress></progress>
   </fieldset>
   <fieldset name="time">
     <legend>time</legend>
-    <h1><span class="icon">🕛</span> <span class="value">????</span></h1>
+    <h2><span class="icon">🕛</span> <span class="value">????</span></h2>
     <progress></progress>
   </fieldset>
   <fieldset name="battery" hidden>
     <legend>battery</legend>
-    <h1><span class="icon">🔌</span> <span class="value">???</span></h1>
+    <h2><span class="icon">🔌</span> <span class="value">???</span></h2>
     <progress></progress>
   </fieldset>
 </div>

@@ -40,9 +40,18 @@ if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference
     const els = document.querySelectorAll('header .face svg');
     const face_rect = els[0].getBoundingClientRect();
 
-    // The function approaches 1 and -1, so that there isn't a dramatic effect at the bottom of the page.
-
-    const cap = (/** @type {number} */ x) => (2 / Math.PI) * Math.atan(2 * x);
+    /**
+     * Constrain x within the range (1, -1),
+     * so that there isn't an overly dramatic effect
+     * when the cursor is at the bottom of the page.
+     *
+     * It helps to just plot 2/pi * arctan(2x)
+     * if you wnat to see how this math works.
+     *
+     * @param {number} x some value to limit.
+     * @returns {number} the constrained value.
+     */
+    const cap = (x) => (2 / Math.PI) * Math.atan(2 * x);
     const chx = cap((evt.clientX - (face_rect.x + face_rect.width / 2)) / face_rect.width);
     const chy = cap((evt.clientY - (face_rect.y + face_rect.height / 2)) / face_rect.height);
 

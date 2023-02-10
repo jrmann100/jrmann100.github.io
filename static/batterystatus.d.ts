@@ -1,28 +1,11 @@
 /**
- * @file Additional types used across modules.
+ * @file Types for currently-nonstandard Battery Status API.
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API}
+ * {@link https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/236/commits/5113f7bf4a99bbf43c0fae8403602f48701b3878}
  * @author Jordan Mann
- * @todo include lib.dom.ts types like NodeListOf, EventTarget, ParentNode in jsdoc or whatever
  */
+/* eslint-disable jsdoc/require-jsdoc */
 
-interface EventTarget {
-  export layoutAddEventListener(
-    type: string,
-    callback: EventListenerOrEventListenerObject | null,
-    options?: boolean | AddEventListenerOptions | undefined
-  ): void;
-}
-interface Window {
-  layoutSetInterval(handler: TimerHandler, timeout?: number, ...arguments: unknown[]): number;
-}
-
-declare function layoutSetInterval(
-  handler: TimerHandler,
-  timeout?: number,
-  ...arguments: unknown[]
-): number;
-
-// fixme I think VSCode lib.dom.ts has this too
-// https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/236/commits/5113f7bf4a99bbf43c0fae8403602f48701b3878
 interface Navigator {
   getBattery(): Promise<BatteryManager>;
 }
@@ -51,14 +34,4 @@ interface BatteryManagerEventTarget extends EventTarget {
     listener: (this: BatteryManager, ev: BatteryManagerEventTargetEventMap[K]) => unknown,
     useCapture?: boolean
   ): void;
-}
-
-interface ColorScheme {
-  pref: 'light' | 'auto' | 'dark' | 'lock' | null;
-  set: 'light' | 'dark' | null;
-  colors: string[];
-}
-
-interface LocalStore {
-  colorScheme: ColorScheme;
 }

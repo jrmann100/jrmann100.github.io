@@ -3,9 +3,14 @@
  * @author Jordan Mann
  */
 
-const clockE = document.querySelector("fieldset[name='time']");
-const dateE = document.querySelector("fieldset[name='date']");
-const batteryE = document.querySelector("fieldset[name='battery']");
+// fixme. this is a module, so these can't be global - what if there are multiple dashboards? pass them into setup and update and only declare in main.
+// see godango. everything should be wrapped in main.
+/** @type {HTMLFieldSetElement | null} */
+let clockE;
+/** @type {HTMLFieldSetElement | null} */
+let dateE;
+/** @type {HTMLFieldSetElement | null} */
+let batteryE;
 
 /**
  * Provide the correct clock emoji for a given time.
@@ -24,6 +29,10 @@ function clockEmoji(date) {
  */
 function updateClock() {
   const now = new Date();
+  /**
+   * Numeric components of the date/time,
+   * so we don't need to parse them one at a time.
+   */
   const parts = new Intl.DateTimeFormat(undefined, {
     day: 'numeric',
     month: 'numeric',
@@ -101,7 +110,9 @@ function setupBattery() {
       function updateLevelInfo() {
         const batteryV = batteryE?.querySelector('.value');
         if (batteryV instanceof HTMLElement) {
-          batteryV.innerText = (battery.level * 100).toString().padStart(3, '0');
+          batteryV.innerText = Math.floor(battery.level * 100)
+            .toString()
+            .padStart(3, '0');
         }
         const batteryP = batteryE?.querySelector('progress');
         if (batteryP instanceof HTMLProgressElement) {
@@ -118,6 +129,9 @@ function setupBattery() {
  * Set up all widgets.
  */
 export function main() {
+  clockE = document.querySelector("fieldset[name='time']");
+  dateE = document.querySelector("fieldset[name='date']");
+  batteryE = document.querySelector("fieldset[name='battery']");
   setupClock();
   setupBattery();
 }

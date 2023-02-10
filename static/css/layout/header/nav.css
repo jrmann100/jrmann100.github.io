@@ -25,14 +25,7 @@ header nav > ul {
   column-gap: 0.5rem;
   flex-flow: wrap;
 }
-
-@media (max-aspect-ratio: 1/2) {
-  header nav > ul {
-    justify-content: start;
-  }
-}
-
-@media print {
+z @media print {
   header nav > ul {
     display: none !important;
   }
@@ -51,7 +44,7 @@ header nav > ul > li > a {
 
 /* todo underline like it's a link? hover effect? */
 /* todo extract fake-details to its own interactive module */
-header nav > ul > li > a,
+header nav a,
 header nav > ul > li > .fake-details > .fake-summary {
   transition: font-weight 0.2s;
   /* checkme this clicks without variable fonts */
