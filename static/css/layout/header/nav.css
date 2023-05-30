@@ -25,7 +25,7 @@ header nav > ul {
   column-gap: 0.5rem;
   flex-flow: wrap;
 }
-z @media print {
+@media print {
   header nav > ul {
     display: none !important;
   }
