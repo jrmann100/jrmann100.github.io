@@ -99,23 +99,25 @@ header nav > ul {
   position: relative;
 }
 
-header nav li > .fake-details:not(:focus-within) div.nav-dropdown {
+header nav li > .fake-details:not(:focus-within) .nav-dropdown {
   display: none;
 }
 
-header nav .fake-details div.nav-dropdown {
+header nav .fake-details .nav-dropdown {
   position: absolute;
   right: 0;
   top: 100%;
   transform: translateY(15px);
-  /* min-height: 5rem; */
   border: var(--default-border);
-  padding: 0.5rem;
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+  width: max-content;
+  max-width: calc(100vw - 3rem);
+}
+
+header nav .fake-details .nav-dropdown {
+  padding: 0.5rem;
   display: flex;
   flex-flow: row wrap;
   gap: 0.5rem;
-  width: max-content;
-  max-width: calc(100vw - 3rem);
   font-weight: initial;
 }
