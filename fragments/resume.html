@@ -39,20 +39,22 @@
     margin-bottom: 1rem;
   }
 
-  span.date {
+  .date, .download {
     float: right;
   }
+
 </style>
 <!--{{/head}}-->
 <!--{{main}}-->
 <section data-only-screen>
   <!-- checkme not better than a link but flashier -->
-  <button
-    data-only-screen
-    onclick="window.location.href = 'https://docs.google.com/document/d/1LMeAQejdKMmpCnJWJKiW07LByC2kkj8UoMS4PSEpl68/export?format=pdf'"
-  >
-    📄 Download a PDF
-  </button>
+    <button
+    class="buttonsize-small download"
+      onclick="window.location.href = 'https://docs.google.com/document/d/1LMeAQejdKMmpCnJWJKiW07LByC2kkj8UoMS4PSEpl68/export?format=pdf'"
+    >
+      Download a PDF
+    </button>
+  </p>
 </section>
 <section>
   <h2>education</h2>

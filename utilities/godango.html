@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="c76eb19bfff43d8cb379c10208b4287f23cb68af">
+<meta name="build-version" content="919c5eac2bcd7924ffda342e578433e71668a155">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
@@ -65,6 +65,9 @@
     opacity: 0.5;
     padding: 0.2rem;
   }
+  textarea::placeholder {
+    font-style: italic;
+  }
 </style>
 <!--{{/head}}-->
   </head>
@@ -111,18 +114,18 @@
 <!--{{/title}}-->
         </h1>
         <ul>
-          <li class="home"><a href="/index.html">👋 home</a></li>
-          <li class="resume"><a href="/resume.html">📄 résumé</a></li>
+          <li class="home"><a href="/index.html">home</a></li>
+          <li class="resume"><a href="/resume.html">résumé</a></li>
           <li class="has-dropdown">
             <div class="fake-details" tabindex="0">
-              <span class="fake-summary">🔨 utilities</span>
+              <span class="fake-summary">utilities</span>
               <div class="nav-dropdown solid">
                 <ul>
                   <li class="godango">
-                    <a href="/utilities/godango.html">🔏 godango</a> - a password generator
+                    <a href="/utilities/godango.html">godango</a> - a password generator
                   </li>
                   <li class="dashboard">
-                    <a href="/utilities/dashboard.html">📊 dashboard</a> - various info widgets
+                    <a href="/utilities/dashboard.html">dashboard</a> - various info widgets
                   </li>
                 </ul>
               </div>
@@ -130,7 +133,7 @@
           </li>
           <li class="options has-dropdown" hidden data-needs-js>
             <div class="fake-details" tabindex="0">
-              <span class="fake-summary"><i>🎨 theme</i></span>
+              <span class="fake-summary"><i>theme</i></span>
               <div class="centering nav-dropdown solid">
                 <switcher-component data-layout data-cell-width="5rem" data-name="colors-switcher">
                   <style>
@@ -169,7 +172,14 @@
     <input name="edit" type="button" value="edit" />
     <!-- todo width !-->
   </fieldset>
-  <textarea style="resize: none; line-height: 200%" cols="40" rows="8" readonly></textarea>
+  <textarea
+    style="resize: none; line-height: 200%"
+    cols="40"
+    rows="8"
+    readonly
+    placeholder="Recent passwords will show up here.&#10;Reload the page to clear the list."
+  >
+  </textarea>
   <details class="options" open>
     <summary style="font-weight: bold">options</summary>
     <fieldset>
