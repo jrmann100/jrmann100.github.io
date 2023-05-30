@@ -2,7 +2,8 @@
 <title>~jordan/utilities/godango</title>
 <meta name="description" content="A dice-based passphrase generator designed by Jordan Mann" />
 <style>
-  header nav li.godango {
+  header nav li.godango,
+  header nav li.utilities {
     font-weight: 900;
   }
 
