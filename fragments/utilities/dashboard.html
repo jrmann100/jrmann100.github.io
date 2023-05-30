@@ -2,7 +2,8 @@
 <title>~jordan/utilities/dashboard</title>
 <meta name="description" content="Various info widgets formatted neatly for your convenience" />
 <style>
-  header nav li.dashboard {
+  header nav li.dashboard,
+  header nav li.utilities {
     font-weight: 900;
   }
 
