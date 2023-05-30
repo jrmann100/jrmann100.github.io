@@ -117,4 +117,5 @@ header nav .fake-details div.nav-dropdown {
   gap: 0.5rem;
   width: max-content;
   max-width: calc(100vw - 3rem);
+  font-weight: initial;
 }
