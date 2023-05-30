@@ -36,6 +36,10 @@ button {
   padding: 0.5rem 0.7rem;
 }
 
+.buttonsize-small {
+  padding: 0.1em 0.5rem;
+}
+
 input[type='button']:not(:disabled),
 input[type='submit']:not(:disabled),
 button:not(:disabled) {
