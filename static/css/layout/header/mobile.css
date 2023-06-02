@@ -15,8 +15,3 @@ header nav > ul {
   justify-content: space-evenly;
   position: static;
 }
-
-header nav .fake-details div.nav-dropdown {
-  left: 1rem;
-  right: 1rem;
-}

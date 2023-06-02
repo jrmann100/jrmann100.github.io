@@ -35,8 +35,12 @@ header nav > ul {
 header nav > ul > li {
   flex-basis: var(--header-item-width);
   text-align: left;
-  user-select: none; /* checkme */
   min-width: var(--header-item-width);
+}
+
+header nav ul > li > a,
+header nav ul > li > .fake-details > .fake-summary {
+  user-select: none;
 }
 
 header nav > ul > li > a {
@@ -99,6 +103,15 @@ header nav > ul {
   position: relative;
 }
 
+@media (max-aspect-ratio: 9/10) {
+  header nav > ul {
+    position: static;
+  }
+  header nav {
+    position: relative;
+  }
+}
+
 header nav li > .fake-details:not(:focus-within) .nav-dropdown {
   display: none;
 }
@@ -110,8 +123,8 @@ header nav .fake-details .nav-dropdown {
   transform: translateY(15px);
   border: var(--default-border);
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
-  width: max-content;
-  max-width: calc(100vw - 3rem);
+  margin: 0 1rem;
+  max-width: max-content;
 }
 
 header nav .fake-details .nav-dropdown {
