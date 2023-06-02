@@ -1,22 +1,18 @@
-header {
-  padding: 0;
-}
-
 header > .logo {
   display: none;
 }
 
-header nav {
-  flex-direction: column-reverse;
+header h1 {
+  /* flex: 0; */
+}
+
+header > nav {
+  justify-content: space-between;
+  padding: 0 1em;
+  flex-wrap: nowrap;
 }
 
 header nav > ul {
-  flex-basis: 100%;
-  justify-content: space-evenly;
-  position: static;
-}
-
-header nav .fake-details div.nav-dropdown {
-  left: 1rem;
-  right: 1rem;
+  justify-content: start;
+  flex: 0;
 }
