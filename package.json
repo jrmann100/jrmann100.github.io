@@ -28,8 +28,10 @@
     "precommit": "lint-staged && tsc --noEmit"
   },
   "lint-staged": {
-    "{static,fragments}/**/*": [
-      "prettier --check",
+    "*": [
+      "prettier --check"
+    ],
+    "*.js": [
       "eslint"
     ]
   }
