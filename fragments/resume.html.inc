@@ -39,15 +39,26 @@
     margin-bottom: 1rem;
   }
 
-  .date,
-  .download {
+  .date {
     float: right;
+  }
+
+  .download-wrapper {
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .download-wrapper big {
+    font-size: 1.7em;
   }
 </style>
 <!--{{/head}}-->
 <!--{{main}}-->
-<section data-only-screen>
+<section data-only-screen class="download-wrapper">
   <!-- checkme not better than a link but flashier -->
+  <big><b>Jordan Mann</b></big>
   <button
     class="buttonsize-small download"
     onclick="window.location.href = 'https://docs.google.com/document/d/1LMeAQejdKMmpCnJWJKiW07LByC2kkj8UoMS4PSEpl68/export?format=pdf'"
@@ -59,20 +70,33 @@
   <h2>education</h2>
   <p><b>Dartmouth College</b>, Hanover, NH <span class="date">06/2025</span></p>
   <p>
-    <i>Intended Major, Computer Science; Intended Minors: Studio Art, Human Centered Design</i
-    ><span class="date">GPA 3.78/4.0</span>
+    <span class="date">GPA 3.82/4.0</span>
+    <i>Intended Major, Computer Science; Intended Minors: Studio Art, Human Centered Design</i>
   </p>
+  <p>Relevant Courses: Software Design, Design Thinking, UI/UX Design*, Intro to Engineering*</p>
   <br />
-  <p><b>Redwood High School</b> 4.4 GPA <span class="date">2017 - 2021</span></p>
+  <p><b>Redwood High School</b> 4.4 GPA <span class="date">06/2021</span></p>
   <p>
-    Relevant Courses: AP Computer Science A (5), AP Calculus BC (5)
     <span class="date">GPA 4.38/4.0</span>
+    Relevant Courses: AP Computer Science A (5), AP Calculus BC (5)
   </p>
   <p>Activities: Art Honor Society Co-President</p>
 </section>
 <br />
 <section>
   <h2>experience</h2>
+  <p>
+    <i>Engineering Intern,</i> <b>Kard Financial</b>, New York, NY
+    <span class="date">03/2023-Present</span>
+  </p>
+  <ul>
+    <li>Utilized Agile development in team of 11 (Jira, GitHub)</li>
+    <li>Resolved high-priority bugs in card rewards product</li>
+    <li>Developed and refactored routes of internal portal (React, Redux)</li>
+    <li>Expanded unit, integration, and E2E JS testing (Mocha, Jest)</li>
+    <li>Debugged and updated data in test environments (MongoDB)</li>
+  </ul>
+  <br />
   <p>
     <i>Software Developer,</i> <b>DALI Lab</b>, Hanover, NH
     <span class="date">01/2022-Present</span>
