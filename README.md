@@ -28,4 +28,7 @@ In all seriousness, Typescript checks that I don't ignore optional values (along
 
 Now go explore the code! Good places to start: [render.js](render.js) and [routing.js](static/js/lib/routing.js), [layout.html](layout.html), [layout.js](static/js/layout.js), or [global.css](static/css/global.css).
 
-_Postscript: There is a tiny amount of code which I did borrow verbatim for this site: Josh W. Comeau's [CSS Reset](https://www.joshwcomeau.com/css/custom-css-reset). I had picked up most of these strategies already, but it felt better to include a resource which explains all of them in depth. Thanks Josh!_
+## Attributions
+There is a tiny amount of code which I did borrow verbatim for this site: Josh W. Comeau's [CSS Reset](https://www.joshwcomeau.com/css/custom-css-reset). I had picked up most of these strategies already, but it felt better to include a resource which explains all of them in depth. Thanks Josh!
+
+Additionally, the color themes are curated from [Huemint](https://huemint.com/), and [godango](https://home.jrmann.com/utilities/godango.html) uses the [EFF Long Wordlist](https://www.eff.org/dice).
