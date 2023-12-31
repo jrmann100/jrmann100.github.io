@@ -1,18 +1,17 @@
+header {
+  margin-top: 0;
+}
+
 header > .logo {
   display: none;
 }
 
-header h1 {
-  /* flex: 0; */
-}
-
-header > nav {
-  justify-content: space-between;
-  padding: 0 1em;
-  flex-wrap: nowrap;
+header nav {
+  flex-direction: column-reverse;
 }
 
 header nav > ul {
-  justify-content: start;
-  flex: 0;
+  flex-basis: 100%;
+  justify-content: space-evenly;
+  position: static;
 }
