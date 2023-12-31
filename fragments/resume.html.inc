@@ -16,7 +16,8 @@
 
   iframe {
     width: 100%;
-    height: 70rem;
+    height: auto;
+    aspect-ratio: 1 / 1.3;
     border: 0;
   }
 </style>
