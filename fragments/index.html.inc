@@ -26,7 +26,7 @@
     margin-right: 0.5em;
   }
 
-  @media (min-aspect-ratio: 30001/40000) {
+  @media (min-width: 35rem) {
     main {
       column-count: 2;
       column-gap: 5rem;
@@ -55,7 +55,7 @@
     font-size: 0.8em;
   }
 
-  @media (max-aspect-ratio: 30000/40000) {
+  @media (max-width: 35.001rem) {
     figure.profile-figure img {
       margin: 1rem auto;
       width: 200px;

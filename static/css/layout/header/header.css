@@ -1,7 +1,7 @@
 @layer standard, face, nav, mobile;
 @import './face.css' layer(face);
 @import './nav.css' layer(nav);
-@import './mobile.css' layer(mobile) (max-aspect-ratio: 3/5);
+@import './mobile.css' layer(mobile) (max-width: 35rem);
 
 @layer standard {
   header {
