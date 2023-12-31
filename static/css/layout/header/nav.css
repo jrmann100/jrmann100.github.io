@@ -103,6 +103,7 @@ header nav > ul {
   position: relative;
 }
 
+/* position dropdowns under header rather than overlap */
 @media (max-aspect-ratio: 9/10) {
   header nav > ul {
     position: static;
@@ -124,7 +125,14 @@ header nav .fake-details .nav-dropdown {
   border: var(--default-border);
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
   margin: 0 1rem;
-  max-width: max-content;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+}
+
+@media (max-width: 35rem) {
+  header nav .fake-details .nav-dropdown {
+    left: 0;
+  }
 }
 
 header nav .fake-details .nav-dropdown {
