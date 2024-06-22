@@ -1,9 +1,43 @@
 <!--{{head}}-->
 <title>~jordan/utilities/clipboard</title>
 <style>
-  iframe {
-    all: revert;
-    background: canvas;
+  header nav li.clipboard,
+  header nav li.utilities {
+    font-weight: 900;
+  }
+
+  #pasteboard {
+    margin-bottom: 0.5em;
+  }
+
+  #outputs iframe {
+    /* all: revert; */
+    border: var(--default-border);
+    background-color: canvas;
+  }
+
+  #outputs {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 1em;
+  }
+
+  #outputs figure {
+    border: var(--default-border);
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 0.5em;
+  }
+
+  #outputs figcaption {
+    font-size: 1.2em;
+    font-style: italic;
+  }
+
+  #outputs figure button {
+    width: fit-content;
   }
 </style>
 <!--{{/head}}-->
@@ -15,42 +49,10 @@
   >This is a live-updating dashboard; as such, you need to enable JavaScript for it to
   work.</noscript
 >
-<input type="text" placeholder="paste here" id="pasteboard" maxlength="0" autofocus />
+<input type="text" placeholder="paste anywhere" id="pasteboard" maxlength="0" size="15" autofocus />
 <div id="outputs"></div>
-<script>
-  document.querySelector('#pasteboard').addEventListener('paste', (ev) => {
-    ev.preventDefault();
-    const outputs = document.querySelector('#outputs');
-    outputs.replaceChildren();
-    for (const item of ev.clipboardData.items) {
-      console.log(item);
-      const figure = document.createElement('figure');
-      let data = [];
-      const caption = document.createElement('figcaption');
-      caption.textContent = item.kind + ': ' + item.type;
-      if (item.kind === 'string') {
-        let frame;
-        if (item.type === 'text/html') {
-          frame = document.createElement('iframe');
-          data.push(frame);
-        }
-        const ta = document.createElement('textarea');
-        new Promise((res) => item.getAsString(res)).then((string) => {
-          if (frame instanceof HTMLIFrameElement) {
-            frame.src = 'data:text/html;charset=utf-8,' + encodeURI(string);
-          }
-          ta.textContent = string;
-        });
-        data.push(ta);
-      } else if (item.kind === 'file' && item.type.startsWith('image/')) {
-        img = document.createElement('img');
-        // todo alt
-        img.src = URL.createObjectURL(item.getAsFile());
-        data.push(img);
-      }
-      figure.append(...data, caption);
-      outputs.append(figure);
-    }
-  });
+<script type="module">
+  import main from '/static/js/clipboard.js';
+  main();
 </script>
 <!--{{/main}}-->
