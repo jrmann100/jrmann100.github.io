@@ -1,5 +1,5 @@
 /**
- * @file Godango helper. Generates word dumplings.
+ * @file Component creator. Converts page fragments to Web Components.
  * @author Jordan Mann
  */
 
