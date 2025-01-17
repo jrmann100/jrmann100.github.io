@@ -13,12 +13,16 @@ input,
 button,
 textarea,
 fieldset,
+select,
 .inputlike,
 input[type='checkbox']::after {
   border-radius: 0.2em; /* checkme. we need to indicate that elements are interactive somehow but I don't like this compromise particularly */
   border: var(--default-border);
   background-color: transparent;
-  color: inherit;
+  color: currentColor;
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
 }
 
 textarea,
@@ -35,7 +39,8 @@ button {
 
 .buttonsize,
 input,
-button {
+button,
+select {
   padding: 0.5rem 0.7rem;
 }
 
