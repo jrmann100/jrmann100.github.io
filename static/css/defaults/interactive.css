@@ -44,6 +44,11 @@ select {
   padding: 0.5rem 0.7rem;
 }
 
+input[type='range'] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .buttonsize-small {
   padding: 0.1em 0.5rem;
 }
