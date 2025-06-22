@@ -30,7 +30,7 @@
 <!--{{main}}-->
 <a
   class="download"
-  href="https://docs.google.com/document/d/1NqBqVn4WvAto6_a7Un78ib-JR2hdWooD5XyfY1EP9N0/export?format=pdf"
+  href="https://docs.google.com/document/d/1LcOpwM2IJcIhgiO-hPV5Ddg9txtqIGaY_wQ8Z6zRfO4/export?format=pdf"
 >
   <button class="buttonsize-small">📥&ensp;Download a PDF</button>
 </a>
@@ -42,7 +42,7 @@
 <iframe
   width="500"
   height="500"
-  src="https://docs.google.com/viewer?embedded=true&url=https://docs.google.com/document/d/1NqBqVn4WvAto6_a7Un78ib-JR2hdWooD5XyfY1EP9N0/export?format=pdf"
+  src="https://docs.google.com/viewer?embedded=true&url=https://docs.google.com/document/d/1LcOpwM2IJcIhgiO-hPV5Ddg9txtqIGaY_wQ8Z6zRfO4/export?format=pdf"
 >
 </iframe>
 <script>
@@ -64,7 +64,7 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         e.preventDefault();
         window.open(
-          'https://docs.google.com/viewerng/viewer?url=https://docs.google.com/document/d/1NqBqVn4WvAto6_a7Un78ib-JR2hdWooD5XyfY1EP9N0/export?format%3Dpdf'
+          'https://docs.google.com/viewerng/viewer?url=https://docs.google.com/document/d/1LcOpwM2IJcIhgiO-hPV5Ddg9txtqIGaY_wQ8Z6zRfO4/export?format%3Dpdf'
         );
       }
     });
