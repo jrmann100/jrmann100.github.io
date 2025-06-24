@@ -78,11 +78,11 @@ function sauce() {
  * if they are not recovered from localStorage.
  */
 let defaults = {
-  COUNT: 3,
+  COUNT: 6,
   /** @type {'custom' | 'random' | 'none'} */
   SAUCE_TYPE: 'custom',
-  SAUCE_VALUE: sauce(),
-  SEPARATOR: '-',
+  SAUCE_VALUE: '-' + sauce(),
+  SEPARATOR: '',
   WORDLIST: './eff_large_wordlist.txt',
   OPTIONS_OPEN: false
 };
