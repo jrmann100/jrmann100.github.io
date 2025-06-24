@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!--{{debug}}-->
-<meta name="build-version" content="fafab2a3aacedf6f2955975d68fb6f92ae674aed">
+<meta name="build-version" content="807b0176a5aef25943f0e91e2150b9bfdf40382e">
 <!--{{/debug}}-->
     <meta charset="UTF-8" />
     <!-- <meta name="color-scheme" content="light dark" /> -->
@@ -51,6 +51,7 @@
 
   input[name='output'] {
     flex: 1;
+    font-family: monospace;
   }
 
   details.options > summary::before {
@@ -68,6 +69,27 @@
   }
   textarea::placeholder {
     font-style: italic;
+  }
+
+  textarea {
+    resize: none;
+    line-height: 200%;
+  }
+
+  textarea:not(:placeholder-shown) {
+    font-family: monospace;
+  }
+
+  fieldset[name='options'] {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+  }
+
+  fieldset[name='sauce'] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 0.5rem;
   }
 </style>
 <!--{{/head}}-->
@@ -177,7 +199,6 @@
     <!-- todo width !-->
   </fieldset>
   <textarea
-    style="resize: none; line-height: 200%"
     cols="40"
     rows="8"
     readonly
@@ -186,28 +207,33 @@
   </textarea>
   <details class="options" open>
     <summary style="font-weight: bold">options</summary>
-    <fieldset>
-      <label style="display: inline-block"
-        ><input name="count" type="number" min="1" max="999" /> word(s)</label
-      >,
-      <label style="display: inline-block"
-        >separator <input name="separator" type="text" size="1"
-      /></label>
+    <fieldset name="options">
+      <div>
+        <label style="display: inline-block"
+          ><input name="count" type="number" min="1" max="999" /> word(s)</label
+        >,
+        <label style="display: inline-block"
+          >separator <input name="separator" type="text" size="1"
+        /></label>
+      </div>
       <fieldset name="sauce">
         <legend>suffix</legend>
-        <input id="sauce-random" type="radio" name="sauce-type" value="random" />
-        <label for="#sauce-random">random</label><br />
-        <input id="sauce-custom" type="radio" name="sauce-type" value="custom" />
-        <label for="#sauce-custom">custom:</label>
-        <input type="text" required size="2" name="sauce-value" /><br />
-        <input id="sauce-none" type="radio" name="sauce-type" value="none" />
-        <label for="#sauce-none">none</label>
+        <div>
+          <input id="sauce-random" type="radio" name="sauce-type" value="random" />
+          <label for="#sauce-random">random</label><br />
+          <input id="sauce-custom" type="radio" name="sauce-type" value="custom" />
+          <label for="#sauce-custom">custom:</label>
+          <input type="text" required size="3" name="sauce-value" /><br />
+          <input id="sauce-none" type="radio" name="sauce-type" value="none" />
+          <label for="#sauce-none">none</label>
+        </div>
         <aside>
           <details>
             <summary style="cursor: pointer"><i>why add a suffix?</i></summary>
-            A suffix helps your passphrases to conform to special conditions, such as including
-            capital letters and numbers.<br /><br />So long as you have enough words, it's probably
-            safe to re-use a custom suffix.
+            A suffix helps your passphrase meet special requirements, like including capital letters
+            or numbers. While these rules are meant to make passwords harder to guess, they can also
+            make them harder to remember. If your passphrases are sufficiently long and random, you
+            can reuse the same suffix and still remember it easily.
           </details>
         </aside>
       </fieldset>
@@ -219,7 +245,9 @@
     including custom suffixes. It uses
     <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues">Web Crypto</a>
     to randomize passwords.<br /><br />Everything runs in your browser. Check out the source on
-    <a href="https://github.com/jrmann100/godango">GitHub.</a></small
+    <a href="https://github.com/jrmann100/jrmann100.github.io/blob/main/static/js/godango.js"
+      >GitHub.</a
+    ></small
   >
 </form>
 <script type="module">
