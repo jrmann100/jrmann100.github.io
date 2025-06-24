@@ -29,6 +29,7 @@
 
   input[name='output'] {
     flex: 1;
+    font-family: monospace;
   }
 
   details.options > summary::before {
@@ -46,6 +47,15 @@
   }
   textarea::placeholder {
     font-style: italic;
+  }
+
+  textarea {
+    resize: none;
+    line-height: 200%;
+  }
+
+  textarea:not(:placeholder-shown) {
+    font-family: monospace;
   }
 </style>
 <!--{{/head}}-->
@@ -67,7 +77,6 @@
     <!-- todo width !-->
   </fieldset>
   <textarea
-    style="resize: none; line-height: 200%"
     cols="40"
     rows="8"
     readonly
