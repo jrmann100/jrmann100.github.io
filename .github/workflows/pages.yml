@@ -8,16 +8,18 @@ jobs:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Setup Bun 🍞
+        uses: oven-sh/setup-bun@v2
+
+      - name: Checkout 🎁
         uses: actions/checkout@v3
 
-      - name: Build 🔧
+      - name: Build 📦
         run: |
-          # yarn
-          yarn run build
+          bun run build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           branch: gh-pages
           folder: build

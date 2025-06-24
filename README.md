@@ -16,7 +16,7 @@ You can `git clone` this repository and open it in VSCode to get it running.
 
 As of the time of writing this, you shouldn't need any external depencies to build the site, but you will need a few tools to develop and test it.
 
-VSCode should prompt you to install some extensions, and you can `yarn install` [nodemon](https://nodemon.io) (automatic building) and [prettier](https://prettier.io) (linting)
+VSCode should prompt you to install some extensions, and you can `bun install` [nodemon](https://nodemon.io) (automatic building) and [prettier](https://prettier.io) (linting)
 
 You can probably preview the site over HTTP with no issues by using `python3 -m http.server --directory build`, but there are a couple of experimental web features which need HTTPS. So I have set up the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer), which will be recommended/configured when you open the project in VSCode. You can change `.vscode/settings.json` to point to a self-signed certificate of your own making, start it from the status bar, and it should open the site automatically!
 
