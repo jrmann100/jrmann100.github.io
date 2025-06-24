@@ -18,7 +18,7 @@ interface EventTarget {
    * @param callback event handler.
    * @param options additional listener configuration.
    */
-  export layoutAddEventListener(
+  layoutAddEventListener(
     type: string,
     callback: EventListenerOrEventListenerObject | null,
     options?: boolean | AddEventListenerOptions | undefined

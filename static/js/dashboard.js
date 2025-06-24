@@ -14,7 +14,6 @@ let batteryE;
 
 /**
  * Provide the correct clock emoji for a given time.
- *
  * @param {Date} date the time.
  * @returns {string} the emoji.
  */
@@ -95,8 +94,8 @@ function setupBattery() {
           batteryI.innerText = battery.charging
             ? '🔌'
             : battery.level <= 0.1 && !battery.charging
-            ? '🪫'
-            : '🔋';
+              ? '🪫'
+              : '🔋';
         }
       }
 

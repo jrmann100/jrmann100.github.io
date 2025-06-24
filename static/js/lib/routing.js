@@ -14,7 +14,6 @@ const tagRegex = /^{{(\/?.+)}}$/;
 /**
  * Identify regions in a document or fragment by their label comments.
  * The regions themselves do not include the labels, only their enclosed content.
- *
  * @param {Node} root in which to locate regions.
  * @returns {Promise<Map<string, Range>>} located regions.
  */
@@ -25,7 +24,6 @@ async function locateRegions(root) {
   const commentsIterator = document.createNodeIterator(root, NodeFilter.SHOW_COMMENT, {
     /**
      * Filter to only label nodes.
-     *
      * @param {Comment} node the node to check.
      * @returns { number } code corresponding to the filter result (accept or reject).
      */
@@ -58,7 +56,6 @@ async function locateRegions(root) {
 
 /**
  * Load a page fragment for a given path and swap the current content with its own.
- *
  * @param {string} path the relative path to load.
  * @todo error handling
  */
@@ -94,7 +91,6 @@ async function load(path) {
 
 /**
  * Convert hard links into dynamic ones that load() content instead of redirecting.
- *
  * @param {ParentNode} parent the parent element/fragment to transform.
  * @returns {ParentNode} the transformed parent node.
  */

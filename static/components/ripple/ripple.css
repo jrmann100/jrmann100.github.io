@@ -14,7 +14,11 @@ div.wrapper {
 
 div.wrapper {
   box-shadow: 0 0.1rem 0.5rem rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease-out, box-shadow 0.2s ease-out, filter 0.3s, outline 0.2s;
+  transition:
+    transform 0.3s ease-out,
+    box-shadow 0.2s ease-out,
+    filter 0.3s,
+    outline 0.2s;
   color: var(--button-color);
   position: absolute;
   top: 0;
@@ -65,7 +69,9 @@ div.wrapper svg path {
 :host(:hover:not(:active)) div.wrapper {
   filter: brightness(1.05);
   transform: perspective(12rem) translateY(-0.1rem) translateZ(0.1rem) !important;
-  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.4), 0 0.2rem 0.2rem rgba(0, 0, 0, 0.4);
+  box-shadow:
+    0 0.1rem 1rem rgba(0, 0, 0, 0.4),
+    0 0.2rem 0.2rem rgba(0, 0, 0, 0.4);
 }
 
 :host(:focus) {

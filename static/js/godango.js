@@ -7,7 +7,6 @@ const storageKey = 'godango-defaults';
 /**
  * Get a random number.
  * Tries to use window.crypto, which is stronger than Math.random().
- *
  * @returns {number} a random number on [0,256).
  */
 function randomUint8() {
@@ -20,7 +19,6 @@ function randomUint8() {
 
 /**
  * Simulate a dice roll.
- *
  * @returns {number} a random number on [1,6].
  */
 function roll() {
@@ -29,7 +27,6 @@ function roll() {
 
 /**
  * Get a random digit 0-9.
- *
  * @returns {number} a random number on [0,10).
  */
 function number() {
@@ -38,7 +35,6 @@ function number() {
 
 /**
  * Get a random letter.
- *
  * @param {boolean} capital whether the letter should be capitalized.
  * @returns {string} a random letter.
  */
@@ -48,8 +44,7 @@ function letter(capital = true) {
 
 /**
  * Get a random word by simulating six dice rolls.
- *
- * @typedef { Object<string,string> } wordlist
+ * @typedef { Record<string,string> } wordlist
  * @param {wordlist} words the list of words to choose from using dice.
  * @returns {string} a random word.
  */
@@ -66,7 +61,6 @@ function word(words) {
 
 /**
  * Get a random 'secret sauce' composed of one capital letter and one number.
- *
  * @returns {string} the sauce.
  */
 function sauce() {
@@ -89,7 +83,6 @@ let defaults = {
 
 /**
  * Bundle random words into a dumpling and add some special sauce.
- *
  * @param {wordlist} words the list of words to choose from using dice.
  * @returns {string} a word dumpling!
  */
@@ -111,7 +104,6 @@ function godango(words) {
 
 /**
  * Calculate the entropy of a word dumpling.
- *
  * @returns {number} the entropy, in number of bits.
  */
 function entropy() {
@@ -128,7 +120,6 @@ function entropy() {
 export async function main() {
   /**
    * Word list. Make sure to cache this.
-   *
    * @see {@link https://www.eff.org/dice}
    */
   const text = await (
@@ -194,7 +185,6 @@ export async function main() {
 
   /**
    * Return whether the output box is editable.
-   *
    * @returns {boolean} edit mode.
    */
   function getEditMode() {
@@ -206,7 +196,6 @@ export async function main() {
 
   /**
    * Set whether the output box is editable.
-   *
    * @param {boolean} on edit mode.
    */
   function setEditMode(on = true) {
@@ -254,7 +243,6 @@ export async function main() {
 
   /**
    * Update user settings.
-   *
    * @param {boolean} doCreate make a word dumpling with the updated settings
    * (usually where the changed settings would result a different kind of dumpling being made.)
    */
@@ -274,19 +262,19 @@ export async function main() {
     throw new Error('could not find required element(s) for setting preferences');
   }
 
-  optionsDetails.addEventListener('toggle', (_) => {
+  optionsDetails.addEventListener('toggle', () => {
     defaults.OPTIONS_OPEN = optionsDetails.open;
     updateDefaults(false);
   });
   optionsDetails.open = defaults.OPTIONS_OPEN;
 
-  countInput.addEventListener('change', (_) => {
+  countInput.addEventListener('change', () => {
     defaults.COUNT = parseInt(countInput.value);
     updateDefaults();
   });
   countInput.value = defaults.COUNT.toString();
 
-  separatorInput.addEventListener('change', (_) => {
+  separatorInput.addEventListener('change', () => {
     defaults.SEPARATOR = separatorInput.value;
     updateDefaults();
   });
@@ -306,7 +294,7 @@ export async function main() {
     throw new Error('could not find the sauce input');
   }
 
-  sauceInput.addEventListener('change', (_) => {
+  sauceInput.addEventListener('change', () => {
     defaults.SAUCE_VALUE = sauceInput.value;
     updateDefaults();
   });
@@ -314,7 +302,7 @@ export async function main() {
   tryDisableCustomSauce();
 
   sauceRadios.forEach((radio) =>
-    radio.addEventListener('change', (_) => {
+    radio.addEventListener('change', () => {
       if (radio.value === 'custom' || radio.value === 'random' || radio.value === 'none') {
         defaults.SAUCE_TYPE = radio.value;
       }

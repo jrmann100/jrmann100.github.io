@@ -10,7 +10,6 @@
  * into a form in the shadow DOM and wiring them up (e.g. with labels).
  *
  * checkme the above
- *
  * @see {@link createComponent}
  * @this {SwitcherComponent}
  */
@@ -72,7 +71,6 @@ export default function setup() {
   Object.defineProperty(this, 'value', {
     /**
      * Getter.
-     *
      * @returns {string | undefined} the value of the currently checked input;
      * that is, the switcher's value.
      */
@@ -83,7 +81,6 @@ export default function setup() {
     },
     /**
      * Setter.
-     *
      * @param {string} value a radio value to find and select.
      */
     set: (value) => {
@@ -92,7 +89,7 @@ export default function setup() {
       if (input === null) {
         throw new Error(`Could not find input matching given value "${value}"`);
       }
-      (input.checked = true), input?.dispatchEvent(new Event('change'));
+      ((input.checked = true), input?.dispatchEvent(new Event('change')));
     }
   });
 }

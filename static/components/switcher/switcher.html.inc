@@ -61,7 +61,9 @@
   label {
     text-align: center;
     pointer-events: none;
-    transition: opacity 0.1s, filter 0.3s;
+    transition:
+      opacity 0.1s,
+      filter 0.3s;
   }
 
   .indicator {
