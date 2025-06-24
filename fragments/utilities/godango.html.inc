@@ -118,13 +118,10 @@
           <label for="#sauce-none">none</label>
         </div>
         <aside>
-          <details>
-            <summary style="cursor: pointer"><i>why add a suffix?</i></summary>
-            A suffix helps your passphrase meet special requirements, like including capital letters
-            or numbers. While these rules are meant to make passwords harder to guess, they can also
-            make them harder to remember. If your passphrases are sufficiently long and random, you
-            can reuse the same suffix and still remember it easily.
-          </details>
+          A suffix helps your passphrase meet special requirements, like including capital letters
+          or numbers.<br />While these rules are meant to make passwords harder to guess, they can
+          also make them harder to remember.<br />If your passphrases are sufficiently long and
+          random, you can reuse the same suffix and still remember it easily.
         </aside>
       </fieldset>
     </fieldset>
