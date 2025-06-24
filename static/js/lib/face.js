@@ -47,7 +47,6 @@ if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference
      *
      * It helps to just plot 2/pi * arctan(2x)
      * if you want to see how this math works.
-     *
      * @param {number} x some value to limit.
      * @returns {number} the constrained value.
      */

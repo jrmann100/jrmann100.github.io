@@ -10,7 +10,6 @@ import { execSync } from 'child_process';
 
 /**
  * Get the build version ID (use the current commit hash)
- *
  * @returns {string} the build version ID.
  */
 function getBuildVersion() {
@@ -27,7 +26,6 @@ const regionRegex = /<!--{{(?<open>.+)}}-->(?<content>(.|\n)*?)<!--{{(?<close>\/
 
 /**
  * Extracts regions from a fragment.
- *
  * @param {string} text the fragment text.
  * @returns {Map<string,string>} the regions.
  */
@@ -47,7 +45,6 @@ function locateRegions(text) {
 
 /**
  * Parses a layout. Locates regions while also labeling intermediate content as '_content_N' sections.
- *
  * @param {string} text the layout text.
  * @returns {Map<string,string>} the sections.
  */
@@ -73,7 +70,6 @@ function locateSections(text) {
 
 /**
  * Recursively pre-render all include files within a folder.
- *
  * @param {string} path the path to the folder in which to locate include files.
  * @param {Map<string, string>} layoutSections sections (content and regions) of layout
  * @todo document and test edge cases
@@ -116,7 +112,6 @@ async function transform(path, layoutSections) {
 
 /**
  * Recursively .html.inc fragments to .html.
- *
  * @param {string} path the path to the folder in which to rename fragments.
  */
 async function removeInc(path) {

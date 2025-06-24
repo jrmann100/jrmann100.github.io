@@ -172,7 +172,6 @@ let current = new Proxy(
   {
     /**
      * Setter.
-     *
      * @param {*} target the color scheme being modified.
      * @param {*} prop the property of the configuration object being changed.
      * @param {*} newValue the updated value to reassign the prop to.

@@ -20,7 +20,6 @@ export class RipplingCard extends HTMLElement {
   /**
    * If either of these attrs are changed,
    * we will need to re-render the button.
-   *
    * @returns {string[]} a list of attribute names.
    */
   static get observedAttributes() {
@@ -83,7 +82,6 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * Getter.
-   *
    * @returns {SVGPathElement} path of this card's icon.
    */
   get path() {
@@ -96,7 +94,6 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * Getter.
-   *
    * @returns {HTMLSpanElement} this card's span.
    */
   get span() {
@@ -110,7 +107,6 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * Get the button's shadow wrapper element.
-   *
    * @returns {HTMLDivElement} the shadow wrapper element.
    */
   get wrapper() {
@@ -145,7 +141,6 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * Fires when an observed attribute is updated.
-   *
    * @param {string} _name attribute name.
    * @param {string | null} _oldValue the old attribute value.
    * @param {string | null} _newValue the new attribute value.
@@ -156,7 +151,6 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * Handle a mouse event; start a ripple UI effect.
-   *
    * @param {MouseEvent} ev the mouse event.
    */
   rippleClick(ev) {
@@ -211,7 +205,6 @@ export class RipplingCard extends HTMLElement {
   /**
    * Deactivate the button,
    * then remove the "deactivate" class we added.
-   *
    * @param {HTMLDivElement} wrapper the shadow wrapper element.
    */
   deactivate(wrapper) {
@@ -228,7 +221,6 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * An event listener callback to deactivate on mouseup.
-   *
    * @param {MouseEvent} _ev the mouse event.
    */
   deactivateEvent(_ev) {

@@ -14,7 +14,6 @@
  * Register a custom element [name]-component.
  *
  * {@link https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements Read the spec.}
- *
  * @see {@link customElements.define}
  * @param {string} name The component's name; components/[name]/* will be dynamically used as a template.
  * @param {CustomElementConstructor} extensionOf Element constructor to base this component off of. For autonomous custom elements <[name]-component>, this will just be HTMLElement.
