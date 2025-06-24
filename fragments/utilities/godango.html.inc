@@ -95,6 +95,7 @@
     placeholder="Recent passwords will show up here.&#10;Reload the page to clear the list."
   >
   </textarea>
+  <!-- TODO: consider making this a tab -->
   <details class="options" open>
     <summary style="font-weight: bold">options</summary>
     <fieldset name="options">
