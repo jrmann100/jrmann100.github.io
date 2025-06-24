@@ -28,19 +28,11 @@ export default defineConfig([
     },
     language: 'html/html'
   },
-  {
-    files: ['**/*.js'],
-    plugins: {
-      prettier
-    },
-    languageOptions: {
-      globals: globals.browser
-    }
-  },
   packageJson.configs.recommended,
   {
     files: ['**/*.js'],
     plugins: {
+      prettier,
       jsdoc
     },
     rules: {
@@ -48,18 +40,26 @@ export default defineConfig([
       ...tseslint.configs.strict.rules,
       ...tseslint.configs.stylistic.rules,
       ...eslintPluginPrettierRecommended.rules,
-      ...eslint.configs.recommended.rules
+      ...eslint.configs.recommended.rules,
+      // https://github.com/gajus/eslint-plugin-jsdoc/issues/99
+      'jsdoc/no-undefined-types': ['off']
     }
   },
   {
-    plugins: {
-      json
-    },
     files: ['**/*.json'],
+    ignores: ['package-lock.json'],
+    plugins: { json },
     language: 'json/json',
-    rules: {
-      'json/no-duplicate-keys': 'error'
-    }
+    extends: ['json/recommended']
+  },
+  {
+    files: ['**/tsconfig.json', '.vscode/*.json'],
+    plugins: { json },
+    language: 'json/jsonc',
+    languageOptions: {
+      allowTrailingCommas: true
+    },
+    extends: ['json/recommended']
   },
   {
     files: ['**/*.md'],
@@ -69,6 +69,20 @@ export default defineConfig([
     language: 'markdown/commonmark',
     rules: {
       'markdown/no-html': 'error'
+    }
+  },
+  // root-level files are Node scripts
+  {
+    files: ['*.js'],
+    languageOptions: {
+      globals: globals.node
+    }
+  },
+  // static files are browser scripts
+  {
+    files: ['static/**/*.js'],
+    languageOptions: {
+      globals: globals.browser
     }
   }
 ]);

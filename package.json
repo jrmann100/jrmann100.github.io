@@ -5,7 +5,7 @@
     "build": "node render.js",
     "build-watch": "mode=dev nodemon render.js -i build -e js,json,html,css,html.inc",
     "lint": "eslint . && tsc --noEmit && prettier --check .",
-    "lint:fix": "eslint --fix . && tsc --noEmit && prettier --write ."
+    "lint:fix": "eslint --fix . && tsc --noEmit && prettier --log-level warn --write ."
   },
   "devDependencies": {
     "@eslint/compat": "^1.3.0",

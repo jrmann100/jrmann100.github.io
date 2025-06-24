@@ -16,8 +16,8 @@ safari godango options ::before shows as show > options
 
 it's inconsistent to have the face highlight and header bottom margin be different I think
 
-it'd be cool to have all utilities include some styles/files by default. i.e. a <!--{{!include}}--> or \_lib.html.inc
--> similarly we could <!--{!include templates/snippets/nav.html.inc}-->
+it'd be cool to have all utilities include some styles/files by default. i.e. a \<!--{{!include}}--> or \_lib.html.inc
+-> similarly we could \<!--{!include templates/snippets/nav.html.inc}-->
 
 there should also be a utilities index?
 
@@ -27,7 +27,7 @@ better monospace font. all roboto?
 
 check that es6 is available
 
-hide menu on click <main>? this would require a js event
+hide menu on click \<main>? this would require a js event
 
 https://www.npmjs.com/package/eslint-plugin-jsdoc#:~:text=quotes%20%2D%20Will%20insist%20on%20%22double%22.
 
@@ -35,11 +35,11 @@ require jsdoc on class methods i.e. in RipplingCard
 
 README.md - and maybe mark jrmann100/routing as stale
 
-double check pages that need js/css and mark data-needs-X and <noscript> as necessary
+double check pages that need js/css and mark data-needs-X and \<noscript> as necessary
 
 uh oh 404
 
-maybe we want to fix the <header> height so it can scroll over into <main> with menus by making <body> a display: grid? worried about <detail> menus spilling off the page.
+maybe we want to fix the \<header> height so it can scroll over into \<main> with menus by making \<body> a display: grid? worried about \<detail> menus spilling off the page.
 
 godango memory
 

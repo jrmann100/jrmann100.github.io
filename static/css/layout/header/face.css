@@ -16,7 +16,9 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  transition: transform 0.2s ease-out, filter 0.1s linear;
+  transition:
+    transform 0.2s ease-out,
+    filter 0.1s linear;
 }
 
 @media print {

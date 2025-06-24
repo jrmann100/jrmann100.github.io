@@ -141,11 +141,8 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * Fires when an observed attribute is updated.
-   * @param {string} _name attribute name.
-   * @param {string | null} _oldValue the old attribute value.
-   * @param {string | null} _newValue the new attribute value.
    */
-  attributeChangedCallback(_name, _oldValue, _newValue) {
+  attributeChangedCallback() {
     this.updateStyle();
   }
 
@@ -221,9 +218,8 @@ export class RipplingCard extends HTMLElement {
 
   /**
    * An event listener callback to deactivate on mouseup.
-   * @param {MouseEvent} _ev the mouse event.
    */
-  deactivateEvent(_ev) {
+  deactivateEvent() {
     this.deactivate(this.wrapper);
   }
 }

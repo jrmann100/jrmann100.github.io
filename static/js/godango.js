@@ -44,7 +44,7 @@ function letter(capital = true) {
 
 /**
  * Get a random word by simulating six dice rolls.
- * @typedef { Object<string,string> } wordlist
+ * @typedef { Record<string,string> } wordlist
  * @param {wordlist} words the list of words to choose from using dice.
  * @returns {string} a random word.
  */
@@ -262,19 +262,19 @@ export async function main() {
     throw new Error('could not find required element(s) for setting preferences');
   }
 
-  optionsDetails.addEventListener('toggle', (_) => {
+  optionsDetails.addEventListener('toggle', () => {
     defaults.OPTIONS_OPEN = optionsDetails.open;
     updateDefaults(false);
   });
   optionsDetails.open = defaults.OPTIONS_OPEN;
 
-  countInput.addEventListener('change', (_) => {
+  countInput.addEventListener('change', () => {
     defaults.COUNT = parseInt(countInput.value);
     updateDefaults();
   });
   countInput.value = defaults.COUNT.toString();
 
-  separatorInput.addEventListener('change', (_) => {
+  separatorInput.addEventListener('change', () => {
     defaults.SEPARATOR = separatorInput.value;
     updateDefaults();
   });
@@ -294,7 +294,7 @@ export async function main() {
     throw new Error('could not find the sauce input');
   }
 
-  sauceInput.addEventListener('change', (_) => {
+  sauceInput.addEventListener('change', () => {
     defaults.SAUCE_VALUE = sauceInput.value;
     updateDefaults();
   });
@@ -302,7 +302,7 @@ export async function main() {
   tryDisableCustomSauce();
 
   sauceRadios.forEach((radio) =>
-    radio.addEventListener('change', (_) => {
+    radio.addEventListener('change', () => {
       if (radio.value === 'custom' || radio.value === 'random' || radio.value === 'none') {
         defaults.SAUCE_TYPE = radio.value;
       }
