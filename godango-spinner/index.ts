@@ -41,9 +41,10 @@ let held = false;
 
 let lastTimestamp = 0;
 const tick = (timestamp: number) => {
-  const timeDelta = timestamp - lastTimestamp;
+  const timeDelta = (timestamp - lastTimestamp) / 1000;
+  const timeFactor = timeDelta * 60;
   reels.forEach(([a, b], i) => {
-    positions[i] = (positions[i] + (timeDelta / 1000) * velocities[i]) % 1;
+    positions[i] = (positions[i] + timeDelta * velocities[i]) % 1;
 
     if (velocities[i] < 0) {
       // if velocity is negative, bring it back to zero.
@@ -52,7 +53,7 @@ const tick = (timestamp: number) => {
       velocities[i] = 0;
     } else {
       // apply friction
-      velocities[i] *= 0.9;
+      velocities[i] *= Math.pow(0.9, timeFactor);
     }
 
     if (!held) {
@@ -60,7 +61,7 @@ const tick = (timestamp: number) => {
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
       if (velocities[i] < 2) {
-        velocities[i] += (nearestSnap - positions[i]) * 8;
+        velocities[i] += (nearestSnap - positions[i]) * 8 * timeFactor;
       }
 
       if (Math.abs(velocities[i]) < 1e-2) {
