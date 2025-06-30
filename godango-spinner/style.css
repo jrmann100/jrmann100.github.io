@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reel {
+  display: flex;
+  flex-flow: column;
+  transform-style: preserve-3d;
+  perspective: 100px;
+  /* perspective-origin: left; */
+  width: 10rem;
+  align-items: center;
+  height: 5rem;
+  overflow: hidden;
+  border: 1px solid black;
+  /* box-shadow: inset 0 0.4rem 0.5rem -0.2rem rgba(0,0,0,0.5), inset 0 -0.5rem 0.5rem -0.3rem rgba(0,0,0,0.5); */
+}
+
+.face {
+  width: 10rem;
+  height: 5rem;
+  flex-shrink: 0;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 1.5rem;
+  /* border: 1px solid black; */
+}
