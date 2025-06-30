@@ -1,8 +1,9 @@
-const a = document.querySelector<HTMLDivElement>(".reel .face:nth-child(1)");
-const b = document.querySelector<HTMLDivElement>(".reel .face:nth-child(2)");
-if (a === null || b === null) {
-  throw new Error("Elements not found");
-}
+const reels = [...document.querySelectorAll<HTMLDivElement>(".reel")].map(
+  (reel) => [
+    reel.querySelector<HTMLDivElement>(".face:nth-child(1)"),
+    reel.querySelector<HTMLDivElement>(".face:nth-child(2)"),
+  ]
+);
 
 const betweenFactory =
   (progress: number) =>
@@ -22,44 +23,55 @@ const update = (element: HTMLElement, progress: number, a = false) => {
   element.style.opacity = `${between(0, 1, 0)}`;
 };
 
-let velocity = 0;
-let progress = 0;
+const velocities = reels.map(() => 0);
+const progresses = reels.map(() => 0);
 let lastTimestamp = 0;
 const tick = (timestamp: number) => {
-  progress = (progress + (timestamp - lastTimestamp) * velocity) % 1;
+  reels.forEach(([a, b], i) => {
+    progresses[i] =
+      (progresses[i] + (timestamp - lastTimestamp) * velocities[i]) % 1;
+
+    if (velocities[i] < 1e-4) {
+      // if velocity is low or negative, bring it towards 0.
+      velocities[i] = 0;
+    } else {
+      // apply friction
+      velocities[i] *= 0.9 + 0.04 * (i / reels.length);
+    }
+
+    const snaps = [0, 0.5, 1];
+    const nearestSnap = snaps.reduce((prev, curr) =>
+      Math.abs(curr - progresses[i]) < Math.abs(prev - progresses[i])
+        ? curr
+        : prev
+    );
+    // the spring can only engage if the velocity is low enough;
+    // otherwise it glides across the peaks.
+    if (velocities[i] < 0.002) {
+      velocities[i] += (nearestSnap - progresses[i]) * 0.008;
+    }
+
+    if (Math.abs(velocities[i]) < 1e-5) {
+      velocities[i] = 0;
+      progresses[i] = nearestSnap;
+    }
+
+    if (a === null || b === null) {
+      throw new Error("Reel faces not found");
+    }
+    update(a, progresses[i], true);
+    update(b, progresses[i], false);
+  });
+
   lastTimestamp = timestamp;
-
-  // if velocity is low or negative, bring it towards 0.
-  if (velocity < 1e-4) {
-    velocity = 0;
-  }
-
-  velocity *= 0.9;
-
-  const snaps = [0, 0.5, 1];
-  const nearestSnap = snaps.reduce((prev, curr) =>
-    Math.abs(curr - progress) < Math.abs(prev - progress) ? curr : prev
-  );
-  // the spring can only engage if the velocity is low enough;
-  // otherwise it glides across the peaks.
-  if (velocity < 0.002) {
-    velocity += (nearestSnap - progress) * 0.008;
-  }
-
-  if (Math.abs(velocity) < 1e-5) {
-    velocity = 0;
-    progress = nearestSnap;
-  }
-  console.log(velocity, progress);
-
-  update(a, progress, true);
-  update(b, progress, false);
-
   requestAnimationFrame(tick);
 };
 
 document.body.addEventListener("click", () => {
-  velocity += 0.005;
+  // v += 0.005;
+  for (let i = 0; i < reels.length; i++) {
+    velocities[i] += 0.005;
+  }
 });
 
 // TODO: add touch/scroll support.
