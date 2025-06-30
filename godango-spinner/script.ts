@@ -52,4 +52,8 @@ document.body.addEventListener("click", (event) => {
   event.preventDefault();
 });
 
+// TODO: add touch/scroll support.
+// probably we will want a "control wheel" that accepts all of these events
+// and just says "spin" or the like
+
 requestAnimationFrame(tick);
