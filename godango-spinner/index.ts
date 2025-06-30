@@ -26,12 +26,7 @@ const between = (progress: number, ...stops: number[]) => {
   return lowerValue + (upperValue - lowerValue) * (position % 1);
 };
 
-const update = (
-  face: HTMLElement,
-  progress: number,
-  velocity: number,
-  a = false
-) => {
+const update = (face: HTMLElement, progress: number, a = false) => {
   const p = (progress + (a ? 0 : 0.5)) % 1;
   face.style.transform = `translateY(${
     between(p, -100, 0, 100) - Number(!a) * 100
@@ -41,14 +36,14 @@ const update = (
 };
 
 const velocities = reels.map(() => 0);
-const progresses = reels.map(() => 0);
+const positions = reels.map(() => 0);
 let held = false;
 
 let lastTimestamp = 0;
 const tick = (timestamp: number) => {
   const timeDelta = timestamp - lastTimestamp;
   reels.forEach(([a, b], i) => {
-    progresses[i] = (progresses[i] + timeDelta * velocities[i]) % 1;
+    positions[i] = (positions[i] + timeDelta * velocities[i]) % 1;
 
     if (velocities[i] < 1e-4) {
       // if velocity is low or negative, bring it back to zero.
@@ -61,21 +56,21 @@ const tick = (timestamp: number) => {
     }
 
     if (!held) {
-      const nearestSnap = Math.round(progresses[i] * 2) / 2;
+      const nearestSnap = Math.round(positions[i] * 2) / 2;
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
       if (velocities[i] < 0.002) {
-        velocities[i] += (nearestSnap - progresses[i]) * 0.008;
+        velocities[i] += (nearestSnap - positions[i]) * 0.008;
       }
 
       if (Math.abs(velocities[i]) < 1e-5) {
         velocities[i] = 0;
-        progresses[i] = nearestSnap;
+        positions[i] = nearestSnap;
       }
     }
 
-    update(a, progresses[i], velocities[i], true);
-    update(b, progresses[i], velocities[i], false);
+    update(a, positions[i], true);
+    update(b, positions[i], false);
   });
 
   lastTimestamp = timestamp;
@@ -99,7 +94,7 @@ controller.addEventListener("wheel", (event) => {
   }
   held = true;
   for (let i = 0; i < reels.length; i++) {
-    progresses[i] = Math.max(progresses[i] - event.deltaY / 1000, 0) % 1;
+    positions[i] = Math.max(positions[i] - event.deltaY / 1000, 0) % 1;
   }
   clearTimeout(scrollTimeout);
   scrollTimeout = setTimeout(() => (held = false), 50);
