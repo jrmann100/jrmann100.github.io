@@ -43,10 +43,10 @@ let lastTimestamp = 0;
 const tick = (timestamp: number) => {
   const timeDelta = timestamp - lastTimestamp;
   reels.forEach(([a, b], i) => {
-    positions[i] = (positions[i] + timeDelta * velocities[i]) % 1;
+    positions[i] = (positions[i] + (timeDelta / 1000) * velocities[i]) % 1;
 
-    if (velocities[i] < 1e-4) {
-      // if velocity is low or negative, bring it back to zero.
+    if (velocities[i] < 0) {
+      // if velocity is negative, bring it back to zero.
       // checkme: there is probably a more elegant way to do this!
       // like having the spring apply a weaker backwards force in the first place.
       velocities[i] = 0;
@@ -59,11 +59,11 @@ const tick = (timestamp: number) => {
       const nearestSnap = Math.round(positions[i] * 2) / 2;
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
-      if (velocities[i] < 0.002) {
-        velocities[i] += (nearestSnap - positions[i]) * 0.008;
+      if (velocities[i] < 2) {
+        velocities[i] += (nearestSnap - positions[i]) * 8;
       }
 
-      if (Math.abs(velocities[i]) < 1e-5) {
+      if (Math.abs(velocities[i]) < 1e-2) {
         velocities[i] = 0;
         positions[i] = nearestSnap;
       }
@@ -81,7 +81,7 @@ controller.addEventListener("click", () => {
   for (let i = 0; i < reels.length; i++) {
     // todo: this means that copying the result will need to await all velocities === 0
     setTimeout(() => {
-      velocities[i] += 0.005;
+      velocities[i] += 5;
     }, (i === 0 ? i : i - 1) * 50);
   }
 });
