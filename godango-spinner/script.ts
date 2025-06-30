@@ -32,11 +32,13 @@ const tick = (timestamp: number) => {
       (progresses[i] + (timestamp - lastTimestamp) * velocities[i]) % 1;
 
     if (velocities[i] < 1e-4) {
-      // if velocity is low or negative, bring it towards 0.
+      // if velocity is low or negative, bring it back to zero.
+      // checkme: there is probably a more elegant way to do this!
+      // like having the spring apply a weaker backwards force in the first place.
       velocities[i] = 0;
     } else {
       // apply friction
-      velocities[i] *= 0.9 + 0.04 * (i / reels.length);
+      velocities[i] *= 0.9; // + 0.04 * (i / reels.length);
     }
 
     const snaps = [0, 0.5, 1];
@@ -70,7 +72,9 @@ const tick = (timestamp: number) => {
 document.body.addEventListener("click", () => {
   // v += 0.005;
   for (let i = 0; i < reels.length; i++) {
-    velocities[i] += 0.005;
+    setTimeout(() => {
+      velocities[i] += 0.005;
+    }, i * 50);
   }
 });
 
