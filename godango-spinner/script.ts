@@ -8,18 +8,13 @@ const betweenFactory =
   (progress: number) =>
   (...stops: number[]) => {
     const position = progress * (stops.length - 1);
-    if (position % 1 === 0) {
-      return stops[position];
-    }
-    const lowerIndex = Math.floor(position);
-    const upperIndex = Math.ceil(position);
-    const lowerValue = stops[lowerIndex];
-    const upperValue = stops[upperIndex];
+    const lowerValue = stops[Math.floor(position)];
+    const upperValue = stops[Math.ceil(position)];
     return lowerValue + (upperValue - lowerValue) * (position % 1);
   };
 
 const update = (element: HTMLElement, progress: number, a = false) => {
-  const between = betweenFactory(progress);
+  const between = betweenFactory((progress + Number(a) * 0.5) % 1);
   element.style.transform = `translateY(${
     between(-100, 0, 100) - Number(!a) * 100
   }%) rotateX(${between(50, -50)}deg)`;
@@ -27,25 +22,34 @@ const update = (element: HTMLElement, progress: number, a = false) => {
   element.style.opacity = `${between(0, 1, 0)}`;
 };
 
+let velocity = 0;
+let progress = 0;
+let lastTimestamp = 0;
 const tick = (timestamp: number) => {
-  // todo: apply blur if velocity is too high
-  const rawProgress = (timestamp % 10000) / 10000;
-  const easing = (t, slowness = 0.8) => {
-    // Ensure t is within the 0-1 range
-    if (t <= 0) {
-      return 0;
-    }
-    if (t >= 1) {
-      return 1;
-    }
-
-    const amplitude = slowness / (4 * Math.PI);
-    return t - amplitude * Math.sin(4 * Math.PI * t);
-  };
-  const progress = easing(rawProgress);
+  progress = (progress + (timestamp - lastTimestamp) * velocity) % 1;
+  lastTimestamp = timestamp;
+  // account for friction
+  if (velocity < 1e-5) {
+    velocity = 0; // Stop the animation if velocity is too low
+  }
+  velocity *= 0.9; // Apply friction
+  const snaps = [0, 0.5, 1];
+  const nearestSnap = snaps.reduce((prev, curr) =>
+    Math.abs(curr - progress) < Math.abs(prev - progress) ? curr : prev
+  );
+  // if (velocity < 0.001) {
+  velocity += (nearestSnap - progress) * 0.01; // Adjust velocity towards the nearest snap point
+  // }
   update(a, progress, true); // Offset the first element by 100% to avoid overlap
-  update(b, (progress + 0.5) % 1, false); // Offset the second element by half a cycle
+  update(b, progress, false); // Offset the second element by half a cycle
   requestAnimationFrame(tick);
 };
+
+document.body.addEventListener("click", (event) => {
+  // Increase velocity on click
+  velocity += 0.0085;
+  // Prevent default action to avoid scrolling
+  event.preventDefault();
+});
 
 requestAnimationFrame(tick);
