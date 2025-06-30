@@ -28,28 +28,38 @@ let lastTimestamp = 0;
 const tick = (timestamp: number) => {
   progress = (progress + (timestamp - lastTimestamp) * velocity) % 1;
   lastTimestamp = timestamp;
-  // account for friction
-  if (velocity < 1e-5) {
-    velocity = 0; // Stop the animation if velocity is too low
+
+  // if velocity is low or negative, bring it towards 0.
+  if (velocity < 1e-4) {
+    velocity = 0;
   }
-  velocity *= 0.9; // Apply friction
+
+  velocity *= 0.9;
+
   const snaps = [0, 0.5, 1];
   const nearestSnap = snaps.reduce((prev, curr) =>
     Math.abs(curr - progress) < Math.abs(prev - progress) ? curr : prev
   );
-  // if (velocity < 0.001) {
-  velocity += (nearestSnap - progress) * 0.01; // Adjust velocity towards the nearest snap point
-  // }
-  update(a, progress, true); // Offset the first element by 100% to avoid overlap
-  update(b, progress, false); // Offset the second element by half a cycle
+  // the spring can only engage if the velocity is low enough;
+  // otherwise it glides across the peaks.
+  if (velocity < 0.002) {
+    velocity += (nearestSnap - progress) * 0.008;
+  }
+
+  if (Math.abs(velocity) < 1e-5) {
+    velocity = 0;
+    progress = nearestSnap;
+  }
+  console.log(velocity, progress);
+
+  update(a, progress, true);
+  update(b, progress, false);
+
   requestAnimationFrame(tick);
 };
 
-document.body.addEventListener("click", (event) => {
-  // Increase velocity on click
-  velocity += 0.0085;
-  // Prevent default action to avoid scrolling
-  event.preventDefault();
+document.body.addEventListener("click", () => {
+  velocity += 0.005;
 });
 
 // TODO: add touch/scroll support.
