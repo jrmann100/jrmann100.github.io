@@ -35,17 +35,30 @@ const update = (face: HTMLElement, progress: number, a = false) => {
   face.style.opacity = `${between(p, 0, 1, 0)}`;
 };
 
-const velocities = reels.map(() => 0);
-const positions = reels.map(() => 0);
-let held = false;
+const velocities = Array.from({ length: reels.length }, () => 0);
+const positions = Array.from({ length: reels.length }, () => 0);
+const held = Array.from({ length: reels.length }, () => false);
+
+// todo: call with "force" to update the first time
+const updatePosition = (i: number, newPosition: number) => {
+  const [a, b] = reels[i];
+  if (i !== 0) {
+    if (newPosition > 1) {
+      a.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    } else if (positions[i] < 0.5 && newPosition >= 0.5) {
+      b.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    }
+  }
+  positions[i] = newPosition % 1;
+  update(a, positions[i], true);
+  update(b, positions[i], false);
+};
 
 let lastTimestamp = 0;
 const tick = (timestamp: number) => {
   const timeDelta = (timestamp - lastTimestamp) / 1000;
   const timeFactor = timeDelta * 60;
   reels.forEach(([a, b], i) => {
-    positions[i] = (positions[i] + timeDelta * velocities[i]) % 1;
-
     if (velocities[i] < 0) {
       // if velocity is negative, bring it back to zero.
       // checkme: there is probably a more elegant way to do this!
@@ -56,7 +69,7 @@ const tick = (timestamp: number) => {
       velocities[i] *= Math.pow(0.9, timeFactor);
     }
 
-    if (!held) {
+    if (!held[i]) {
       const nearestSnap = Math.round(positions[i] * 2) / 2;
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
@@ -70,11 +83,12 @@ const tick = (timestamp: number) => {
       }
     }
 
-    update(a, positions[i], true);
-    update(b, positions[i], false);
+    const newPosition = positions[i] + timeDelta * velocities[i];
+    updatePosition(i, newPosition);
   });
 
   lastTimestamp = timestamp;
+  // TODO: eventually we can disable this when all velocities are 0.
   requestAnimationFrame(tick);
 };
 
@@ -88,17 +102,30 @@ controller.addEventListener("click", () => {
 });
 
 let scrollTimeout: number | undefined = undefined;
+let totalScroll = 0;
 controller.addEventListener("wheel", (event) => {
   event.preventDefault();
   if (event.deltaY >= 0) {
     return;
   }
-  held = true;
+  // checkme: is this costly?
+  held.fill(true);
+  totalScroll -= event.deltaY * 4;
   for (let i = 0; i < reels.length; i++) {
-    positions[i] = Math.max(positions[i] - event.deltaY / 1000, 0) % 1;
+    if (totalScroll < i * 50) {
+      continue;
+    }
+    updatePosition(i, Math.max(positions[i] - event.deltaY / 1000, 0));
   }
   clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => (held = false), 50);
+  scrollTimeout = setTimeout(() => {
+    for (let i = 0; i < reels.length; i++) {
+      // checkme: do we need to clear these timeouts if we start scrolling again?
+      // or should we assume it just gets overwritten?
+      setTimeout(() => (held[i] = false), i * 50);
+    }
+    totalScroll = 0;
+  }, 50);
 });
 
 // TODO: add touch support.
