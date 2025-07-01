@@ -35,9 +35,9 @@ const update = (face: HTMLElement, progress: number, a = false) => {
   face.style.opacity = `${between(p, 0, 1, 0)}`;
 };
 
-const velocities = Array.from({ length: reels.length }, () => 0);
-const positions = Array.from({ length: reels.length }, () => 0);
-const held = Array.from({ length: reels.length }, () => false);
+const velocities = new Array(reels.length).fill(0);
+const positions = new Array(reels.length).fill(0);
+const held = new Array(reels.length).fill(false);
 
 // todo: call with "force" to update the first time
 const updatePosition = (i: number, newPosition: number) => {
@@ -55,9 +55,14 @@ const updatePosition = (i: number, newPosition: number) => {
 };
 
 let lastTimestamp = 0;
+let isTicking = false;
+
 const tick = (timestamp: number) => {
+  if (!isTicking) return;
+
   const timeDelta = (timestamp - lastTimestamp) / 1000;
   const timeFactor = timeDelta * 60;
+  const frictionFactor = Math.pow(0.9, timeFactor);
   reels.forEach(([a, b], i) => {
     if (velocities[i] < 0) {
       // if velocity is negative, bring it back to zero.
@@ -66,7 +71,7 @@ const tick = (timestamp: number) => {
       velocities[i] = 0;
     } else {
       // apply friction
-      velocities[i] *= Math.pow(0.9, timeFactor);
+      velocities[i] *= frictionFactor;
     }
 
     if (!held[i]) {
@@ -88,8 +93,22 @@ const tick = (timestamp: number) => {
   });
 
   lastTimestamp = timestamp;
-  // TODO: eventually we can disable this when all velocities are 0.
-  requestAnimationFrame(tick);
+
+  // If all reels have stopped moving and none are held, stop the loop.
+  if (velocities.every((v) => v === 0) && !held.some((h) => h)) {
+    isTicking = false;
+  } else {
+    requestAnimationFrame(tick);
+  }
+};
+
+const startTicking = () => {
+  if (!isTicking) {
+    isTicking = true;
+    // Reset timestamp to avoid a large jump after a pause
+    lastTimestamp = performance.now();
+    requestAnimationFrame(tick);
+  }
 };
 
 controller.addEventListener("click", () => {
@@ -97,6 +116,7 @@ controller.addEventListener("click", () => {
     // todo: this means that copying the result will need to await all velocities === 0
     setTimeout(() => {
       velocities[i] += 5;
+      startTicking();
     }, (i === 0 ? i : i - 1) * 50);
   }
 });
@@ -122,12 +142,13 @@ controller.addEventListener("wheel", (event) => {
     for (let i = 0; i < reels.length; i++) {
       // checkme: do we need to clear these timeouts if we start scrolling again?
       // or should we assume it just gets overwritten?
-      setTimeout(() => (held[i] = false), i * 50);
+      setTimeout(() => {
+        startTicking();
+        held[i] = false;
+      }, i * 50);
     }
     totalScroll = 0;
   }, 50);
 });
 
 // TODO: add touch support.
-
-requestAnimationFrame(tick);
