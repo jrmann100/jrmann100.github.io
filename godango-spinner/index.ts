@@ -19,6 +19,14 @@ if (controller === null) {
   throw new Error("Controller element not found");
 }
 
+const reelCount = reels.length;
+const velocities = new Array(reelCount).fill(0);
+const positions = new Array(reelCount).fill(0);
+let movingReels = 0;
+let lastWheelTime = 0;
+let lastTickTime = 0;
+let isTicking = false;
+
 const between = (progress: number, ...stops: number[]) => {
   const position = progress * (stops.length - 1);
   const lowerValue = stops[Math.floor(position)];
@@ -35,10 +43,6 @@ const update = (face: HTMLElement, progress: number, a = false) => {
   face.style.opacity = `${between(p, 0, 1, 0)}`;
 };
 
-const velocities = new Array(reels.length).fill(0);
-const positions = new Array(reels.length).fill(0);
-const held = new Array(reels.length).fill(false);
-
 // todo: call with "force" to update the first time
 const updatePosition = (i: number, newPosition: number) => {
   const [a, b] = reels[i];
@@ -54,16 +58,13 @@ const updatePosition = (i: number, newPosition: number) => {
   update(b, positions[i], false);
 };
 
-let lastTimestamp = 0;
-let isTicking = false;
-
 const tick = (timestamp: number) => {
   if (!isTicking) return;
 
-  const timeDelta = (timestamp - lastTimestamp) / 1000;
+  const timeDelta = (timestamp - lastTickTime) / 1000;
   const timeFactor = timeDelta * 60;
   const frictionFactor = Math.pow(0.9, timeFactor);
-  reels.forEach(([a, b], i) => {
+  reels.forEach((_, i) => {
     if (velocities[i] < 0) {
       // if velocity is negative, bring it back to zero.
       // checkme: there is probably a more elegant way to do this!
@@ -74,15 +75,21 @@ const tick = (timestamp: number) => {
       velocities[i] *= frictionFactor;
     }
 
-    if (!held[i]) {
+    if (timestamp - lastWheelTime > (i === 0 ? 1 : i) * 50) {
       const nearestSnap = Math.round(positions[i] * 2) / 2;
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
       if (velocities[i] < 2) {
+        if (velocities[i] > 0) {
+          movingReels++;
+        }
         velocities[i] += (nearestSnap - positions[i]) * 8 * timeFactor;
       }
 
       if (Math.abs(velocities[i]) < 1e-2) {
+        if (velocities[i] !== 0) {
+          movingReels--;
+        }
         velocities[i] = 0;
         positions[i] = nearestSnap;
       }
@@ -92,10 +99,10 @@ const tick = (timestamp: number) => {
     updatePosition(i, newPosition);
   });
 
-  lastTimestamp = timestamp;
+  lastTickTime = timestamp;
 
   // If all reels have stopped moving and none are held, stop the loop.
-  if (velocities.every((v) => v === 0) && !held.some((h) => h)) {
+  if (movingReels === 0 && timestamp - lastWheelTime > reelCount * 50) {
     isTicking = false;
   } else {
     requestAnimationFrame(tick);
@@ -106,49 +113,39 @@ const startTicking = () => {
   if (!isTicking) {
     isTicking = true;
     // Reset timestamp to avoid a large jump after a pause
-    lastTimestamp = performance.now();
+    lastTickTime = performance.now();
     requestAnimationFrame(tick);
   }
 };
 
 controller.addEventListener("click", () => {
-  for (let i = 0; i < reels.length; i++) {
+  for (let i = 0; i < reelCount; i++) {
     // todo: this means that copying the result will need to await all velocities === 0
     setTimeout(() => {
+      if (velocities[i] === 0) {
+        movingReels++;
+      }
       velocities[i] += 5;
       startTicking();
     }, (i === 0 ? i : i - 1) * 50);
   }
 });
 
-let scrollTimeout: number | undefined = undefined;
-let totalScroll = 0;
 controller.addEventListener("wheel", (event) => {
   event.preventDefault();
   if (event.deltaY >= 0) {
     return;
   }
-  // checkme: is this costly?
-  held.fill(true);
-  totalScroll -= event.deltaY * 4;
-  for (let i = 0; i < reels.length; i++) {
-    if (totalScroll < i * 50) {
-      continue;
-    }
+  if (!isTicking) {
+    startTicking();
+  }
+  lastWheelTime = performance.now();
+  for (let i = 0; i < reelCount; i++) {
     updatePosition(i, Math.max(positions[i] - event.deltaY / 1000, 0));
   }
-  clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => {
-    for (let i = 0; i < reels.length; i++) {
-      // checkme: do we need to clear these timeouts if we start scrolling again?
-      // or should we assume it just gets overwritten?
-      setTimeout(() => {
-        startTicking();
-        held[i] = false;
-      }, i * 50);
-    }
-    totalScroll = 0;
-  }, 50);
 });
+
+// quickly init the reels
+startTicking();
 
 // TODO: add touch support.
