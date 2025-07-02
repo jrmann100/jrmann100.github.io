@@ -1,81 +1,35 @@
 <!--{{head}}-->
 <title>~jordan/utilities/godango</title>
 <meta name="description" content="A dice-based passphrase generator designed by Jordan Mann" />
-<style>
-  header nav li.godango,
-  header nav li.utilities {
-    font-weight: 900;
-  }
-
-  /* todo mobile format */
-  summary {
-    width: fit-content;
-    cursor: pointer;
-  }
-
-  form.godango {
-    display: flex;
-    flex-flow: column;
-    row-gap: 1rem;
-  }
-
-  fieldset[name='result'] {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    border: 0;
-    padding: 0;
-  }
-
-  input[name='output'] {
-    flex: 1;
-    font-family: monospace;
-  }
-
-  details.options > summary::before {
-    content: 'show ';
-  }
-
-  details.options[open] > summary::before {
-    content: 'hide ';
-  }
-
-  textarea,
-  .stats input {
-    opacity: 0.5;
-    padding: 0.2rem;
-  }
-  textarea::placeholder {
-    font-style: italic;
-  }
-
-  textarea {
-    resize: none;
-    line-height: 200%;
-  }
-
-  textarea:not(:placeholder-shown) {
-    font-family: monospace;
-  }
-
-  fieldset[name='options'] {
-    display: flex;
-    flex-flow: column;
-    gap: 1rem;
-  }
-
-  fieldset[name='sauce'] {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    gap: 0.5rem;
-  }
-</style>
+<link rel="stylesheet" href="/static/apps/godango/godango.css" />
 <!--{{/head}}-->
 <!--{{title}}-->
 <small style="font-weight: normal; display: inline-block">utilities/</small>godango
 <!--{{/title}}-->
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
+<div class="machine">
+  <div class="reel controller" role="button" tabindex="0">
+    <div class="face">SPIN</div>
+    <div class="face">SPIN</div>
+  </div>
+  <div class="reel">
+    <div class="face">🍒</div>
+    <div class="face">🍋</div>
+  </div>
+  <div class="reel">
+    <div class="face">🍒</div>
+    <div class="face">🍋</div>
+  </div>
+  <div class="reel">
+    <div class="face">🍒</div>
+    <div class="face">🍋</div>
+  </div>
+  <div class="reel">
+    <div class="face">🍒</div>
+    <div class="face">🍋</div>
+  </div>
+</div>
 <form class="godango" data-needs-js hidden>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
@@ -139,7 +93,7 @@
   >
 </form>
 <script type="module">
-  import { main } from '/static/js/godango.js';
+  import main from '/static/apps/godango/godango.js';
   main();
 </script>
 <!--{{/main}}-->

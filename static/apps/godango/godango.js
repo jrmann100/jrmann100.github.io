@@ -2,6 +2,9 @@
  * @file Godango helper. Generates word dumplings.
  * @author Jordan Mann
  */
+
+import machineMain from './machine.js';
+
 const storageKey = 'godango-defaults';
 
 /**
@@ -117,7 +120,8 @@ function entropy() {
 /**
  * Make UI responsive.
  */
-export async function main() {
+export default async function main() {
+  machineMain();
   /**
    * Word list. Make sure to cache this.
    * @see {@link https://www.eff.org/dice}

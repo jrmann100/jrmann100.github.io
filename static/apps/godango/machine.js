@@ -6,15 +6,15 @@
 /**
  * Container element for the reels.
  */
-const machine = document.querySelector(".machine");
+const machine = document.querySelector('.machine');
 if (machine === null) {
-  throw new Error("Machine element not found");
+  throw new Error('Machine element not found');
 }
 
 /**
  * The reels of the machine.
  */
-const reels = [...machine.querySelectorAll(".reel")];
+const reels = [...machine.querySelectorAll('.reel')];
 
 /**
  * The controller reel is the first reel.
@@ -27,9 +27,9 @@ const controller = reels[0];
  * The faces of the machine, grouped in pairs by reel.
  */
 const faces = reels.map((reel) => {
-  const faces = [...reel.querySelectorAll(".face")];
+  const faces = [...reel.querySelectorAll('.face')];
   if (faces.length !== 2) {
-    throw new Error("Each reel must have exactly two faces");
+    throw new Error('Each reel must have exactly two faces');
   }
   const [a, b] = faces;
   return [a, b];
@@ -258,10 +258,7 @@ const handleAnimationFrame = (timestamp) => {
 
   // limit the time delta to avoid large jumps;
   // e.g., if the page was momentarily inactive.
-  const timeDelta = Math.min(
-    (timestamp - lastFrameTime) / 1000,
-    MAX_FRAME_TIME
-  );
+  const timeDelta = Math.min((timestamp - lastFrameTime) / 1000, MAX_FRAME_TIME);
   // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
   const timeFactor = timeDelta * 60;
   const frictionFactor = Math.pow(FRICTION_FACTOR, timeFactor);
@@ -301,10 +298,7 @@ const handleAnimationFrame = (timestamp) => {
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
       if (velocities[i] < SPRING_THRESHOLD) {
-        addVelocity(
-          i,
-          (nearestSnap - positions[i]) * FRICTION_FACTOR * timeFactor
-        );
+        addVelocity(i, (nearestSnap - positions[i]) * FRICTION_FACTOR * timeFactor);
       }
     }
 
@@ -314,10 +308,7 @@ const handleAnimationFrame = (timestamp) => {
   lastFrameTime = timestamp;
 
   // if all reels have stopped moving and none are held, pause the animation loop.
-  if (
-    movingReels === 0 &&
-    timestamp - lastWheelTime > reelCount * WHEEL_END_OFFSET
-  ) {
+  if (movingReels === 0 && timestamp - lastWheelTime > reelCount * WHEEL_END_OFFSET) {
     animationRunning = false;
   } else {
     requestAnimationFrame(handleAnimationFrame);
@@ -336,25 +327,27 @@ const resumeAnimation = () => {
   }
 };
 
-controller.addEventListener("click", () => {
-  clicks.push([NEVER, 0]);
-  resumeAnimation();
-});
+export default function main() {
+  controller.addEventListener('click', () => {
+    clicks.push([NEVER, 0]);
+    resumeAnimation();
+  });
 
-// TODO: add touch support.
-controller.addEventListener("wheel", (event) => {
-  event.preventDefault();
-  if (event.deltaY >= 0) {
-    return;
-  }
-  // safe to call every time; there's an embedded check to prevent multiple RAF calls.
-  resumeAnimation();
-  lastWheelTime = performance.now();
-  // manually scroll the reels.
-  for (let i = 0; i < reelCount; i++) {
-    updatePosition(i, Math.max(positions[i] - event.deltaY / 1000, 0));
-  }
-});
+  // TODO: add touch support.
+  controller.addEventListener('wheel', (event) => {
+    event.preventDefault();
+    if (event.deltaY >= 0) {
+      return;
+    }
+    // safe to call every time; there's an embedded check to prevent multiple RAF calls.
+    resumeAnimation();
+    lastWheelTime = performance.now();
+    // manually scroll the reels.
+    for (let i = 0; i < reelCount; i++) {
+      updatePosition(i, Math.max(positions[i] - event.deltaY / 1000, 0));
+    }
+  });
 
-// quickly init the reels - should just loop once and then terminate since there is no motion.
-resumeAnimation();
+  // quickly init the reels - should just loop once and then terminate since there is no motion.
+  resumeAnimation();
+}

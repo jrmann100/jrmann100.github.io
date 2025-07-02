@@ -14,7 +14,7 @@
     "passphrase": "liveserver"
   },
   "liveServer.settings.donotVerifyTags": true,
-  "liveServer.settings.host": "0.0.0.0",
+  "liveServer.settings.host": "localhost",
   "liveServer.settings.donotShowInfoMsg": true,
   "todo-tree.regex.regexCaseSensitive": false,
   "todo-tree.general.tags": ["FIXME", "TODO", "[ ]", "CHECKME", "DELME"],
