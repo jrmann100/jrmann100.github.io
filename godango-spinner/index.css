@@ -56,4 +56,5 @@ body {
   font-family: monospace;
   font-size: 1.5rem;
   /* border: 1px solid black; */
+  will-change: transform, transform-origin, opacity;
 }
