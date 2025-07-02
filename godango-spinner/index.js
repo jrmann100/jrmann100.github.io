@@ -1,4 +1,9 @@
 /**
+ * @file Operates a set of spinning reels with randomized faces using spring physics.
+ * @author Jordan Mann
+ */
+
+/**
  * Container element for the reels.
  */
 const machine = document.querySelector(".machine");
@@ -342,7 +347,7 @@ controller.addEventListener("wheel", (event) => {
   if (event.deltaY >= 0) {
     return;
   }
-  // safe to call every time, there's an embedded check to prevent multiple RAF calls.
+  // safe to call every time; there's an embedded check to prevent multiple RAF calls.
   resumeAnimation();
   lastWheelTime = performance.now();
   // manually scroll the reels.
