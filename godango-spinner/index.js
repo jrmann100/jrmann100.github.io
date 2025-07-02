@@ -114,7 +114,7 @@ const clearVelocity = (reelIndex) => {
  */
 const renderFace = (face, position, a = false) => {
   // the position of the second face is offset by 0.5
-  const p = (position + (a ? 0.5 : 0)) % 1;
+  const p = Math.abs((position + (a ? 0.5 : 0)) % 1);
   face.style.transform = `translateY(${
     // go from all the way above the reel to all the way below it
     between(p, -100, 0, 100) - Number(!a) * 100
