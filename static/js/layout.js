@@ -5,6 +5,6 @@
 import './lib/face.js';
 import './lib/routing.js';
 import './lib/interactive.js';
+import checkNeeds from './lib/checkNeeds.js';
 
-// enable components which require javascript.
-document.querySelectorAll('[data-needs-js]').forEach((el) => el.removeAttribute('hidden'));
+checkNeeds();
