@@ -19,8 +19,8 @@ const reelCount = reels.length;
 const velocities = new Array(reelCount).fill(0);
 const positions = new Array(reelCount).fill(0);
 let movingReels = 0;
-let lastWheelTime = 0;
-let lastTickTime = 0;
+let lastWheelTime = -Infinity;
+let lastTickTime = -Infinity;
 let isTicking = false;
 // contains the timestamp a click started, and the next reel to be boosted.
 const clicks: [number, number][] = [];
@@ -48,11 +48,15 @@ const between: {
 };
 
 const addVelocity = (reelIndex: number, delta: number) => {
-  if (velocities[reelIndex] === 0 && delta > 0) {
-    movingReels++;
-  }
-  velocities[reelIndex] += delta;
+  if (delta === 0) return;
+
   if (velocities[reelIndex] === 0) {
+    velocities[reelIndex] = delta;
+    movingReels++;
+    return;
+  }
+
+  if ((velocities[reelIndex] += delta) === 0) {
     movingReels--;
   }
 };
@@ -62,9 +66,9 @@ const scaleVelocity = (reelIndex: number, factor: number) => {
 };
 
 const setVelocity = (reelIndex: number, newVelocity: number) => {
-  if (newVelocity > 0) {
+  if (velocities[reelIndex] === 0 && newVelocity !== 0) {
     movingReels++;
-  } else if (newVelocity === 0) {
+  } else if (velocities[reelIndex] !== 0 && newVelocity === 0) {
     movingReels--;
   }
   velocities[reelIndex] = newVelocity;
@@ -102,12 +106,19 @@ const tick = (timestamp: number) => {
   const frictionFactor = Math.pow(0.9, timeFactor);
 
   for (let i = 0; i < clicks.length; i++) {
-    // todo: replace all magic numbers
-    if (timestamp - clicks[i][0] > 50) {
-      clicks[i][0] = timestamp;
+    // immediately start the control reel and the first reel.
+    if (clicks[i][1] === 0) {
       addVelocity(clicks[i][1]++, 5);
+      addVelocity(clicks[i][1]++, 5);
+      clicks[i][0] = timestamp;
+    } else {
+      // todo: replace all magic numbers
+      if (timestamp - clicks[i][0] > 50) {
+        clicks[i][0] = timestamp;
+        addVelocity(clicks[i][1]++, 5);
+      }
     }
-    if (clicks[i][1] > reelCount) {
+    if (clicks[i][1] >= reelCount) {
       clicks.shift();
       i--;
     }
