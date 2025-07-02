@@ -5,11 +5,7 @@ if (machine === null) {
 
 const reels = [...machine.querySelectorAll<HTMLDivElement>(".reel")].map(
   (reel) => {
-    const a = reel.querySelector<HTMLDivElement>(".face:nth-child(1)");
-    const b = reel.querySelector<HTMLDivElement>(".face:nth-child(2)");
-    if (a === null || b === null) {
-      throw new Error("Reel faces not found");
-    }
+    const [a, b] = reel.querySelectorAll<HTMLElement>(".face");
     return [a, b];
   }
 );
@@ -27,11 +23,26 @@ let lastWheelTime = 0;
 let lastTickTime = 0;
 let isTicking = false;
 
-const between = (progress: number, ...stops: number[]) => {
-  const position = progress * (stops.length - 1);
-  const lowerValue = stops[Math.floor(position)];
-  const upperValue = stops[Math.ceil(position)];
-  return lowerValue + (upperValue - lowerValue) * (position % 1);
+const between: {
+  (
+    progress: number,
+    firstStop: number,
+    secondStop: number,
+    thirdStop: number
+  ): number;
+  (progress: number, start: number, end: number): number;
+} = (
+  progress: number,
+  firstStop: number,
+  secondStop: number,
+  thirdStop?: number
+) => {
+  if (thirdStop === undefined) {
+    return firstStop + (secondStop - firstStop) * progress;
+  } else if (progress < 0.5) {
+    return firstStop + (secondStop - firstStop) * (progress * 2);
+  }
+  return secondStop + (thirdStop - secondStop) * ((progress - 0.5) * 2);
 };
 
 const update = (face: HTMLElement, progress: number, a = false) => {
