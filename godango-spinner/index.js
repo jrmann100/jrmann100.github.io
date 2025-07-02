@@ -238,7 +238,7 @@ const handleAnimationFrame = (timestamp) => {
 
   faces.forEach((_, i) => {
     // apply friction, and resist backward motion.
-    scaleVelocity(i, frictionFactor * (velocities[i] < 0 ? 0.6 : 1));
+    scaleVelocity(i, frictionFactor * (velocities[i] < 0 ? 0.4 : 1));
 
     // manual movement (scrolling) overrides the spring.
     // once there has been 50ms of no manual movement,
