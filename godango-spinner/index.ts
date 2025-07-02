@@ -22,6 +22,8 @@ let movingReels = 0;
 let lastWheelTime = 0;
 let lastTickTime = 0;
 let isTicking = false;
+// contains the timestamp a click started, and the next reel to be boosted.
+const clicks: [number, number][] = [];
 
 const between: {
   (
@@ -45,7 +47,30 @@ const between: {
   return secondStop + (thirdStop - secondStop) * ((progress - 0.5) * 2);
 };
 
-const update = (face: HTMLElement, progress: number, a = false) => {
+const addVelocity = (reelIndex: number, delta: number) => {
+  if (velocities[reelIndex] === 0 && delta > 0) {
+    movingReels++;
+  }
+  velocities[reelIndex] += delta;
+  if (velocities[reelIndex] === 0) {
+    movingReels--;
+  }
+};
+
+const scaleVelocity = (reelIndex: number, factor: number) => {
+  velocities[reelIndex] *= factor;
+};
+
+const setVelocity = (reelIndex: number, newVelocity: number) => {
+  if (newVelocity > 0) {
+    movingReels++;
+  } else if (newVelocity === 0) {
+    movingReels--;
+  }
+  velocities[reelIndex] = newVelocity;
+};
+
+const renderFace = (face: HTMLElement, progress: number, a = false) => {
   const p = (progress + (a ? 0 : 0.5)) % 1;
   face.style.transform = `translateY(${
     between(p, -100, 0, 100) - Number(!a) * 100
@@ -65,8 +90,8 @@ const updatePosition = (i: number, newPosition: number) => {
     }
   }
   positions[i] = newPosition % 1;
-  update(a, positions[i], true);
-  update(b, positions[i], false);
+  renderFace(a, positions[i], true);
+  renderFace(b, positions[i], false);
 };
 
 const tick = (timestamp: number) => {
@@ -75,15 +100,28 @@ const tick = (timestamp: number) => {
   const timeDelta = (timestamp - lastTickTime) / 1000;
   const timeFactor = timeDelta * 60;
   const frictionFactor = Math.pow(0.9, timeFactor);
+
+  for (let i = 0; i < clicks.length; i++) {
+    // todo: replace all magic numbers
+    if (timestamp - clicks[i][0] > 50) {
+      clicks[i][0] = timestamp;
+      addVelocity(clicks[i][1]++, 5);
+    }
+    if (clicks[i][1] > reelCount) {
+      clicks.shift();
+      i--;
+    }
+  }
+
   reels.forEach((_, i) => {
     if (velocities[i] < 0) {
       // if velocity is negative, bring it back to zero.
       // checkme: there is probably a more elegant way to do this!
       // like having the spring apply a weaker backwards force in the first place.
-      velocities[i] = 0;
+      setVelocity(i, 0);
     } else {
       // apply friction
-      velocities[i] *= frictionFactor;
+      scaleVelocity(i, frictionFactor);
     }
 
     if (timestamp - lastWheelTime > (i === 0 ? 1 : i) * 50) {
@@ -91,17 +129,11 @@ const tick = (timestamp: number) => {
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
       if (velocities[i] < 2) {
-        if (velocities[i] > 0) {
-          movingReels++;
-        }
-        velocities[i] += (nearestSnap - positions[i]) * 8 * timeFactor;
+        addVelocity(i, (nearestSnap - positions[i]) * 8 * timeFactor);
       }
 
       if (Math.abs(velocities[i]) < 1e-2) {
-        if (velocities[i] !== 0) {
-          movingReels--;
-        }
-        velocities[i] = 0;
+        setVelocity(i, 0);
         positions[i] = nearestSnap;
       }
     }
@@ -130,16 +162,8 @@ const startTicking = () => {
 };
 
 controller.addEventListener("click", () => {
-  for (let i = 0; i < reelCount; i++) {
-    // todo: this means that copying the result will need to await all velocities === 0
-    setTimeout(() => {
-      if (velocities[i] === 0) {
-        movingReels++;
-      }
-      velocities[i] += 5;
-      startTicking();
-    }, (i === 0 ? i : i - 1) * 50);
-  }
+  clicks.push([performance.now(), 0]);
+  startTicking();
 });
 
 controller.addEventListener("wheel", (event) => {
