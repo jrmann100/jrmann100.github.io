@@ -61,15 +61,17 @@ const positions = new Array(reelCount).fill(0);
  */
 let movingReels = 0;
 
+const NEVER = -Infinity;
+
 /**
  * The time the last wheel event was triggered, or -Infinity if no wheel event has occurred.
  */
-let lastWheelTime = -Infinity;
+let lastWheelTime = NEVER;
 
 /**
  * The time the last animation frame was processed, or -Infinity if no frames have been processed.
  */
-let lastFrameTime = -Infinity;
+let lastFrameTime = NEVER;
 
 /**
  * Whether the animation loop is currently running.
@@ -160,6 +162,8 @@ const clearVelocity = (reelIndex) => {
   }
 };
 
+const MAX_TILT = 50;
+
 /**
  * Update the position of a reel face.
  * @param {HTMLElement} face the element to update.
@@ -173,7 +177,9 @@ const renderFace = (face, position, a = false) => {
   face.style.transform = `translateY(${
     // go from all the way above the reel to all the way below it
     between(p, -100, 0, 100) - Number(!a) * 100
-  }%) rotateX(${between(p, 50, -50)}deg)`;
+  }%) rotateX(${between(p, MAX_TILT, -MAX_TILT)}deg)`;
+  // when a face is entering, its bottom edge should be at the top;
+  // when it is exiting, its top edge should be at the bottom.
   face.style.transformOrigin = `${between(p, 100, 0)}% 50%`;
   face.style.opacity = `${between(p, 0, 1, 0)}`;
 };
@@ -197,8 +203,45 @@ const updatePosition = (i, newPosition) => {
   renderFace(b, positions[i], false);
 };
 
-const START_OFFSET = 50;
-const END_OFFSET = 50;
+/**
+ * Delay between boosting each reel after a click.
+ */
+const CLICK_START_OFFSET = 50;
+
+/**
+ * Delay between re-engaging the spring on each reel after manual scrolling.
+ */
+const WHEEL_END_OFFSET = 50;
+
+/**
+ * The baseline factor by which the velocity of a reel is reduced every 1/60th of a second.
+ */
+const FRICTION_FACTOR = 0.9;
+
+/**
+ * The factor by which the velocity of a reel is reduced when it is moving backward.
+ */
+const RESIST_FACTOR = 0.4;
+
+/**
+ * The amount of velocity added to a reel when it is boosted.
+ */
+const BOOST_AMOUNT = 5;
+
+/**
+ * The force with which the spring pulls the reel towards the nearest stop.
+ */
+const SPRING_FACTOR = 8;
+
+/**
+ * The velocity at which the wheel is moving too fast for the spring to engage.
+ */
+const SPRING_THRESHOLD = 2;
+
+/**
+ * Maximum time delta for a single animation frame, in seconds.
+ */
+const MAX_FRAME_TIME = 0.1;
 
 /**
  * Update the state of the machine until all reels have stabilized.
@@ -210,22 +253,25 @@ const handleAnimationFrame = (timestamp) => {
 
   // limit the time delta to avoid large jumps;
   // e.g., if the page was momentarily inactive.
-  const timeDelta = Math.min((timestamp - lastFrameTime) / 1000, 0.1);
+  const timeDelta = Math.min(
+    (timestamp - lastFrameTime) / 1000,
+    MAX_FRAME_TIME
+  );
+  // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
   const timeFactor = timeDelta * 60;
-  const frictionFactor = Math.pow(0.9, timeFactor);
+  const frictionFactor = Math.pow(FRICTION_FACTOR, timeFactor);
 
   for (let i = 0; i < clicks.length; i++) {
     // immediately boost the control reel and the first reel.
     if (clicks[i][1] === 0) {
-      addVelocity(clicks[i][1]++, 5);
-      addVelocity(clicks[i][1]++, 5);
+      addVelocity(clicks[i][1]++, BOOST_AMOUNT);
+      addVelocity(clicks[i][1]++, BOOST_AMOUNT);
       clicks[i][0] = timestamp;
-    } else {
-      // for every following reel, wait START_OFFSET ms after the last reel was boosted.
-      if (timestamp - clicks[i][0] > START_OFFSET) {
-        clicks[i][0] = timestamp;
-        addVelocity(clicks[i][1]++, 5);
-      }
+    }
+    // for every following reel, wait START_OFFSET ms after the last reel was boosted.
+    else if (timestamp - clicks[i][0] > CLICK_START_OFFSET) {
+      clicks[i][0] = timestamp;
+      addVelocity(clicks[i][1]++, BOOST_AMOUNT);
     }
     // remove this entry if there are no more reels to boost.
     // clicks is a queue and all clicks take the same amount of time to process,
@@ -238,18 +284,22 @@ const handleAnimationFrame = (timestamp) => {
 
   faces.forEach((_, i) => {
     // apply friction, and resist backward motion.
-    scaleVelocity(i, frictionFactor * (velocities[i] < 0 ? 0.4 : 1));
+    scaleVelocity(i, frictionFactor * (velocities[i] < 0 ? RESIST_FACTOR : 1));
 
     // manual movement (scrolling) overrides the spring.
-    // once there has been 50ms of no manual movement,
-    // the springs start to engage one at a time;
+    // once there has been END_OFFSET ms of no manual movement,
+    // the springs start to engage one at a time every END_OFFSET ms,
     // except for the controller (0th) reel, which engages at the same time as the first reel.
-    if (timestamp - lastWheelTime > (i === 0 ? 1 : i) * END_OFFSET) {
+    if (timestamp - lastWheelTime > (i === 0 ? 1 : i) * WHEEL_END_OFFSET) {
+      // round to nearest 0.5
       const nearestSnap = Math.round(positions[i] * 2) / 2;
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
-      if (velocities[i] < 2) {
-        addVelocity(i, (nearestSnap - positions[i]) * 8 * timeFactor);
+      if (velocities[i] < SPRING_THRESHOLD) {
+        addVelocity(
+          i,
+          (nearestSnap - positions[i]) * FRICTION_FACTOR * timeFactor
+        );
       }
     }
 
@@ -258,8 +308,11 @@ const handleAnimationFrame = (timestamp) => {
 
   lastFrameTime = timestamp;
 
-  // if all reels have stopped moving and none are held, stop the loop.
-  if (movingReels === 0 && timestamp - lastWheelTime > reelCount * 50) {
+  // if all reels have stopped moving and none are held, pause the animation loop.
+  if (
+    movingReels === 0 &&
+    timestamp - lastWheelTime > reelCount * WHEEL_END_OFFSET
+  ) {
     animationRunning = false;
   } else {
     requestAnimationFrame(handleAnimationFrame);
@@ -279,7 +332,7 @@ const resumeAnimation = () => {
 };
 
 controller.addEventListener("click", () => {
-  clicks.push([-Infinity, 0]);
+  clicks.push([NEVER, 0]);
   resumeAnimation();
 });
 
