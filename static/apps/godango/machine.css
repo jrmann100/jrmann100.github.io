@@ -3,16 +3,21 @@
   display: flex;
 
   .reel {
+    /* todo: signature mono font */
     display: flex;
     flex-flow: column;
     transform-style: preserve-3d;
     perspective: 100px;
-    width: 10rem;
     align-items: center;
     height: 3rem;
     overflow: hidden;
     border: var(--default-border);
     user-select: none;
+  }
+
+  .reel:not(.controller) {
+    font-family: monospace;
+    flex: 0 0 11ch;
   }
 
   .controller {
@@ -27,6 +32,7 @@
 
   .controller .face {
     width: fit-content;
+    padding: 0.5rem 1rem;
   }
 
   .reel:not(.controller):not(:last-child) {
@@ -34,17 +40,11 @@
   }
 
   .face {
-    width: 9em;
     height: 100%;
     flex-shrink: 0;
-    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     will-change: transform, transform-origin, opacity;
-  }
-
-  .reel:not(.controller) {
-    font-family: monospace;
   }
 }

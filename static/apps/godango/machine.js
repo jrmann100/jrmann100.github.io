@@ -3,6 +3,8 @@
  * @author Jordan Mann
  */
 
+import { word } from './math.js';
+
 /**
  * Container element for the reels.
  */
@@ -13,8 +15,9 @@ if (machine === null) {
 
 /**
  * The reels of the machine.
+ * @type {HTMLElement[]}
  */
-const reels = [...machine.querySelectorAll('.reel')];
+const reels = Array.from(machine.querySelectorAll('.reel'));
 
 /**
  * The controller reel is the first reel.
@@ -25,13 +28,17 @@ const controller = reels[0];
 
 /**
  * The faces of the machine, grouped in pairs by reel.
+ * @type {[HTMLElement, HTMLElement][]}
  */
 const faces = reels.map((reel) => {
-  const faces = [...reel.querySelectorAll('.face')];
-  if (faces.length !== 2) {
+  /**
+   * @type {HTMLElement[]}
+   */
+  const theseFaces = Array.from(reel.querySelectorAll('.face'));
+  if (theseFaces.length !== 2) {
     throw new Error('Each reel must have exactly two faces');
   }
-  const [a, b] = faces;
+  const [a, b] = theseFaces;
   return [a, b];
 });
 
@@ -90,20 +97,22 @@ let animationRunning = false;
 const clicks = [];
 
 /**
- * @overload
  * Calculates a value between two stops based on position.
+ * @overload
  * @param {number} position the position value between 0 and 1.
  * @param {number} start the first stop value.
  * @param {number} end the second stop value.
+ * @returns {number} the calculated value between the stops.
  */
 
 /**
- * @overload
  * Calculates a value between three stops based on position.
+ * @overload
  * @param {number} position the position value between 0 and 1.
  * @param {number} firstStop the first stop value.
  * @param {number} secondStop the second stop value.
  * @param {number} thirdStop the optional third stop value.
+ * @returns {number} the calculated value between the stops.
  */
 
 /**
@@ -173,7 +182,7 @@ const MAX_TILT = 50;
  * Update the position of a reel face.
  * @param {HTMLElement} face the element to update.
  * @param {number} position the position value between 0 and 1.
- * @param {boolean} [a=false] whether this is the first or the second face of the reel.
+ * @param {boolean} [a] whether this is the first or the second face of the reel.
  */
 const renderFace = (face, position, a = false) => {
   // the position of the second face is offset by 0.5
@@ -198,9 +207,9 @@ const updatePosition = (i, newPosition) => {
   const [a, b] = faces[i];
   if (i !== 0) {
     if (newPosition > 1) {
-      b.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      b.textContent = word();
     } else if (positions[i] < 0.5 && newPosition >= 0.5) {
-      a.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      a.textContent = word();
     }
   }
   positions[i] = newPosition % 1;
@@ -255,7 +264,6 @@ const MIN_ABS_VELOCITY = 0.01;
 
 /**
  * Update the state of the machine until all reels have stabilized.
- *
  * @type {FrameRequestCallback}
  */
 const handleAnimationFrame = (timestamp) => {
@@ -344,20 +352,28 @@ export default function main() {
   });
 
   // TODO: add touch support.
-  controller.addEventListener('wheel', (event) => {
-    event.preventDefault();
-    if (event.deltaY >= 0) {
-      return;
+  controller.addEventListener(
+    'wheel',
+    (
+      /** @type {WheelEvent} */
+      event
+    ) => {
+      event.preventDefault();
+      if (event.deltaY >= 0) {
+        return;
+      }
+      // safe to call every time; there's an embedded check to prevent multiple RAF calls.
+      resumeAnimation();
+      lastWheelTime = performance.now();
+      // manually scroll the reels.
+      for (let i = 0; i < reelCount; i++) {
+        updatePosition(i, Math.max(positions[i] - event.deltaY / 1000, 0));
+      }
     }
-    // safe to call every time; there's an embedded check to prevent multiple RAF calls.
-    resumeAnimation();
-    lastWheelTime = performance.now();
-    // manually scroll the reels.
-    for (let i = 0; i < reelCount; i++) {
-      updatePosition(i, Math.max(positions[i] - event.deltaY / 1000, 0));
-    }
-  });
+  );
 
   // quickly init the reels - should just loop once and then terminate since there is no motion.
   resumeAnimation();
 }
+
+// todo: machine loading state
