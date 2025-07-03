@@ -47,10 +47,12 @@ export default defineConfig([
         'warn',
         {
           require: {
-            ArrowFunctionExpression: true
+            ArrowFunctionExpression: true,
+            MethodDefinition: true
           }
         }
-      ]
+      ],
+      quotes: ['warn', 'single', { avoidEscape: true }]
     }
   },
   {
