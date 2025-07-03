@@ -54,7 +54,7 @@ function locateSections(text) {
   let contentIndex = 0;
   for (let region = regionRegex.exec(text); region !== null; region = regionRegex.exec(text)) {
     if (region.groups?.open.startsWith('_content_')) {
-      throw new Error(`region label cannot start with internally-used '_content_' header`);
+      throw new Error("region label cannot start with internally-used '_content_' header");
     }
     if (region.index !== 0) {
       sections.set(`_content_${contentIndex++}`, text.substring(0, region.index));

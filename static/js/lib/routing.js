@@ -146,4 +146,4 @@ window.layoutAddEventListener('popstate', (e) => {
 
 // make all links dynamic, enabling routing.
 dynamify(document.body);
-console.log(`🔀 routing module ready.`);
+console.log('🔀 routing module ready.');

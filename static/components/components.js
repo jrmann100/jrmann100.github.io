@@ -112,7 +112,7 @@ export default async function createComponent(
     );
 
     if (!isCustomElementConstructor(MaybeCustomElementConstructor)) {
-      throw new TypeError(`Expected a CustomElementConstructor`);
+      throw new TypeError('Expected a CustomElementConstructor');
     }
 
     CustomComponent = class extends MaybeCustomElementConstructor {

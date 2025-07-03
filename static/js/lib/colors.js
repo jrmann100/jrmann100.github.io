@@ -205,7 +205,7 @@ let current = new Proxy(
         document.documentElement.style.setProperty('--p-black', newValue[1]);
         document.documentElement.style.setProperty('--p-accent', newValue[2]);
         document
-          .querySelector(`meta[name="theme-color"]`)
+          .querySelector('meta[name="theme-color"]')
           ?.setAttribute('content', current.colors[0]);
       }
       save();
