@@ -56,3 +56,11 @@ we need to regulate header h1 sizes to presumably fixed width, so that there isn
 I want a simple sideways+fade transition! is that too much to ask? direction can change depending on back/forward nav
 
 clipboard app should be expanded into more of a suite. HTML should be reactive for sure!
+
+capitalize parameter descriptions
+
+invert spinner inner shadow
+
+dynamically registering components if they're only used on one page?
+
+important: component styles needed to be injected directly in shadow mode

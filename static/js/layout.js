@@ -8,3 +8,6 @@ import './lib/interactive.js';
 import checkNeeds from './lib/checkNeeds.js';
 
 checkNeeds();
+document.layoutAddEventListener('endnavigate', () => {
+  checkNeeds();
+});

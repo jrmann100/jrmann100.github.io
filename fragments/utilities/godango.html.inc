@@ -8,29 +8,31 @@
 <!--{{/title}}-->
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
-<div class="machine">
-  <div class="reel controller" role="button" tabindex="0">
-    <div class="face">SPIN</div>
-    <div class="face">SPIN</div>
+<nosecure-component/></nosecure-component>
+<ripple-component d="m 6.2220957,7.1841562 c -0.2961276,0.2444863 -0.2961276,0.6394258 0,0.8839121 l 2.9460895,2.4323267 -2.9460895,2.432327 c -0.2961276,0.244485 -0.2961276,0.639426 0,0.88391 0.296127,0.244491 0.774487,0.244491 1.0706148,0 l 3.4851945,-2.877416 c 0.296127,-0.244486 0.296127,-0.639425 0,-0.883912 L 7.2927105,7.1778872 C 7.004176,6.9396697 6.5182227,6.9396697 6.2220957,7.1841562 Z M 21,3 H 3 C 1.9,3 1,3.9 1,5 v 14 c 0,1.1 0.9,2 2,2 h 18 c 1.1,0 2,-0.9 2,-2 V 5 C 23,3.9 22.1,3 21,3 Z M 20,19 H 4 C 3.45,19 3,18.55 3,18 V 6 C 3,5.45 3.45,5 4,5 h 10.5 v 1.5 c 0,0.55 0.45,1 1,1 H 21 V 18 c 0,0.55 -0.45,1 -1,1 z" text="Shell"></ripple-component>
+<form class="godango" data-needs-secure hidden>
+  <div class="godango-machine">
+    <div class="buttonlike reel controller" role="button" tabindex="0">
+      <div class="face">SPIN</div>
+      <div class="face">SPIN</div>
+    </div>
+    <div class="reel">
+      <div class="face">🍒</div>
+      <div class="face">🍋</div>
+    </div>
+    <div class="reel">
+      <div class="face">🍒</div>
+      <div class="face">🍋</div>
+    </div>
+    <div class="reel">
+      <div class="face">🍒</div>
+      <div class="face">🍋</div>
+    </div>
+    <div class="reel">
+      <div class="face">🍒</div>
+      <div class="face">🍋</div>
+    </div>
   </div>
-  <div class="reel">
-    <div class="face">🍒</div>
-    <div class="face">🍋</div>
-  </div>
-  <div class="reel">
-    <div class="face">🍒</div>
-    <div class="face">🍋</div>
-  </div>
-  <div class="reel">
-    <div class="face">🍒</div>
-    <div class="face">🍋</div>
-  </div>
-  <div class="reel">
-    <div class="face">🍒</div>
-    <div class="face">🍋</div>
-  </div>
-</div>
-<form class="godango" data-needs-js hidden>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
     <label>length <input type="text" size="3" name="length" disabled /> chars</label>

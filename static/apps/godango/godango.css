@@ -11,7 +11,7 @@ summary {
   cursor: pointer;
 }
 
-form.godango {
+form.godango:not([hidden]) {
   display: flex;
   flex-flow: column;
   row-gap: 1rem;

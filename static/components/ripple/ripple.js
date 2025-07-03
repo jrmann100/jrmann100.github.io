@@ -27,7 +27,7 @@ export class RipplingCard extends HTMLElement {
   }
 
   /** Instantiate, append, and wire up content. */
-  constructor() {
+  constructor(_content) {
     super();
     /** Shadow root, into which we can insert content. */
     const shadow = this.attachShadow({
@@ -223,3 +223,5 @@ export class RipplingCard extends HTMLElement {
     this.deactivate(this.wrapper);
   }
 }
+
+export default RipplingCard;

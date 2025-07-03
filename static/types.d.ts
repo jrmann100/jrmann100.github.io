@@ -65,6 +65,15 @@ interface ColorScheme {
    */
   colors: string[];
 }
+/** todo */
+
+interface ComponentConstructor<T extends HTMLElement = HTMLElement> {
+  /**
+   * Creates a new component instance.
+   * @param templateContent the template content to use for this component.
+   */
+  new (templateContent?: DocumentFragment): T;
+}
 
 /**
  * Switcher; a very fancy radio list.

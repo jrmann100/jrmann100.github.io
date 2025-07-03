@@ -170,17 +170,6 @@ export default async function main() {
   /** @type {HTMLInputElement | null} */
   const sauceInput = form.querySelector('input[name=sauce-value]');
 
-  if (!window.crypto) {
-    const warning = document.createElement('details');
-    warning.style.color = 'orange';
-    warning.innerText =
-      "Your browser doesn't support Web Crypto. Passwords generated may not be cryptographically secure (we can't make them random enough).";
-    const summary = document.createElement('summary');
-    summary.textContent = '⚠️ unsafe mode';
-    warning.appendChild(summary);
-    document.querySelector('main')?.insertAdjacentElement('afterbegin', warning);
-  }
-
   if (editButton === null) {
     throw new Error('could not find the edit button');
   }

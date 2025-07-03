@@ -6,7 +6,7 @@
 /**
  * Container element for the reels.
  */
-const machine = document.querySelector('.machine');
+const machine = document.querySelector('.godango-machine');
 if (machine === null) {
   throw new Error('Machine element not found');
 }
@@ -249,11 +249,17 @@ const SPRING_THRESHOLD = 2;
 const MAX_FRAME_TIME = 0.1;
 
 /**
+ * The minimum velocity at which a reel is considered moving.
+ */
+const MIN_ABS_VELOCITY = 0.01;
+
+/**
  * Update the state of the machine until all reels have stabilized.
  *
  * @type {FrameRequestCallback}
  */
 const handleAnimationFrame = (timestamp) => {
+  // console.log(`Animation frame at ${timestamp} ms`, velocities);
   if (!animationRunning) return;
 
   // limit the time delta to avoid large jumps;
@@ -288,17 +294,21 @@ const handleAnimationFrame = (timestamp) => {
     // apply friction, and resist backward motion.
     scaleVelocity(i, frictionFactor * (velocities[i] < 0 ? RESIST_FACTOR : 1));
 
-    // manual movement (scrolling) overrides the spring.
-    // once there has been END_OFFSET ms of no manual movement,
-    // the springs start to engage one at a time every END_OFFSET ms,
-    // except for the controller (0th) reel, which engages at the same time as the first reel.
     if (timestamp - lastWheelTime > (i === 0 ? 1 : i) * WHEEL_END_OFFSET) {
+      // manual movement (scrolling) overrides the spring.
+      // once there has been END_OFFSET ms of no manual movement,
+      // the springs start to engage one at a time every END_OFFSET ms,
+      // except for the controller (0th) reel, which engages at the same time as the first reel.
       // round to nearest 0.5
       const nearestSnap = Math.round(positions[i] * 2) / 2;
       // the spring can only engage if the velocity is low enough;
       // otherwise it glides across the peaks.
       if (velocities[i] < SPRING_THRESHOLD) {
-        addVelocity(i, (nearestSnap - positions[i]) * FRICTION_FACTOR * timeFactor);
+        addVelocity(i, (nearestSnap - positions[i]) * SPRING_FACTOR * timeFactor);
+      }
+
+      if (Math.abs(velocities[i]) < MIN_ABS_VELOCITY) {
+        clearVelocity(i);
       }
     }
 

@@ -147,9 +147,3 @@ window.layoutAddEventListener('popstate', (e) => {
 // make all links dynamic, enabling routing.
 dynamify(document.body);
 console.log(`🔀 routing module ready.`);
-
-// checkme
-document.layoutAddEventListener('endnavigate', () => {
-  // enable components which require javascript.
-  document.querySelectorAll('[data-needs-js]').forEach((el) => el.removeAttribute('hidden'));
-});
