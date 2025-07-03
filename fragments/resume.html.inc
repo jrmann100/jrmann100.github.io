@@ -36,7 +36,7 @@
 </a>
 <span class="status"
   >Loading PDF - this may take a few tries&hellip;<br /><noscript
-    ><a href="">Reload manually</a></noscript
+    ><a href=".">Reload manually</a></noscript
   ></span
 >
 <iframe
@@ -57,13 +57,16 @@
       document.querySelector('.status').remove();
     });
 
+    // intercept print shortcut to open printable viewer
     // standard drive preview viewer is not printable for some reason!
     // so use this workaround which previews the pdf it just exported
-    window.addEventListener('beforeprint', (e) => {
-      e.preventDefault();
-      window.open(
-        'https://docs.google.com/viewerng/viewer?url=https://docs.google.com/document/d/1LcOpwM2IJcIhgiO-hPV5Ddg9txtqIGaY_wQ8Z6zRfO4/export?format%3Dpdf'
-      );
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        window.open(
+          'https://docs.google.com/viewerng/viewer?url=https://docs.google.com/document/d/1LcOpwM2IJcIhgiO-hPV5Ddg9txtqIGaY_wQ8Z6zRfO4/export?format%3Dpdf'
+        );
+      }
     });
   }
 </script>
