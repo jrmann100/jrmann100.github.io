@@ -28,7 +28,7 @@ const getTextOrThrow = (url) =>
 /**
  * @typedef ComponentOptions describes how a component's definition files should be loaded.
  * @property {boolean} [html] whether to load a HTML include for this component.
- * @property {boolean} [css] whether to load a stylesheet for this component.
+ * @property {'global' | 'local'} [css] whether to load a stylesheet for this component.
  * @property {boolean | ComponentAutoOptions} [js] whether to load a JavaScript file for this component,
  * or how to handle the template if no JavaScript file is provided.
  */
@@ -54,7 +54,7 @@ const isCustomElementConstructor = (c) =>
  */
 export default async function createComponent(
   name,
-  { html = true, css = false, js = false } = {},
+  { html = true, css = undefined, js = false } = {},
   options
 ) {
   if (customElements.get(name + '-component') !== undefined) {
@@ -78,23 +78,25 @@ export default async function createComponent(
     template.innerHTML = await getTextOrThrow(`/static/components/${name}/${name}.html.inc`);
     templateContent = template.content;
   }
-  if (css) {
-    if (typeof js === 'object' && js?.shadow) {
-      // if the component is using a shadow DOM, we need to inject the styles directly into the shadow root
-      const style = document.createElement('style');
-      style.textContent = await getTextOrThrow(`/static/components/${name}/${name}.css`);
-    } else {
-      const link = document.createElement('link');
-      const linkLoaded = new Promise((resolve, reject) => {
-        link.onload = resolve;
-        link.onerror = reject;
-      });
-      link.rel = 'stylesheet';
-      link.href = `/static/components/${name}/${name}.css`;
-      document.head.append(link);
-      // checkme: timeout loading?
-      await linkLoaded;
+  if (css === 'local') {
+    // if the component is using a shadow DOM, we need to inject the styles directly into the shadow root
+    const style = document.createElement('style');
+    style.textContent = await getTextOrThrow(`/static/components/${name}/${name}.css`);
+    if (templateContent === undefined) {
+      templateContent = document.createDocumentFragment();
     }
+    templateContent.insertBefore(style, templateContent.firstChild);
+  } else if (css === 'global') {
+    const link = document.createElement('link');
+    const linkLoaded = new Promise((resolve, reject) => {
+      link.onload = resolve;
+      link.onerror = reject;
+    });
+    link.rel = 'stylesheet';
+    link.href = `/static/components/${name}/${name}.css`;
+    document.head.append(link);
+    // checkme: timeout loading?
+    await linkLoaded;
   }
   if (js === true) {
     const MaybeCustomElementConstructor = await import(
@@ -142,7 +144,7 @@ export default async function createComponent(
 
 (async () => {
   await createComponent('switcher', {
-    css: true,
+    css: 'global',
     js: true
   });
   await createComponent('nosecure', {

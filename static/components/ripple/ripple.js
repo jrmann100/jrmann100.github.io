@@ -27,19 +27,20 @@ export class RipplingCard extends HTMLElement {
   }
 
   /** Instantiate, append, and wire up content. */
-  constructor(_content) {
+  constructor(content) {
     super();
     /** Shadow root, into which we can insert content. */
     const shadow = this.attachShadow({
       mode: 'open'
     });
+    shadow.append(content);
     this.boundButton = null;
     // All the styles we'll need on our elements.
     // This should hopefully be an external stylesheet at some point.
     // When that happens, should it load here or with the script?
-    var style = document.createElement('link');
-    style.setAttribute('rel', 'stylesheet');
-    style.setAttribute('href', '/static/components/ripple/ripple.css');
+    // var style = document.createElement('link');
+    // style.setAttribute('rel', 'stylesheet');
+    // style.setAttribute('href', '/static/components/ripple/ripple.css');
     // Add all the elements we're going to need:
     // an SVG icon and a title inside a wrapper.
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -72,7 +73,7 @@ export class RipplingCard extends HTMLElement {
     // Add everything into the shadow.
     wrapper.appendChild(svg);
     wrapper.appendChild(text);
-    shadow.appendChild(style);
+    // shadow.appendChild(style);
     shadow.appendChild(wrapper);
     // Another unfortunate product of complicated events:
     // this deactivation event listener can be removed

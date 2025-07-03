@@ -27,6 +27,7 @@ rippling card test
   import createComponent from '/static/components/components.js';
   await createComponent('ripple', {
     html: false,
+    css: 'local',
     js: true
   });
 </script>
