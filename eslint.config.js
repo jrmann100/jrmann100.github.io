@@ -42,7 +42,15 @@ export default defineConfig([
       ...eslintPluginPrettierRecommended.rules,
       ...eslint.configs.recommended.rules,
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/99
-      'jsdoc/no-undefined-types': ['off']
+      'jsdoc/no-undefined-types': ['off'],
+      'jsdoc/require-jsdoc': [
+        'warn',
+        {
+          require: {
+            ArrowFunctionExpression: true
+          }
+        }
+      ]
     }
   },
   {
