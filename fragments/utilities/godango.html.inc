@@ -8,7 +8,7 @@
 <!--{{/title}}-->
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
-<nosecure-component/></nosecure-component>
+<nosecure-component></nosecure-component>
 <form class="godango" data-needs-secure hidden>
   <div class="godango-machine">
     <div class="buttonlike reel controller" role="button" tabindex="0">
@@ -38,7 +38,6 @@
   </p>
   <fieldset name="result">
     <input name="copy" type="button" value="copy" />
-    <input name="new" type="submit" value="new" />
     <input name="output" size="20" readonly type="text" />
     <input name="edit" type="button" value="edit" />
     <!-- todo width !-->
