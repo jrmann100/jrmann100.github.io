@@ -5,6 +5,7 @@
  * @todo getter to get the current value, even if this is trivial using the form.
  */
 
+// TODO
 class Switcher extends HTMLElement {
   /**
    * @param {DocumentFragment | undefined} templateContent the template content to use for this switcher.
@@ -97,6 +98,7 @@ class Switcher extends HTMLElement {
 }
 
 /**
+ * TODO
  * @type {ComponentConstructor<Switcher>}
  */
 const SwitcherComponent = Switcher;

@@ -26,31 +26,39 @@ export class RipplingCard extends HTMLElement {
     return ['d', 'text'];
   }
 
-  /** Instantiate, append, and wire up content. */
+  /**
+   * Instantiate, append, and wire up content.
+   * @param {DocumentFragment | undefined} content the content to append to the shadow root.
+   */
   constructor(content) {
     super();
+    if (content === undefined) {
+      throw new Error('Missing template content for ripple component');
+    }
     /** Shadow root, into which we can insert content. */
     const shadow = this.attachShadow({
       mode: 'open'
     });
     shadow.append(content);
     this.boundButton = null;
-    // All the styles we'll need on our elements.
-    // This should hopefully be an external stylesheet at some point.
-    // When that happens, should it load here or with the script?
-    // var style = document.createElement('link');
-    // style.setAttribute('rel', 'stylesheet');
-    // style.setAttribute('href', '/static/components/ripple/ripple.css');
-    // Add all the elements we're going to need:
-    // an SVG icon and a title inside a wrapper.
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '24');
-    svg.setAttribute('height', '24');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    svg.appendChild(path);
-    var text = document.createElement('span');
-    var wrapper = document.createElement('div');
+
+    const wrapper = shadow.querySelector('.wrapper');
+    if (!(wrapper instanceof HTMLDivElement)) {
+      throw new Error('Could not find wrapper');
+    }
+    const svg = shadow.querySelector('svg');
+    if (!(svg instanceof SVGElement)) {
+      throw new Error('Could not find SVG element');
+    }
+    const path = svg.querySelector('path');
+    if (!(path instanceof SVGPathElement)) {
+      throw new Error('Could not find SVG path element');
+    }
+    const span = shadow.querySelector('span');
+    if (!(span instanceof HTMLSpanElement)) {
+      throw new Error('Could not find span element');
+    }
+
     wrapper.classList.add('wrapper');
     // You can actually tab through the buttons for keyboard control.
     // Haven't figured out tab cycling, but I'd like to.
@@ -70,11 +78,6 @@ export class RipplingCard extends HTMLElement {
         );
       }
     });
-    // Add everything into the shadow.
-    wrapper.appendChild(svg);
-    wrapper.appendChild(text);
-    // shadow.appendChild(style);
-    shadow.appendChild(wrapper);
     // Another unfortunate product of complicated events:
     // this deactivation event listener can be removed
     // if another mousedown occurs.
@@ -225,4 +228,10 @@ export class RipplingCard extends HTMLElement {
   }
 }
 
-export default RipplingCard;
+/**
+ *  A fancy card-sized button with a ripple effect on user click.
+ * @type {CustomElementConstructor}
+ */
+const RippleComponent = RipplingCard;
+
+export default RippleComponent;
