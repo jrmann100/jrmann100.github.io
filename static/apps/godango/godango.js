@@ -1,5 +1,5 @@
 /**
- * @file Godango helper. Generates word dumplings.
+ * @file Godango helper. Generates passphrases.
  * @author Jordan Mann
  */
 
@@ -7,59 +7,76 @@ import machineMain from './machine.js';
 
 const storageKey = 'godango-defaults';
 
+const UINT32_RANGE = 0x100000000; // 2^32
 /**
- * Get a random number.
- * Tries to use window.crypto, which is stronger than Math.random().
- * @returns {number} a random number on [0,256).
+ *
+ * For performance this function ASSUMES that min and max are integers,
+ * that min <= max,
+ * and that max - min < UINT32_RANGE.
+ * @param {number} min the minimum integer value to generate, inclusive.
+ * @param {number} max the maximum integer value to generate, inclusive.
+ * @returns {number} a random integer on [min, max].
  */
-function randomUint8() {
-  if (window.crypto) {
-    return window.crypto.getRandomValues(new Uint8Array(1))[0];
-  } else {
-    return Math.floor(Math.random() * 256);
-  }
-}
+const randomUintBetween = (min, max) => {
+  // suppose we are trying to model a 4-sided die.
+  // then the values we can generate are 1, 2, 3, and 4.
+  // the total range of values we can generate is (4 - 1) + 1 = 4.
+  const buckets = max - min + 1;
+
+  // the problem is that crypto.getRandomValues() generates a random number on [0, 2^32).
+  // this is like having only a 10-sided die.
+
+  // our first instinct might be to just modulo the result by the number of buckets. that means:
+  // rolling 1, 5, 9  gives us a 1;
+  // rolling 2, 6, 10 gives us a 2;
+  // rolling 3, 7     gives us a 3;
+  // rolling 4, 8     gives us a 4.
+  // but wait! that's not an even distribution!
+  // it's twice as likely to roll a 1 or a 2 than it is to roll a 3 or a 4.
+  // we need to roll again excluding values 9 and 10 so the number of buckets divides evenly into the range of values.
+  // in this case, that's a remainder of (10 % 4) = 2 values excluded.
+  const limit = UINT32_RANGE - (UINT32_RANGE % buckets);
+
+  // so keep rolling until we get a value less than 9.
+  let int;
+  do {
+    int = window.crypto.getRandomValues(new Uint32Array(1))[0];
+  } while (int >= limit);
+
+  // now we can safely modulo.
+  return min + (int % buckets);
+
+  // this process is known as rejection sampling!
+  // also see this thread: https://stackoverflow.com/a/18230432/9068081
+};
 
 /**
- * Simulate a dice roll.
- * @returns {number} a random number on [1,6].
+ * Get a random word by simulating six dice rolls.
+ * @typedef { string[] } wordlist
+ * @param {wordlist} words the list of words to choose from using dice.
+ * @returns {string} a random word.
  */
-function roll() {
-  return 1 + (randomUint8() % 6);
+function word(words) {
+  return words[randomUintBetween(0, words.length - 1)];
 }
 
+const NUM_DIGITS = 10;
 /**
  * Get a random digit 0-9.
  * @returns {number} a random number on [0,10).
  */
 function number() {
-  return randomUint8() % 10;
+  return randomUintBetween(0, NUM_DIGITS - 1);
 }
 
+const NUM_LETTERS = 26;
 /**
  * Get a random letter.
  * @param {boolean} capital whether the letter should be capitalized.
  * @returns {string} a random letter.
  */
 function letter(capital = true) {
-  return String.fromCharCode((capital ? 65 : 97) + (randomUint8() % 26));
-}
-
-/**
- * Get a random word by simulating six dice rolls.
- * @typedef { Record<string,string> } wordlist
- * @param {wordlist} words the list of words to choose from using dice.
- * @returns {string} a random word.
- */
-function word(words) {
-  return words[
-    Array.from(
-      {
-        length: 5
-      },
-      roll
-    ).join('')
-  ];
+  return String.fromCharCode((capital ? 65 : 97) + randomUintBetween(0, NUM_LETTERS - 1));
 }
 
 /**
@@ -107,12 +124,14 @@ function godango(words) {
 
 /**
  * Calculate the entropy of a word dumpling.
+ * @param {number} wordsLength the number of words to choose from.
  * @returns {number} the entropy, in number of bits.
  */
-function entropy() {
+function entropy(wordsLength) {
   return Math.round(
     Math.log2(
-      Math.pow(Math.pow(6, 5), defaults.COUNT) * (defaults.SAUCE_TYPE === 'random' ? 10 * 26 : 1)
+      Math.pow(wordsLength, defaults.COUNT) *
+        (defaults.SAUCE_TYPE === 'random' ? NUM_DIGITS * NUM_LETTERS : 1)
     )
   );
 }
@@ -133,9 +152,7 @@ export default async function main() {
   ).text();
 
   /** Parsed wordlist, matching 6-digit numbers to words. */
-  const words = Object.fromEntries(
-    [...text.matchAll(/(\d+)\t(\w+)\n/g)].map(([, number, word]) => [number, word])
-  );
+  const words = [...text.matchAll(/\d+\t(\w+)\n/g)].map(([, word]) => word);
 
   const form = document.querySelector('form.godango');
   if (form === null) {
@@ -215,7 +232,7 @@ export default async function main() {
   }
 
   /**
-   * Generate a word dumpling and update the UI to display it.
+   * Generate a passphrase and update the UI to display it.
    */
   function create() {
     if (outputBox == null || entropyBox == null || lengthBox == null || lastBox == null) {
@@ -223,7 +240,7 @@ export default async function main() {
     }
     setEditMode(false);
     outputBox.value = godango(words);
-    entropyBox.value = entropy().toString();
+    entropyBox.value = entropy(words.length).toString();
     lengthBox.value = outputBox.value.length.toString();
     outputBox.focus();
     outputBox.select();
@@ -236,8 +253,8 @@ export default async function main() {
 
   /**
    * Update user settings.
-   * @param {boolean} doCreate make a word dumpling with the updated settings
-   * (usually where the changed settings would result a different kind of dumpling being made.)
+   * @param {boolean} [doCreate] make a passphrase with the updated settings
+   * (usually where the changed settings would result a different kind of passphrase being made.)
    */
   function updateDefaults(doCreate = true) {
     localStorage.setItem(storageKey, JSON.stringify(defaults));
