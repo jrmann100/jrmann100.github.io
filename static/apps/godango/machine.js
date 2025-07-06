@@ -202,13 +202,15 @@ const renderFace = (face, position, a = false) => {
  * Update the position of a reel.
  * @param {number} i the index of the reel to update.
  * @param {number} newPosition the new position of the reel, between 0 and 1.
+ * @param {boolean} [force] whether to force an update of the reel content.
  */
-const updatePosition = (i, newPosition) => {
+const updatePosition = (i, newPosition, force = false) => {
   const [a, b] = faces[i];
   if (i !== 0) {
-    if (newPosition > 1) {
+    if (force || newPosition > 1) {
       b.textContent = word();
-    } else if (positions[i] < 0.5 && newPosition >= 0.5) {
+    }
+    if (force || (positions[i] < 0.5 && newPosition >= 0.5)) {
       a.textContent = word();
     }
   }
@@ -377,3 +379,15 @@ export default function main() {
 }
 
 // todo: machine loading state
+
+// checkme: update with force instead of this?
+for (let i = 1; i < reelCount; i++) {
+  updatePosition(i, positions[i], true);
+}
+
+export const getPassphrase = () =>
+  positions
+    .slice(1) // skip the controller
+    .map((position, i) =>
+      position < 0.25 || position > 0.75 ? faces[i + 1][0].textContent : faces[i + 1][1].textContent
+    );
