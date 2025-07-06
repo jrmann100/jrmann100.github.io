@@ -3,7 +3,7 @@
  * @author Jordan Mann
  */
 
-import machineMain from './machine.js';
+import machineMain, { getPassphrase } from './machine.js';
 import { entropy, sauce } from './math.js';
 
 const storageKey = 'godango-defaults';
@@ -226,9 +226,12 @@ export default async function main() {
     throw new Error('could not find the copy button');
   }
 
-  copyButton.addEventListener('click', () => {
-    outputBox.select();
-    document.execCommand('copy');
+  copyButton.addEventListener('click', async () => {
+    console.log(getPassphrase());
+    // todo: sauce
+    await navigator.clipboard.writeText(getPassphrase().join(defaults.SEPARATOR));
+    // outputBox.select();
+    // document.execCommand('copy');
   });
   create();
 
