@@ -10,36 +10,36 @@
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
 <nosecure-component></nosecure-component>
 <form class="godango" data-needs-secure hidden>
-  <div class="godango-machine">
-    <div class="buttonlike reel controller" role="button" tabindex="0">
-      <div class="face">SPIN</div>
-      <div class="face">SPIN</div>
-    </div>
-    <div class="reel">
-      <div class="face">🍒</div>
-      <div class="face">🍋</div>
-    </div>
-    <div class="reel">
-      <div class="face">🍒</div>
-      <div class="face">🍋</div>
-    </div>
-    <div class="reel">
-      <div class="face">🍒</div>
-      <div class="face">🍋</div>
-    </div>
-    <div class="reel">
-      <div class="face">🍒</div>
-      <div class="face">🍋</div>
-    </div>
-  </div>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
     <label>length <input type="text" size="3" name="length" disabled /> chars</label>
   </p>
   <fieldset name="result">
+    <div class="godango-machine">
+      <div class="buttonlike reel controller" role="button" tabindex="0">
+        <div class="face">SPIN</div>
+        <div class="face">SPIN</div>
+      </div>
+      <div class="reel">
+        <div class="face">🍒</div>
+        <div class="face">🍋</div>
+      </div>
+      <div class="reel">
+        <div class="face">🍒</div>
+        <div class="face">🍋</div>
+      </div>
+      <div class="reel">
+        <div class="face">🍒</div>
+        <div class="face">🍋</div>
+      </div>
+      <div class="reel">
+        <div class="face">🍒</div>
+        <div class="face">🍋</div>
+      </div>
+    </div>
     <input name="copy" type="button" value="copy" />
-    <input name="output" size="20" readonly type="text" />
-    <input name="edit" type="button" value="edit" />
+    <input hidden name="output" size="20" readonly type="text" />
+    <input hidden name="edit" type="button" value="edit" />
     <!-- todo width !-->
   </fieldset>
   <textarea
