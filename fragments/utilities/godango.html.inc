@@ -53,14 +53,21 @@
   <details class="options" open>
     <summary style="font-weight: bold">options</summary>
     <fieldset name="options">
-      <div>
-        <label style="display: inline-block"
-          ><input name="count" type="number" min="1" max="999" /> word(s)</label
-        >,
-        <label style="display: inline-block"
-          >separator <input name="separator" type="text" size="1"
-        /></label>
-      </div>
+      <fieldset name="sauce">
+        <legend>passphrase</legend>
+        <div>
+          <label style="display: inline-block"
+            ><input name="count" type="number" min="1" max="999" /> word(s)</label
+          >,
+          <label style="display: inline-block"
+            >separator <input name="separator" type="text" size="1"
+          /></label>
+        </div>
+        <aside>
+          Why use a passsphrase instead of a password?
+          <a href="https://xkcd.com/936/" target="_blank">Learn more.</a><br />
+        </aside>
+      </fieldset>
       <fieldset name="sauce">
         <legend>suffix</legend>
         <div>
