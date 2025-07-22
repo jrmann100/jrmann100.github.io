@@ -89,7 +89,7 @@ export default function setup() {
       if (input === null) {
         throw new Error(`Could not find input matching given value "${value}"`);
       }
-      ((input.checked = true), input?.dispatchEvent(new Event('change')));
+      ((input.checked = true), input.dispatchEvent(new Event('change')));
     }
   });
 }
