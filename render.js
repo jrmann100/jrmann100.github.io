@@ -33,7 +33,7 @@ function locateRegions(text) {
   /** @type {Map<string, string>} */
   const regions = new Map();
   for (const region of text.matchAll(new RegExp(regionRegex, 'g'))) {
-    if (!(`/${region.groups?.open}` === region.groups?.close)) {
+    if (`/${region.groups?.open}` !== region.groups?.close) {
       throw new Error(
         `fragment's region tags don't match! '${region.groups?.open}' and '${region.groups?.close}'`
       );

@@ -91,11 +91,7 @@ function setupBattery() {
       function updateChargeInfo() {
         const batteryI = batteryE?.querySelector('.icon');
         if (batteryI instanceof HTMLElement) {
-          batteryI.innerText = battery.charging
-            ? '🔌'
-            : battery.level <= 0.1 && !battery.charging
-              ? '🪫'
-              : '🔋';
+          batteryI.innerText = battery.charging ? '🔌' : battery.level <= 0.1 ? '🪫' : '🔋';
         }
       }
 
