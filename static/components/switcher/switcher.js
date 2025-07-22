@@ -31,12 +31,12 @@ export default function setup() {
   }
   const layout = this.dataset.layout !== undefined;
   if (this.dataset.cellWidth !== undefined) {
-    form?.style.setProperty('--cell-width', this.dataset.cellWidth);
+    form.style.setProperty('--cell-width', this.dataset.cellWidth);
   }
-  form?.style.setProperty('--cells', inputs.length.toString());
+  form.style.setProperty('--cells', inputs.length.toString());
   const indicator = document.createElement('div');
   indicator.classList.add('indicator');
-  form?.append(indicator);
+  form.append(indicator);
   inputs.forEach((input, i) => {
     // fixme what to do when this component is in the layout?
     (layout ? input.layoutAddEventListener : input.addEventListener).call(
@@ -65,7 +65,7 @@ export default function setup() {
     label.innerText = labelContent;
     input.style.setProperty('--cell', (i + 1).toString());
     label.style.setProperty('--cell', (i + 1).toString());
-    form?.append(label);
+    form.append(label);
   });
   this.values = [...inputs].map((x) => x.value);
   Object.defineProperty(this, 'value', {
