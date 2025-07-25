@@ -20,6 +20,43 @@ if (machine === null) {
 const reels = Array.from(machine.querySelectorAll('.reel'));
 
 /**
+ * Displays the length of the current passphrase.
+ * @type {HTMLInputElement | null}
+ */
+const lengthBox = document.querySelector('input[name=length]');
+if (lengthBox === null) {
+  throw new Error('Length indicator element not found');
+}
+
+/**
+ * The length being currently displayed.
+ */
+let displayedLength = 0; // TODO: calculate initial value based on the initial words
+
+/**
+ * The sum of the lengths of all words currently displayed on the reels.
+ */
+let currentLength = 0;
+
+/**
+ * The words currently displayed on the reels.
+ * @type {(string | null)[]}
+ */
+const words = [];
+
+/**
+ * Update a word currently being displayed on a reel,
+ * and any other UI state that depends on it.
+ * @param {number} index the index of the reel to update.
+ * @param {*} word the new word to display.
+ */
+const setWord = (index, word) => {
+  currentLength -= words[index]?.length ?? 0;
+  words[index] = word;
+  currentLength += word.length;
+};
+
+/**
  * The controller reel is the first reel.
  *
  * It has a static label and handles user input.
@@ -207,11 +244,16 @@ const renderFace = (face, position, a = false) => {
 const updatePosition = (i, newPosition, force = false) => {
   const [a, b] = faces[i];
   if (i !== 0) {
+    if (force || (positions[i] < 0.5 && newPosition >= 0.5)) {
+      setWord(i - 1, b.textContent);
+      a.textContent = word();
+    }
     if (force || newPosition > 1) {
+      setWord(i - 1, a.textContent);
       b.textContent = word();
     }
-    if (force || (positions[i] < 0.5 && newPosition >= 0.5)) {
-      a.textContent = word();
+    if (force) {
+      displayedLength = currentLength;
     }
   }
   positions[i] = newPosition % 1;
@@ -325,10 +367,17 @@ const handleAnimationFrame = (timestamp) => {
     updatePosition(i, positions[i] + timeDelta * velocities[i]);
   });
 
+  displayedLength += Math.sign(currentLength - displayedLength);
+  lengthBox.value = displayedLength.toString();
+
   lastFrameTime = timestamp;
 
   // if all reels have stopped moving and none are held, pause the animation loop.
-  if (movingReels === 0 && timestamp - lastWheelTime > reelCount * WHEEL_END_OFFSET) {
+  if (
+    movingReels === 0 &&
+    timestamp - lastWheelTime > reelCount * WHEEL_END_OFFSET &&
+    displayedLength === currentLength
+  ) {
     animationRunning = false;
   } else {
     requestAnimationFrame(handleAnimationFrame);

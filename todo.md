@@ -38,3 +38,5 @@ I want a simple sideways+fade transition! is that too much to ask? direction can
 clipboard app should be expanded into more of a suite. HTML should be reactive for sure!
 
 capitalize parameter descriptions in JSDoc - require this
+
+disallow {*} any in jsdoc

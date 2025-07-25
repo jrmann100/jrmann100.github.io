@@ -42,13 +42,6 @@
     <input hidden name="edit" type="button" value="edit" />
     <!-- todo width !-->
   </fieldset>
-  <textarea
-    cols="40"
-    rows="8"
-    readonly
-    placeholder="Recent passwords will show up here.&#10;Reload the page to clear the list."
-  >
-  </textarea>
   <!-- TODO: consider making this a tab -->
   <details class="options" open>
     <summary style="font-weight: bold">options</summary>
