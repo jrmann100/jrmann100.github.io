@@ -91,6 +91,12 @@ const reelCount = faces.length;
 const velocities = new Array(reelCount).fill(0);
 
 /**
+ * The velocity of the length indicator.
+ * @type {number}
+ */
+let lengthVelocity = 0;
+
+/**
  * The position of each reel, between 0 and 1.
  * The faces swap positions such that there is always at least one face visible,
  * and another face entering from the top.
@@ -367,8 +373,18 @@ const handleAnimationFrame = (timestamp) => {
     updatePosition(i, positions[i] + timeDelta * velocities[i]);
   });
 
-  displayedLength += Math.sign(currentLength - displayedLength);
-  lengthBox.value = displayedLength.toString();
+  lengthVelocity =
+    // TODO: magic number
+    lengthVelocity * frictionFactor * 0.5 +
+    (currentLength - displayedLength) * SPRING_FACTOR * timeFactor * 0.5;
+
+  if (Math.abs(lengthVelocity) < MIN_ABS_VELOCITY) {
+    lengthVelocity = 0;
+  }
+
+  displayedLength += lengthVelocity * timeDelta;
+
+  lengthBox.value = Math.round(displayedLength).toString();
 
   lastFrameTime = timestamp;
 
@@ -376,7 +392,7 @@ const handleAnimationFrame = (timestamp) => {
   if (
     movingReels === 0 &&
     timestamp - lastWheelTime > reelCount * WHEEL_END_OFFSET &&
-    displayedLength === currentLength
+    lengthVelocity === 0
   ) {
     animationRunning = false;
   } else {
