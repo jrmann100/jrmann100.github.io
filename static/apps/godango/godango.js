@@ -3,7 +3,7 @@
  * @author Jordan Mann
  */
 
-import machineMain, { getPassphrase } from './machine.js';
+import machineMain, { getPassphrase, setConstantLength } from './machine.js';
 import { entropy, sauce } from './math.js';
 
 const storageKey = 'godango-defaults';
@@ -28,18 +28,16 @@ let defaults = {
 export default async function main() {
   machineMain();
 
-  const form = document.querySelector('form.godango');
+  const form = document.querySelector('.godango-form');
   if (form === null) {
     throw new Error('could not find form');
   }
   /** @type {HTMLDetailsElement | null} */
-  const optionsDetails = document.querySelector('details.options');
+  const optionsDetails = form.querySelector('details.options');
 
   /** @type {HTMLInputElement | null} */
   const entropyBox = form.querySelector('input[name=entropy]');
 
-  /** @type {HTMLInputElement | null} */
-  const lengthBox = form.querySelector('input[name=length]');
   /** @type {HTMLInputElement | null} */
   const copyButton = form.querySelector('input[name=copy]');
 
@@ -52,15 +50,8 @@ export default async function main() {
   /** @type {HTMLInputElement | null} */
   const sauceInput = form.querySelector('input[name=sauce-value]');
 
-  /**
-   * Generate a passphrase and update the UI to display it.
-   */
-  function create() {
-    if (entropyBox == null || lengthBox == null) {
-      throw new Error('could not find required status element(s)');
-    }
-    entropyBox.value = entropy(defaults.COUNT, defaults.SAUCE_TYPE === 'custom').toString();
-  }
+  /** @type {HTMLDivElement | null} */
+  const sauceReel = form.querySelector('.sauce .face');
 
   /**
    * Update user settings.
@@ -69,9 +60,11 @@ export default async function main() {
    */
   function updateDefaults(doCreate = true) {
     localStorage.setItem(storageKey, JSON.stringify(defaults));
-    if (doCreate) {
-      create();
+    if (entropyBox == null) {
+      throw new Error('could not find required status element(s)');
     }
+    entropyBox.value = entropy(defaults.COUNT, defaults.SAUCE_TYPE === 'custom').toString();
+    setConstantLength(defaults.COUNT * defaults.SEPARATOR.length);
   }
 
   const defaultsString = localStorage.getItem(storageKey);
@@ -115,11 +108,17 @@ export default async function main() {
     throw new Error('could not find the sauce input');
   }
 
+  if (sauceReel === null) {
+    throw new Error('could not find the sauce reel');
+  }
+
   sauceInput.addEventListener('change', () => {
     defaults.SAUCE_VALUE = sauceInput.value;
+    sauceReel.textContent = defaults.SAUCE_VALUE;
     updateDefaults();
   });
   sauceInput.value = defaults.SAUCE_VALUE;
+  sauceReel.textContent = defaults.SAUCE_VALUE;
   tryDisableCustomSauce();
 
   sauceRadios.forEach((radio) =>
@@ -140,21 +139,15 @@ export default async function main() {
     currentSauceType.checked = true;
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    create();
-  });
-
   if (copyButton === null) {
     throw new Error('could not find the copy button');
   }
 
   copyButton.addEventListener('click', async () => {
-    console.log(getPassphrase());
-    // todo: sauce
-    await navigator.clipboard.writeText(getPassphrase().join(defaults.SEPARATOR));
+    await navigator.clipboard.writeText(
+      getPassphrase().join(defaults.SEPARATOR) + defaults.SAUCE_VALUE
+    );
     // outputBox.select();
     // document.execCommand('copy');
   });
-  create();
 }

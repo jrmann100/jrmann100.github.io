@@ -9,7 +9,7 @@
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
 <nosecure-component></nosecure-component>
-<form class="godango" data-needs-secure hidden>
+<div class="godango-form" data-needs-secure hidden>
   <p class="stats">
     <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
     <label>length <input type="text" size="3" name="length" disabled /> chars</label>
@@ -33,6 +33,10 @@
         <div class="face">🍋</div>
       </div>
       <div class="reel">
+        <div class="face">🍒</div>
+        <div class="face">🍋</div>
+      </div>
+      <div class="reel sauce">
         <div class="face">🍒</div>
         <div class="face">🍋</div>
       </div>
@@ -91,7 +95,7 @@
       >GitHub.</a
     ></small
   >
-</form>
+</div>
 <script type="module">
   import main from '/static/apps/godango/godango.js';
   main();

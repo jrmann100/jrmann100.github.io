@@ -3,7 +3,7 @@
  * @author Jordan Mann
  */
 
-import { word } from './math.js';
+import { sauce, word } from './math.js';
 
 /**
  * Container element for the reels.
@@ -54,6 +54,15 @@ const setWord = (index, word) => {
   currentLength -= words[index]?.length ?? 0;
   words[index] = word;
   currentLength += word.length;
+  console.log(words, currentLength, constantLength);
+};
+
+let constantLength = 0;
+export const setConstantLength = (length) => {
+  currentLength -= constantLength;
+  constantLength = length;
+  currentLength += constantLength;
+  resumeAnimation();
 };
 
 /**
@@ -62,6 +71,13 @@ const setWord = (index, word) => {
  * It has a static label and handles user input.
  */
 const controller = reels[0];
+
+/**
+ * The sauce reel is the last reel.
+ * It has a dynamic label which is composed of non-word characters.
+ */
+const sauceIndex = reels.length - 1;
+const sauceReel = reels[sauceIndex];
 
 /**
  * The faces of the machine, grouped in pairs by reel.
@@ -252,11 +268,11 @@ const updatePosition = (i, newPosition, force = false) => {
   if (i !== 0) {
     if (force || (positions[i] < 0.5 && newPosition >= 0.5)) {
       setWord(i - 1, b.textContent);
-      a.textContent = word();
+      a.textContent = i === sauceIndex ? sauce() : word();
     }
     if (force || newPosition > 1) {
       setWord(i - 1, a.textContent);
-      b.textContent = word();
+      b.textContent = i === sauceIndex ? sauce() : word();
     }
     if (force) {
       displayedLength = currentLength;
@@ -317,7 +333,6 @@ const MIN_ABS_VELOCITY = 0.01;
  * @type {FrameRequestCallback}
  */
 const handleAnimationFrame = (timestamp) => {
-  // console.log(`Animation frame at ${timestamp} ms`, velocities);
   if (!animationRunning) return;
 
   // limit the time delta to avoid large jumps;
