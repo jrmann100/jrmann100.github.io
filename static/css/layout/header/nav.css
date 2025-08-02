@@ -38,6 +38,12 @@ header nav > ul > li {
   min-width: var(--header-item-width);
 }
 
+header nav > ul > li.options {
+  --header-item-width: 2rem;
+  /* flex-basis: calc(var(--header-item-width) / 2); */
+  /* min-width: calc(var(--header-item-width) / 2); */
+}
+
 header nav ul > li > a,
 header nav ul > li > .fake-details > .fake-summary {
   user-select: none;
@@ -124,7 +130,7 @@ header nav .fake-details .nav-dropdown {
   transform: translateY(15px);
   border: var(--default-border);
   box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
   width: max-content;
   max-width: calc(100% - 2rem);
 }
