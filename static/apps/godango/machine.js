@@ -339,6 +339,10 @@ const handleAnimationFrame = (timestamp) => {
   // e.g., if the page was momentarily inactive.
   const timeDelta = Math.min((timestamp - lastFrameTime) / 1000, MAX_FRAME_TIME);
   // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
+  // TODO: this doesn't actually work because of the order of operations.
+  // since velocity is scaled, then added every frame, if you apply half of each operation every frame
+  // you don't account for the addition in the first frame.
+  // the result is that things seem more jiggly at 30fps.
   const timeFactor = timeDelta * 60;
   const frictionFactor = Math.pow(FRICTION_FACTOR, timeFactor);
 
@@ -390,7 +394,7 @@ const handleAnimationFrame = (timestamp) => {
 
   lengthVelocity =
     // TODO: magic number
-    lengthVelocity * frictionFactor * 0.5 +
+    lengthVelocity * Math.pow(FRICTION_FACTOR * 0.5, timeFactor) +
     (currentLength - displayedLength) * SPRING_FACTOR * timeFactor * 0.5;
 
   if (Math.abs(lengthVelocity) < MIN_ABS_VELOCITY) {
@@ -433,7 +437,7 @@ export default function main() {
     resumeAnimation();
   });
 
-  // TODO: add touch support.
+  // TODO: add touch support; and click and drag flicking?
   controller.addEventListener(
     'wheel',
     (
