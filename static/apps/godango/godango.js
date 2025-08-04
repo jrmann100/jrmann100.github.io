@@ -3,7 +3,7 @@
  * @author Jordan Mann
  */
 
-import machineMain, { getPassphrase, setConstantLength } from './machine.js';
+import GodangoMachine from './GodangoMachine.js';
 import { entropy, sauce } from './math.js';
 
 const storageKey = 'godango-defaults';
@@ -26,12 +26,12 @@ let defaults = {
  * Make UI responsive.
  */
 export default async function main() {
-  machineMain();
-
   const form = document.querySelector('.godango-form');
   if (form === null) {
     throw new Error('could not find form');
   }
+  const machine = new GodangoMachine(form);
+
   /** @type {HTMLDetailsElement | null} */
   const optionsDetails = form.querySelector('details.options');
 
@@ -64,7 +64,7 @@ export default async function main() {
       throw new Error('could not find required status element(s)');
     }
     entropyBox.value = entropy(defaults.COUNT, defaults.SAUCE_TYPE === 'custom').toString();
-    setConstantLength(defaults.COUNT * defaults.SEPARATOR.length);
+    machine.setConstantLength(defaults.COUNT * defaults.SEPARATOR.length);
   }
 
   const defaultsString = localStorage.getItem(storageKey);
@@ -145,7 +145,7 @@ export default async function main() {
 
   copyButton.addEventListener('click', async () => {
     await navigator.clipboard.writeText(
-      getPassphrase().join(defaults.SEPARATOR) + defaults.SAUCE_VALUE
+      machine.getPassphrase().join(defaults.SEPARATOR) + defaults.SAUCE_VALUE
     );
     // outputBox.select();
     // document.execCommand('copy');
