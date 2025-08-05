@@ -124,22 +124,22 @@ export default class GodangoMachine {
     WHEEL_END_OFFSET: 50,
 
     /**
-     * The baseline factor by which the velocity of a reel is reduced every 1/60th of a second.
+     * TODO
      */
-    FRICTION_FACTOR: 0.9,
+    FORWARD_FRICTION_FORCE: 0.1,
 
     /**
-     * The factor by which the velocity of a reel is reduced when it is moving backward.
+     * TODO
      */
-    RESIST_FACTOR: 0.4,
+    BACKWARD_FRICTION_FORCE: 0.5,
 
     /**
-     * The amount of velocity added to a reel when it is boosted.
+     * TODO
      */
-    BOOST_AMOUNT: 5,
+    BOOST_AMOUNT: 4,
 
     /**
-     * The force with which the spring pulls the reel towards the nearest stop.
+     * TODO
      */
     SPRING_FACTOR: 8,
 
@@ -151,7 +151,8 @@ export default class GodangoMachine {
     /**
      * Maximum time delta for a single animation frame, in seconds.
      */
-    MAX_FRAME_TIME: 0.1,
+    // MAX_FRAME_TIME: 35e-3,
+    MAX_FRAME_TIME: Infinity,
 
     /**
      * The minimum velocity at which a reel is considered moving.
@@ -241,19 +242,6 @@ export default class GodangoMachine {
   }
 
   /**
-   * Scale the velocity of a reel by a factor.
-   * Updates {@link movingReels} if this stops the reel.
-   * @param {number} reelIndex the index of the reel to scale.
-   * @param {number} factor the factor to scale the velocity by.
-   */
-  scaleVelocity(reelIndex, factor) {
-    if (factor === 0 && this.velocities[reelIndex] !== 0) {
-      this.movingReels--;
-    }
-    this.velocities[reelIndex] *= factor;
-  }
-
-  /**
    * Set the velocity of a reel to a specific value.
    * Decrements {@link movingReels} if the reel was previously moving.
    * @param {*} reelIndex
@@ -323,6 +311,8 @@ export default class GodangoMachine {
     this.renderFace(b, this.positions[i], false);
   }
 
+  DEBUG_FRAME_RATE = 20;
+  DEBUG_DROPPED_FRAMES = 0;
   /**
    * Update the state of the machine until all reels have stabilized.
    * @type {FrameRequestCallback}
@@ -330,23 +320,71 @@ export default class GodangoMachine {
   handleAnimationFrame(timestamp) {
     if (!this.animationRunning) return;
 
+    // convenient hack: skip the first frame to determine the frame rate.
+    // just make sure to reset timestamp to NEVER once the animation pauses.
+    if (this.lastFrameTime === GodangoMachine.constants.NEVER) {
+      this.lastFrameTime = timestamp;
+      requestAnimationFrame(this.handleAnimationFrame.bind(this));
+      return;
+    }
+
+    // debug: frame dropper
+    if (this.DEBUG_DROPPED_FRAMES < 60 / this.DEBUG_FRAME_RATE - 1) {
+      this.DEBUG_DROPPED_FRAMES++;
+      requestAnimationFrame(this.handleAnimationFrame.bind(this));
+      console.log(`DEBUG: Dropped frame`);
+      return;
+    }
+
+    this.DEBUG_DROPPED_FRAMES = 0;
+
     // limit the time delta to avoid large jumps;
     // e.g., if the page was momentarily inactive.
     const timeDelta = Math.min(
       (timestamp - this.lastFrameTime) / 1000,
       GodangoMachine.constants.MAX_FRAME_TIME
     );
+    this.lastFrameTime = timestamp;
+
     // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
-    // TODO: this doesn't actually work because of the order of operations.
-    // since velocity is scaled, then added every frame, if you apply half of each operation every frame
-    // you don't account for the addition in the first frame.
-    // the result is that things seem more jiggly at 30fps.
     const timeFactor = timeDelta * 60;
-    const frictionFactor = Math.pow(GodangoMachine.constants.FRICTION_FACTOR, timeFactor);
+
+    this.faces.forEach((_, i) => {
+      let totalForce =
+        this.velocities[i] *
+        -(this.velocities[i] > 0
+          ? GodangoMachine.constants.FORWARD_FRICTION_FORCE
+          : GodangoMachine.constants.BACKWARD_FRICTION_FORCE);
+
+      if (
+        timestamp - this.lastWheelTime >
+        (i === 0 ? 1 : i) * GodangoMachine.constants.WHEEL_END_OFFSET
+      ) {
+        // manual movement (scrolling) overrides the spring.
+        // once there has been END_OFFSET ms of no manual movement,
+        // the springs start to engage one at a time every END_OFFSET ms,
+        // except for the controller (0th) reel, which engages at the same time as the first reel.
+        // round to nearest 0.5
+        const nearestSnap = Math.round(this.positions[i] * 2) / 2;
+        // the spring can only engage if the velocity is low enough;
+        // otherwise it glides across the peaks.
+        if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD && this.positions[i]) {
+          totalForce += (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR;
+        }
+        this.addVelocity(i, totalForce * timeFactor);
+        // TODO: not stopping fast enough
+
+        if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
+          this.clearVelocity(i);
+        }
+      }
+    });
 
     for (let i = 0; i < this.clicks.length; i++) {
       // immediately boost the control reel and the first reel.
       if (this.clicks[i][1] === 0) {
+        // boosting is technically a force, but it's instantaneous and not applied over time.
+        // therefore we don't incorporate it into acceleration and apply it directly to the velocity.
         this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_AMOUNT);
         this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_AMOUNT);
         this.clicks[i][0] = timestamp;
@@ -365,66 +403,37 @@ export default class GodangoMachine {
       }
     }
 
-    this.faces.forEach((_, i) => {
-      // apply friction, and resist backward motion.
-      this.scaleVelocity(
-        i,
-        frictionFactor * (this.velocities[i] < 0 ? GodangoMachine.constants.RESIST_FACTOR : 1)
-      );
-
-      if (
-        timestamp - this.lastWheelTime >
-        (i === 0 ? 1 : i) * GodangoMachine.constants.WHEEL_END_OFFSET
-      ) {
-        // manual movement (scrolling) overrides the spring.
-        // once there has been END_OFFSET ms of no manual movement,
-        // the springs start to engage one at a time every END_OFFSET ms,
-        // except for the controller (0th) reel, which engages at the same time as the first reel.
-        // round to nearest 0.5
-        const nearestSnap = Math.round(this.positions[i] * 2) / 2;
-        // the spring can only engage if the velocity is low enough;
-        // otherwise it glides across the peaks.
-        if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD) {
-          this.addVelocity(
-            i,
-            (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR * timeFactor
-          );
-        }
-
-        if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
-          this.clearVelocity(i);
-        }
-      }
-
+    for (let i = 0; i < this.reelCount; i++) {
       this.updatePosition(i, this.positions[i] + timeDelta * this.velocities[i]);
-    });
-
-    this.lengthVelocity =
-      // TODO: magic number
-      this.lengthVelocity * Math.pow(GodangoMachine.constants.FRICTION_FACTOR * 0.5, timeFactor) +
-      (this.currentLength - this.displayedLength) *
-        GodangoMachine.constants.SPRING_FACTOR *
-        timeFactor *
-        0.5;
-
-    if (Math.abs(this.lengthVelocity) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
-      this.lengthVelocity = 0;
     }
 
-    this.displayedLength += this.lengthVelocity * timeDelta;
+    // // TODO: update to force-based
+    // this.lengthVelocity =
+    //   // TODO: magic number
+    //   this.lengthVelocity *
+    //     Math.pow(GodangoMachine.constants.FORWARD_FRICTION_FORCE * 0.5, timeFactor) +
+    //   (this.currentLength - this.displayedLength) *
+    //     GodangoMachine.constants.SPRING_FACTOR *
+    //     timeFactor *
+    //     0.5;
 
-    this.lengthBox.value = Math.round(this.displayedLength).toString();
+    // if (Math.abs(this.lengthVelocity) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
+    //   this.lengthVelocity = 0;
+    // }
+
+    // this.displayedLength += this.lengthVelocity * timeDelta;
+
+    // this.lengthBox.value = Math.round(this.displayedLength).toString();
     // this.lengthBox.style.transform = `translateY(${this.displayedLength - 30}px)`;
-
-    this.lastFrameTime = timestamp;
 
     // if all reels have stopped moving and none are held, pause the animation loop.
     if (
       this.movingReels === 0 &&
-      timestamp - this.lastWheelTime > this.reelCount * GodangoMachine.constants.WHEEL_END_OFFSET &&
-      this.lengthVelocity === 0
+      timestamp - this.lastWheelTime > this.reelCount * GodangoMachine.constants.WHEEL_END_OFFSET
+      // this.lengthVelocity === 0
     ) {
       this.animationRunning = false;
+      this.lastFrameTime = GodangoMachine.constants.NEVER;
     } else {
       requestAnimationFrame(this.handleAnimationFrame.bind(this));
     }
@@ -436,8 +445,6 @@ export default class GodangoMachine {
   resumeAnimation() {
     if (!this.animationRunning) {
       this.animationRunning = true;
-      // reset timestamp to avoid a large jump after a pause
-      this.lastFrameTime = performance.now();
       requestAnimationFrame(this.handleAnimationFrame.bind(this));
     }
   }
