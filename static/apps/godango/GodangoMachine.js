@@ -151,8 +151,7 @@ export default class GodangoMachine {
     /**
      * Maximum time delta for a single animation frame, in seconds.
      */
-    // MAX_FRAME_TIME: 35e-3,
-    MAX_FRAME_TIME: Infinity,
+    MAX_FRAME_TIME: 250 / 6,
 
     /**
      * The minimum velocity at which a reel is considered moving.
@@ -311,7 +310,7 @@ export default class GodangoMachine {
     this.renderFace(b, this.positions[i], false);
   }
 
-  DEBUG_FRAME_RATE = 20;
+  DEBUG_FRAME_RATE = 6;
   DEBUG_DROPPED_FRAMES = 0;
   /**
    * Update the state of the machine until all reels have stabilized.
@@ -332,7 +331,7 @@ export default class GodangoMachine {
     if (this.DEBUG_DROPPED_FRAMES < 60 / this.DEBUG_FRAME_RATE - 1) {
       this.DEBUG_DROPPED_FRAMES++;
       requestAnimationFrame(this.handleAnimationFrame.bind(this));
-      console.log(`DEBUG: Dropped frame`);
+      // console.log(`DEBUG: Dropped frame`);
       return;
     }
 
@@ -340,14 +339,13 @@ export default class GodangoMachine {
 
     // limit the time delta to avoid large jumps;
     // e.g., if the page was momentarily inactive.
-    const timeDelta = Math.min(
-      (timestamp - this.lastFrameTime) / 1000,
-      GodangoMachine.constants.MAX_FRAME_TIME
-    );
+    const timeDelta =
+      Math.min(timestamp - this.lastFrameTime, GodangoMachine.constants.MAX_FRAME_TIME) / 1000;
     this.lastFrameTime = timestamp;
 
     // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
     const timeFactor = timeDelta * 60;
+    console.log(timeFactor);
 
     this.faces.forEach((_, i) => {
       let totalForce =
@@ -369,9 +367,16 @@ export default class GodangoMachine {
         // the spring can only engage if the velocity is low enough;
         // otherwise it glides across the peaks.
         if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD && this.positions[i]) {
+          // const adjustedSpringFactor = timeFactor < 2 ? GodangoMachine.constants.SPRING_FACTOR : 1;
           totalForce += (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR;
         }
-        this.addVelocity(i, totalForce * timeFactor);
+        // if (totalForce * timeFactor > 1) {
+        //   // TODO: do we need this
+        //   console.log(
+        //     `DEBUG: large force ${Math.round(totalForce * timeFactor)} detected; you're probably running at a very low frame rate`
+        //   );
+        // }
+        this.addVelocity(i, Math.min(totalForce * timeFactor, 1));
         // TODO: not stopping fast enough
 
         if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
