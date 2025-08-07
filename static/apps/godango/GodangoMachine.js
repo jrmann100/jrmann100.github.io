@@ -413,7 +413,7 @@ export default class GodangoMachine {
       // regardless of whether the length is increasing or decreasing.
       // backward is a bit stronger than forward so we use that.
       this.lengthVelocity * -GodangoMachine.constants.BACKWARD_FRICTION_FORCE +
-      (this.currentLength - this.displayedLength) * 0.4 * GodangoMachine.constants.SPRING_FACTOR;
+      (this.currentLength - this.displayedLength) * GodangoMachine.constants.SPRING_FACTOR * 0.7;
 
     this.lengthVelocity += lengthForce * timeFactor;
 
