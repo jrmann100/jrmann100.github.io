@@ -55,8 +55,8 @@ export default class GodangoMachine {
   constantLength = 0;
 
   /**
-   * TODO: description. actually, methods should have required descriptions.
-   * @param {number} length
+   *
+   * @param {number} length the length
    */
   setConstantLength(length) {
     this.currentLength -= this.constantLength;
@@ -124,22 +124,26 @@ export default class GodangoMachine {
     WHEEL_END_OFFSET: 50,
 
     /**
-     * TODO
+     * If the reel is moving forward at velocity v,
+     * the friction force applied to it is v * FORWARD_FRICTION_FACTOR.
      */
-    FORWARD_FRICTION_FORCE: 0.125,
+    FORWARD_FRICTION_FACTOR: 0.125,
 
     /**
-     * TODO
+     * If the reel is moving backward at velocity v,
+     * the friction force applied to it is v * BACKWARD_FRICTION_FORCE.
+     * This is stronger than forward friction to prevent prevent reels
+     * from jiggling too much as they approach a snap point.
      */
     BACKWARD_FRICTION_FORCE: 0.5,
 
     /**
-     * TODO
+     * The instantaneous velocity added to a reel when it is boosted.
      */
-    BOOST_AMOUNT: 5,
+    BOOST_VELOCITY: 5,
 
     /**
-     * TODO
+     * This describes the "stiffness" of the spring (see Hooke's law).
      */
     SPRING_FACTOR: 8,
 
@@ -207,6 +211,7 @@ export default class GodangoMachine {
    */
 
   /**
+   * Interpolates between two or three stops based on a value between 0 and 1.
    * @param {number} position the position value between 0 and 1.
    * @param {number} firstStop the first stop value.
    * @param {number} secondStop the second stop value.
@@ -312,9 +317,9 @@ export default class GodangoMachine {
     this.renderFace(b, this.positions[i], false);
   }
 
-  // TODO: remove this debug code?
-  DEBUG_FRAME_RATE = Infinity;
-  DEBUG_DROPPED_FRAMES = 0;
+  // DEBUG_FRAME_RATE = 30;
+  // DEBUG_DROPPED_FRAMES = 0;
+
   /**
    * Update the state of the machine until all reels have stabilized.
    * @type {FrameRequestCallback}
@@ -330,15 +335,12 @@ export default class GodangoMachine {
       return;
     }
 
-    // debug: frame dropper
-    if (this.DEBUG_DROPPED_FRAMES < 60 / this.DEBUG_FRAME_RATE - 1) {
-      this.DEBUG_DROPPED_FRAMES++;
-      requestAnimationFrame(this.handleAnimationFrame.bind(this));
-      // console.log(`DEBUG: Dropped frame`);
-      return;
-    }
-
-    this.DEBUG_DROPPED_FRAMES = 0;
+    // if (this.DEBUG_DROPPED_FRAMES < 60 / this.DEBUG_FRAME_RATE - 1) {
+    //   this.DEBUG_DROPPED_FRAMES++;
+    //   requestAnimationFrame(this.handleAnimationFrame.bind(this));
+    //   return;
+    // }
+    // this.DEBUG_DROPPED_FRAMES = 0;
 
     // limit the time delta to avoid large jumps;
     // e.g., if the page was momentarily inactive.
@@ -353,7 +355,7 @@ export default class GodangoMachine {
       let totalForce =
         this.velocities[i] *
         -(this.velocities[i] > 0
-          ? GodangoMachine.constants.FORWARD_FRICTION_FORCE
+          ? GodangoMachine.constants.FORWARD_FRICTION_FACTOR
           : GodangoMachine.constants.BACKWARD_FRICTION_FORCE);
 
       if (
@@ -369,12 +371,10 @@ export default class GodangoMachine {
         // the spring can only engage if the velocity is low enough;
         // otherwise it glides across the peaks.
         if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD) {
-          // const adjustedSpringFactor = timeFactor < 2 ? GodangoMachine.constants.SPRING_FACTOR : 1;
           totalForce += (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR;
         }
       }
       this.addVelocity(i, totalForce * timeFactor);
-      // TODO: not stopping fast enough
 
       if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
         this.clearVelocity(i);
@@ -386,14 +386,14 @@ export default class GodangoMachine {
       if (this.clicks[i][1] === 0) {
         // boosting is technically a force, but it's instantaneous and not applied over time.
         // therefore we don't incorporate it into acceleration and apply it directly to the velocity.
-        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_AMOUNT);
-        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_AMOUNT);
+        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_VELOCITY);
+        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_VELOCITY);
         this.clicks[i][0] = timestamp;
       }
       // for every following reel, wait START_OFFSET ms after the last reel was boosted.
       else if (timestamp - this.clicks[i][0] > GodangoMachine.constants.CLICK_START_OFFSET) {
         this.clicks[i][0] = timestamp;
-        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_AMOUNT);
+        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_VELOCITY);
       }
       // remove this entry if there are no more reels to boost.
       // clicks is a queue and all clicks take the same amount of time to process,
