@@ -50,6 +50,10 @@ export default defineConfig([
         {
           require: {
             ArrowFunctionExpression: true,
+            ClassDeclaration: true,
+            ClassExpression: true,
+            FunctionDeclaration: true,
+            FunctionExpression: true,
             MethodDefinition: true
           }
         }
@@ -60,8 +64,7 @@ export default defineConfig([
           contexts: [
             'ArrowFunctionExpression',
             'FunctionDeclaration',
-            'FunctionExpression',
-            'MethodDefinition'
+            'MethodDefinition:not([kind="get"])'
           ]
         }
       ],
