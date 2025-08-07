@@ -63,11 +63,15 @@ export default defineConfig([
         {
           contexts: [
             'ArrowFunctionExpression',
+            'ClassDeclaration',
+            'ClassExpression',
             'FunctionDeclaration',
-            'MethodDefinition:not([kind="get"])'
+            'FunctionExpression:not(MethodDefinition > FunctionExpression)',
+            'MethodDefinition:not([kind="get"], [kind="set"])'
           ]
         }
       ],
+      'jsdoc/no-blank-blocks': 'warn',
       quotes: ['warn', 'single', { avoidEscape: true }]
     },
     settings: {
