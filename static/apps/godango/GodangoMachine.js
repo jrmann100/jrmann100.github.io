@@ -408,30 +408,29 @@ export default class GodangoMachine {
       this.updatePosition(i, this.positions[i] + timeDelta * this.velocities[i]);
     }
 
-    // // TODO: update to force-based
-    // this.lengthVelocity =
-    //   // TODO: magic number
-    //   this.lengthVelocity *
-    //     Math.pow(GodangoMachine.constants.FORWARD_FRICTION_FORCE * 0.5, timeFactor) +
-    //   (this.currentLength - this.displayedLength) *
-    //     GodangoMachine.constants.SPRING_FACTOR *
-    //     timeFactor *
-    //     0.5;
+    let lengthForce =
+      // friction should be constant here since the effect should be the same
+      // regardless of whether the length is increasing or decreasing.
+      // backward is a bit stronger than forward so we use that.
+      this.lengthVelocity * -GodangoMachine.constants.BACKWARD_FRICTION_FORCE +
+      (this.currentLength - this.displayedLength) * 0.4 * GodangoMachine.constants.SPRING_FACTOR;
 
-    // if (Math.abs(this.lengthVelocity) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
-    //   this.lengthVelocity = 0;
-    // }
+    this.lengthVelocity += lengthForce * timeFactor;
 
-    // this.displayedLength += this.lengthVelocity * timeDelta;
+    if (Math.abs(this.lengthVelocity) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
+      this.lengthVelocity = 0;
+    }
 
-    // this.lengthBox.value = Math.round(this.displayedLength).toString();
+    this.displayedLength += this.lengthVelocity * timeDelta;
+
+    this.lengthBox.value = Math.round(this.displayedLength).toString();
     // this.lengthBox.style.transform = `translateY(${this.displayedLength - 30}px)`;
 
     // if all reels have stopped moving and none are held, pause the animation loop.
     if (
       this.movingReels === 0 &&
-      timestamp - this.lastWheelTime > this.reelCount * GodangoMachine.constants.WHEEL_END_OFFSET
-      // this.lengthVelocity === 0
+      timestamp - this.lastWheelTime > this.reelCount * GodangoMachine.constants.WHEEL_END_OFFSET &&
+      this.lengthVelocity === 0
     ) {
       this.animationRunning = false;
       this.lastFrameTime = GodangoMachine.constants.NEVER;
