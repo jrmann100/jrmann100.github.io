@@ -4,7 +4,6 @@
  * {@link https://github.com/microsoft/TypeScript-DOM-lib-generator/pull/236/commits/5113f7bf4a99bbf43c0fae8403602f48701b3878}
  * @author Jordan Mann
  */
-/* eslint-disable jsdoc/require-jsdoc */
 
 interface Navigator {
   getBattery(): Promise<BatteryManager>;

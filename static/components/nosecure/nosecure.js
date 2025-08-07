@@ -3,9 +3,11 @@
  * @author Jordan Mann
  */
 
+/**
+ *
+ */
 class NoSecure extends HTMLElement {
   /**
-   *
    * @param {DocumentFragment | undefined} templateContent the template content to use for this component.
    */
   constructor(templateContent) {

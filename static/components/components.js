@@ -115,7 +115,13 @@ export default async function createComponent(
       throw new TypeError('Expected a CustomElementConstructor');
     }
 
+    /**
+     *
+     */
     CustomComponent = class extends MaybeCustomElementConstructor {
+      /**
+       *
+       */
       constructor() {
         super(templateContent?.cloneNode(true));
       }
@@ -123,7 +129,13 @@ export default async function createComponent(
   } else {
     const SuperClass = typeof js === 'object' && js?.extensionOf ? js.extensionOf : HTMLElement;
     const shadow = typeof js === 'object' && js?.shadow;
+    /**
+     *
+     */
     CustomComponent = class extends SuperClass {
+      /**
+       *
+       */
       constructor() {
         super();
         if (templateContent === undefined) {

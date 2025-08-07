@@ -5,6 +5,9 @@
 
 import { sauce, word } from './math.js';
 
+/**
+ *
+ */
 export default class GodangoMachine {
   /**
    * Container element for the reels.
@@ -514,6 +517,9 @@ export default class GodangoMachine {
     this.resumeAnimation();
   }
 
+  /**
+   *
+   */
   getPassphrase() {
     return this.positions
       .slice(1) // skip the controller

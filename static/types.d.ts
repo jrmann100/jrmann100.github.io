@@ -12,7 +12,6 @@ interface EventTarget {
    * We override addEventListener for page-local scripts,
    * but the template and certain scripts will need
    * persistent event listeners.
-   *
    * @see events.js
    * @param type event type to receive.
    * @param callback event handler.
@@ -33,7 +32,6 @@ interface Window {
    * We override setInterval for page-local scripts,
    * but the template and certain scripts will need
    * persistent event listeners.
-   *
    * @param handler called on every pulse.
    * @param timeout milliseconds between pulses.
    * @param arguments other args used by window.setInterval().
@@ -44,7 +42,6 @@ interface Window {
 
 /**
  * Combination of configuration values used by colors module.
- *
  * @see colors.js
  */
 interface ColorScheme {
@@ -67,13 +64,13 @@ interface ColorScheme {
 }
 /** todo */
 
-interface ComponentConstructor<T extends HTMLElement = HTMLElement> {
-  /**
-   * Creates a new component instance.
-   * @param templateContent the template content to use for this component.
-   */
-  new (templateContent?: DocumentFragment): T;
-}
+/**
+ * Creates a new component instance.
+ * @param templateContent the template content to use for this component.
+ */
+type ComponentConstructor<T extends HTMLElement = HTMLElement> = new (
+  templateContent?: DocumentFragment
+) => T;
 
 /**
  * Switcher; a very fancy radio list.

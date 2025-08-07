@@ -6,6 +6,9 @@
  */
 
 // TODO
+/**
+ *
+ */
 class Switcher extends HTMLElement {
   /**
    * @param {DocumentFragment | undefined} templateContent the template content to use for this switcher.

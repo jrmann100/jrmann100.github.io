@@ -1,3 +1,6 @@
+/**
+ *
+ */
 const checkNeeds = () => {
   // enable components which require javascript.
   document.querySelectorAll('[data-needs-js]').forEach((el) => el.removeAttribute('hidden'));
