@@ -30,17 +30,19 @@ export default defineConfig([
   },
   packageJson.configs.recommended,
   {
-    files: ['**/*.js'],
+    files: ['**/*.{js,ts}'],
     plugins: {
       prettier,
       jsdoc
     },
+    extends: [
+      eslint.configs.recommended,
+      jsdoc.configs['flat/recommended'],
+      tseslint.configs.strict,
+      tseslint.configs.stylistic,
+      eslintPluginPrettierRecommended
+    ],
     rules: {
-      ...jsdoc.configs['flat/recommended'].rules,
-      ...tseslint.configs.strict.rules,
-      ...tseslint.configs.stylistic.rules,
-      ...eslintPluginPrettierRecommended.rules,
-      ...eslint.configs.recommended.rules,
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/99
       'jsdoc/no-undefined-types': ['off'],
       'jsdoc/require-jsdoc': [
@@ -52,7 +54,26 @@ export default defineConfig([
           }
         }
       ],
+      'jsdoc/require-description': [
+        'warn',
+        {
+          contexts: [
+            'ArrowFunctionExpression',
+            'FunctionDeclaration',
+            'FunctionExpression',
+            'MethodDefinition'
+          ]
+        }
+      ],
       quotes: ['warn', 'single', { avoidEscape: true }]
+    },
+    settings: {
+      jsdoc: {
+        preferredTypes: {
+          any: false,
+          '*': false
+        }
+      }
     }
   },
   {
@@ -83,14 +104,14 @@ export default defineConfig([
   },
   // root-level files are Node scripts
   {
-    files: ['*.js'],
+    files: ['*.js', '*.ts'],
     languageOptions: {
       globals: globals.node
     }
   },
   // static files are browser scripts
   {
-    files: ['static/**/*.js'],
+    files: ['static/**/*.{js, ts}'],
     languageOptions: {
       globals: globals.browser
     }
