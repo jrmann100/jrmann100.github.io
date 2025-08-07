@@ -145,8 +145,10 @@ export default class GodangoMachine {
 
     /**
      * The velocity at which the wheel is moving too fast for the spring to engage.
+     * If this is too high, then the spring continues to jump to the next snap point
+     * before friction has an opportunity to slow it down; leading to the reel never stopping.
      */
-    SPRING_THRESHOLD: 2,
+    SPRING_THRESHOLD: 1.3,
 
     /**
      * Maximum time delta for a single animation frame, in seconds.
