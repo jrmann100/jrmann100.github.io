@@ -126,7 +126,7 @@ export default class GodangoMachine {
     /**
      * TODO
      */
-    FORWARD_FRICTION_FORCE: 0.1,
+    FORWARD_FRICTION_FORCE: 0.125,
 
     /**
      * TODO
@@ -136,7 +136,7 @@ export default class GodangoMachine {
     /**
      * TODO
      */
-    BOOST_AMOUNT: 4,
+    BOOST_AMOUNT: 5,
 
     /**
      * TODO
@@ -348,7 +348,6 @@ export default class GodangoMachine {
 
     // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
     const timeFactor = timeDelta * 60;
-    console.log(this.velocities.map((x) => x.toFixed(2).padStart(5, '+')));
 
     this.faces.forEach((_, i) => {
       let totalForce =
