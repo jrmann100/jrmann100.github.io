@@ -370,13 +370,8 @@ export default class GodangoMachine {
           // const adjustedSpringFactor = timeFactor < 2 ? GodangoMachine.constants.SPRING_FACTOR : 1;
           totalForce += (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR;
         }
-        // if (totalForce * timeFactor > 1) {
-        //   // TODO: do we need this
-        //   console.log(
-        //     `DEBUG: large force ${Math.round(totalForce * timeFactor)} detected; you're probably running at a very low frame rate`
-        //   );
-        // }
-        this.addVelocity(i, Math.min(totalForce * timeFactor, 1));
+
+        this.addVelocity(i, totalForce * timeFactor);
         // TODO: not stopping fast enough
 
         if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
