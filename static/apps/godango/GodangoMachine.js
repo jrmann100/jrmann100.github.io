@@ -312,7 +312,8 @@ export default class GodangoMachine {
     this.renderFace(b, this.positions[i], false);
   }
 
-  DEBUG_FRAME_RATE = 6;
+  // TODO: remove this debug code?
+  DEBUG_FRAME_RATE = Infinity;
   DEBUG_DROPPED_FRAMES = 0;
   /**
    * Update the state of the machine until all reels have stabilized.
