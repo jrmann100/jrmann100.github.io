@@ -348,7 +348,6 @@ export default class GodangoMachine {
 
     // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
     const timeFactor = timeDelta * 60;
-    console.log(timeFactor);
 
     this.faces.forEach((_, i) => {
       let totalForce =
