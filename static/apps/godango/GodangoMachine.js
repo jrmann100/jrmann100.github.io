@@ -44,7 +44,7 @@ export default class GodangoMachine {
    * Update a word currently being displayed on a reel,
    * and any other UI state that depends on it.
    * @param {number} index the index of the reel to update.
-   * @param {*} word the new word to display.
+   * @param {string} word the new word to display.
    */
   setWord(index, word) {
     this.currentLength -= this.words[index]?.length ?? 0;
@@ -52,18 +52,8 @@ export default class GodangoMachine {
     this.currentLength += word.length;
   }
 
+  // TODO: compute dynamically based on sauce and separators?
   constantLength = 0;
-
-  /**
-   *
-   * @param {number} length the length
-   */
-  setConstantLength(length) {
-    this.currentLength -= this.constantLength;
-    this.constantLength = length;
-    this.currentLength += this.constantLength;
-    this.resumeAnimation();
-  }
 
   /**
    * The faces of the machine, grouped in pairs by reel.
@@ -72,7 +62,7 @@ export default class GodangoMachine {
   faces;
 
   /**
-   * The total number of reels, including the controller.
+   * @returns {number} the number of reels in the machine.
    */
   get reelCount() {
     return this.faces.length;
@@ -299,12 +289,12 @@ export default class GodangoMachine {
     const [a, b] = this.faces[i];
     if (i !== 0) {
       if (force || (this.positions[i] < 0.5 && newPosition >= 0.5)) {
-        this.setWord(i - 1, b.textContent);
+        this.setWord(i - 1, b.textContent ?? '');
         // the sauce reel is the last reel
         a.textContent = this.getNewFaceContent(i);
       }
       if (force || newPosition > 1) {
-        this.setWord(i - 1, a.textContent);
+        this.setWord(i - 1, a.textContent ?? '');
         // the sauce reel is the last reel
         b.textContent = this.getNewFaceContent(i);
       }
