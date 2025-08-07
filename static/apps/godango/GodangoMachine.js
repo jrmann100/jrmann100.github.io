@@ -145,10 +145,8 @@ export default class GodangoMachine {
 
     /**
      * The velocity at which the wheel is moving too fast for the spring to engage.
-     * If this is too high, then the spring continues to jump to the next snap point
-     * before friction has an opportunity to slow it down; leading to the reel never stopping.
      */
-    SPRING_THRESHOLD: 1.3,
+    SPRING_THRESHOLD: 2,
 
     /**
      * Maximum time delta for a single animation frame, in seconds.
@@ -348,6 +346,7 @@ export default class GodangoMachine {
 
     // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
     const timeFactor = timeDelta * 60;
+    console.log(this.velocities.map((x) => x.toFixed(2).padStart(5, '+')));
 
     this.faces.forEach((_, i) => {
       let totalForce =
@@ -368,17 +367,16 @@ export default class GodangoMachine {
         const nearestSnap = Math.round(this.positions[i] * 2) / 2;
         // the spring can only engage if the velocity is low enough;
         // otherwise it glides across the peaks.
-        if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD && this.positions[i]) {
+        if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD) {
           // const adjustedSpringFactor = timeFactor < 2 ? GodangoMachine.constants.SPRING_FACTOR : 1;
           totalForce += (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR;
         }
+      }
+      this.addVelocity(i, totalForce * timeFactor);
+      // TODO: not stopping fast enough
 
-        this.addVelocity(i, totalForce * timeFactor);
-        // TODO: not stopping fast enough
-
-        if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
-          this.clearVelocity(i);
-        }
+      if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
+        this.clearVelocity(i);
       }
     });
 
