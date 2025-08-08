@@ -65,6 +65,24 @@ interface ColorScheme {
 /** todo */
 
 /**
+ * Enumerate possible property-newValue pairs that can be updated on the 'current' ColorScheme proxy.
+ */
+type CurrentProxySetterArgs = {
+  [K in keyof ColorScheme]: [
+    target: ColorScheme,
+    prop: K,
+    newValue: ColorScheme[K],
+    receiver: unknown
+  ];
+};
+
+/**
+ * Type of the 'current' ColorScheme proxy setter.
+ */
+type CurrentProxySetter = ProxyHandler<ColorScheme>['set'] &
+  ((...args: CurrentProxySetterArgs[keyof CurrentProxySetterArgs]) => boolean);
+
+/**
  * Creates a new component instance.
  * @param templateContent the template content to use for this component.
  */

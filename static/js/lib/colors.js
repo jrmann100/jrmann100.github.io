@@ -172,35 +172,36 @@ let current = new Proxy(
   {
     /**
      * Setter.
-     * @param {*} target the color scheme being modified.
-     * @param {*} prop the property of the configuration object being changed.
-     * @param {*} newValue the updated value to reassign the prop to.
-     * @returns {boolean} whether the value was successfully set.
+     * @type {CurrentProxySetter}
      */
-    set(target, prop, newValue) {
+    set(target, prop, newValue, receiver) {
       if (prop === 'set' && newValue !== target.set) {
-        Reflect.set(target, prop, newValue);
+        Reflect.set(target, prop, newValue, receiver);
         if (target.pref !== 'lock') {
           newColors();
+        }
+        if (newValue === null) {
+          throw new Error('Should not try to unset current.set back to null!');
         }
         document.documentElement.setAttribute('data-color-scheme', newValue);
       } else if (prop === 'pref') {
         // if (target.pref === 'lock') {
         //   newColors();
         // }
-        Reflect.set(target, prop, newValue);
+        Reflect.set(target, prop, newValue, receiver);
         document.querySelector('.colors-shuffle')?.toggleAttribute('disabled', newValue === 'lock');
-        let targetSet = undefined;
+        /** @type {ColorScheme['set']} */
+        let targetSet = null;
         if (newValue === 'auto') {
           targetSet = media.matches ? 'light' : 'dark';
         } else if (newValue === 'light' || newValue === 'dark') {
           targetSet = newValue;
         }
-        if (targetSet !== undefined && current.set !== targetSet) {
+        if (targetSet !== null && current.set !== targetSet) {
           current.set = targetSet;
         }
       } else if (prop === 'colors') {
-        Reflect.set(target, prop, newValue);
+        Reflect.set(target, prop, newValue, receiver);
         document.documentElement.style.setProperty('--p-white', newValue[0]);
         document.documentElement.style.setProperty('--p-black', newValue[1]);
         document.documentElement.style.setProperty('--p-accent', newValue[2]);
