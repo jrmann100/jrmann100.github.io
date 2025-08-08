@@ -13,7 +13,7 @@
 // Thanks to MDN Web Docs for the help.
 
 /**
- * @class A fancy card-sized button with a ripple effect on user click.
+ * A fancy card-sized button with a ripple effect on user click.
  * @property {null | (MouseEvent) => void } boundButton function to handle document mouseup, bound to a single pressed component.
  */
 export class RipplingCard extends HTMLElement {
