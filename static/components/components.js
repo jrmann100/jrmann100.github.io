@@ -116,26 +116,21 @@ export default async function createComponent(
     }
 
     /**
-     *
+     * Extend the given constructor, instantiating it with the template content.
      */
     CustomComponent = class extends MaybeCustomElementConstructor {
-      /**
-       *
-       */
       constructor() {
         super(templateContent?.cloneNode(true));
       }
     };
   } else {
+    // we may be given a class to extend, or fall back to HTMLElement
     const SuperClass = typeof js === 'object' && js?.extensionOf ? js.extensionOf : HTMLElement;
     const shadow = typeof js === 'object' && js?.shadow;
     /**
-     *
+     * Extend the given class or HTMLElement, and append the template content.
      */
     CustomComponent = class extends SuperClass {
-      /**
-       *
-       */
       constructor() {
         super();
         if (templateContent === undefined) {

@@ -4,7 +4,8 @@
  */
 
 /**
- *
+ * Shows itself only when the browsing context is not secure.
+ * Like what <noscript> does for JavaScript.
  */
 class NoSecure extends HTMLElement {
   /**

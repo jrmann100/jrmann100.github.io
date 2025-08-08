@@ -7,7 +7,8 @@
 
 // TODO
 /**
- *
+ * A very fancy radio group with an indicator that glides over the different labels
+ * rather than displaying individual bubbles to be checked.
  */
 class Switcher extends HTMLElement {
   /**
@@ -94,7 +95,8 @@ class Switcher extends HTMLElement {
         if (input === null) {
           throw new Error(`Could not find input matching given value "${value}"`);
         }
-        ((input.checked = true), input.dispatchEvent(new Event('change')));
+        input.checked = true;
+        input.dispatchEvent(new Event('change'));
       }
     });
   }

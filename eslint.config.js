@@ -53,8 +53,8 @@ export default defineConfig([
             ClassDeclaration: true,
             ClassExpression: true,
             FunctionDeclaration: true,
-            FunctionExpression: true,
-            MethodDefinition: true
+            FunctionExpression: true
+            // MethodDefinition: true
           }
         }
       ],
@@ -67,7 +67,7 @@ export default defineConfig([
             'ClassExpression',
             'FunctionDeclaration',
             'FunctionExpression:not(MethodDefinition > FunctionExpression)',
-            'MethodDefinition:not([kind="get"], [kind="set"])'
+            'MethodDefinition:not([kind="get"], [kind="set"], [kind="constructor"])'
           ]
         }
       ],

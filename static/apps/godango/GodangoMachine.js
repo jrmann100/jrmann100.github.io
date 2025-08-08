@@ -6,7 +6,10 @@
 import { sauce, word } from './math.js';
 
 /**
- *
+ * A series of spinning reels which snap into place with a spring-like action,
+ * constantly randomizing the words displayed on their faces.
+ * Designed for the purpose of generating passphrases.
+ * Not to be used for gambling.
  */
 export default class GodangoMachine {
   /**
@@ -243,7 +246,7 @@ export default class GodangoMachine {
   /**
    * Set the velocity of a reel to a specific value.
    * Decrements {@link movingReels} if the reel was previously moving.
-   * @param {*} reelIndex
+   * @param {number} reelIndex the index of the reel for which to clear the velocity.
    */
   clearVelocity(reelIndex) {
     if (this.velocities[reelIndex] !== 0) {
@@ -518,7 +521,8 @@ export default class GodangoMachine {
   }
 
   /**
-   *
+   * Return the words currently being displayed.
+   * @returns {(string | null)[]} the word displayed on each word reel.
    */
   getPassphrase() {
     return this.positions
