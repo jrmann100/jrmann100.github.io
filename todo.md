@@ -39,4 +39,4 @@ clipboard app should be expanded into more of a suite. HTML should be reactive f
 
 capitalize parameter descriptions in JSDoc - require this
 
-disallow {*} any in jsdoc
+run all lint steps without short-circuiting, but report if any fail?
