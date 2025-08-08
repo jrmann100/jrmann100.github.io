@@ -232,6 +232,7 @@ document.layoutAddEventListener('DOMContentLoaded', () => {
     switcher.layoutAddEventListener(
       'switch',
       // checkme https://github.com/Microsoft/TypeScript/issues/28357
+      // eslint-disable-next-line jsdoc/check-types
       (/** @type {any} */ { detail: { value } }) => (current.pref = value)
     );
   }, 100);
