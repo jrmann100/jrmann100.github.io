@@ -39,9 +39,8 @@ const getTextOrThrow = (url) =>
  * @returns {c is CustomElementConstructor} whether C is probably a CustomElementConstructor.
  */
 const isCustomElementConstructor = (c) =>
-  typeof c === 'function' &&
-  c.prototype instanceof HTMLElement &&
-  c.prototype.constructor.length === 1;
+  typeof c === 'function' && c.prototype instanceof HTMLElement;
+
 /**
  * Register a custom element [name]-component.
  *
