@@ -64,7 +64,12 @@ export default async function main() {
       throw new Error('could not find required status element(s)');
     }
     entropyBox.value = entropy(defaults.COUNT, defaults.SAUCE_TYPE === 'custom').toString();
-    machine.setConstantLength(defaults.COUNT * defaults.SEPARATOR.length);
+    // TODO: maybe move everything into the machine…
+    // machine.setConstantLength(defaults.COUNT * defaults.SEPARATOR.length);
+    // TODO: docreate
+    if (doCreate) {
+      // machine.click();
+    }
   }
 
   const defaultsString = localStorage.getItem(storageKey);
