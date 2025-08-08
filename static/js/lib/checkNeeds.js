@@ -1,5 +1,6 @@
 /**
- *
+ * Check properties of the page (whether JavaScript is enabled, a secure context, etc.)
+ * and conditionally un-hide elements that require those properties by their `data-needs-*` attributes.
  */
 const checkNeeds = () => {
   // enable components which require javascript.
