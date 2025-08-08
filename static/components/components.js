@@ -46,7 +46,8 @@ const isCustomElementConstructor = (c) =>
  *
  * {@link https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements Read the spec.}
  * @see {@link customElements.define}
- * @param {string} name The component's name; components/[name]/* will be dynamically used as a template.
+ * @param {string} name The component's name; used to reference components/[name]/[basename].*,
+ * where [basename] is like 'tab' if name is 'tabs/tab' and registered as tabs-tab-component.
  * @param {ComponentOptions} [componentOptions] Describes how the component's definition files should be loaded.
  * By default, the component only loads HTML into the light DOM of a subclass of HTMLElement.
  * @param {ElementDefinitionOptions} [options] other arguments to pass to {@link customElements.define}
@@ -72,15 +73,17 @@ export default async function createComponent(
    */
   let CustomComponent;
 
+  const basename = name.split('/').at(-1);
+
   if (html) {
     const template = document.createElement('template');
-    template.innerHTML = await getTextOrThrow(`/static/components/${name}/${name}.html.inc`);
+    template.innerHTML = await getTextOrThrow(`/static/components/${name}/${basename}.html.inc`);
     templateContent = template.content;
   }
   if (css === 'local') {
     // if the component is using a shadow DOM, we need to inject the styles directly into the shadow root
     const style = document.createElement('style');
-    style.textContent = await getTextOrThrow(`/static/components/${name}/${name}.css`);
+    style.textContent = await getTextOrThrow(`/static/components/${name}/${basename}.css`);
     if (templateContent === undefined) {
       templateContent = document.createDocumentFragment();
     }
@@ -92,14 +95,14 @@ export default async function createComponent(
       link.onerror = reject;
     });
     link.rel = 'stylesheet';
-    link.href = `/static/components/${name}/${name}.css`;
+    link.href = `/static/components/${name}/${basename}.css`;
     document.head.append(link);
     // checkme: timeout loading?
     await linkLoaded;
   }
   if (js === true) {
     const MaybeCustomElementConstructor = await import(
-      `/static/components/${name}/${name}.js`
+      `/static/components/${name}/${basename}.js`
     ).then(
       (module) => module.default,
       (err) => {
@@ -145,5 +148,5 @@ export default async function createComponent(
     };
   }
 
-  customElements.define(name + '-component', CustomComponent, options);
+  customElements.define(name.replaceAll('/', '-') + '-component', CustomComponent, options);
 }
