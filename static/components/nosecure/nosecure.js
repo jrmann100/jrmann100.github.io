@@ -19,7 +19,7 @@ class NoSecure extends HTMLElement {
     if (window.isSecureContext) {
       this.hidden = true;
     }
-    if (this.children.length === 0) {
+    if (this.childNodes.length === 0) {
       this.append(templateContent);
     }
   }
