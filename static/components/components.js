@@ -148,14 +148,3 @@ export default async function createComponent(
 
   customElements.define(name + '-component', CustomComponent, options);
 }
-
-(async () => {
-  await createComponent('switcher', {
-    css: 'global',
-    js: true
-  });
-  await createComponent('nosecure', {
-    js: true
-  });
-  console.log('🧩 components module ready.');
-})();
