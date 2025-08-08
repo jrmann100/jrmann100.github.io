@@ -9,8 +9,9 @@
 /**
  * A very fancy radio group with an indicator that glides over the different labels
  * rather than displaying individual bubbles to be checked.
+ * @type {ComponentConstructor}
  */
-class Switcher extends HTMLElement {
+const Switcher = class extends HTMLElement {
   /**
    * @param {DocumentFragment | undefined} templateContent the template content to use for this switcher.
    */
@@ -100,11 +101,6 @@ class Switcher extends HTMLElement {
       }
     });
   }
-}
+};
 
-/**
- * TODO
- * @type {ComponentConstructor<Switcher>}
- */
-const SwitcherComponent = Switcher;
-export default SwitcherComponent;
+export default Switcher;
