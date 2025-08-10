@@ -28,7 +28,7 @@ const getTextOrThrow = (url) =>
 /**
  * @typedef ComponentOptions describes how a component's definition files should be loaded.
  * @property {boolean} [html] whether to load a HTML include for this component.
- * @property {'global' | 'local'} [css] whether to load a stylesheet for this component.
+ * @property {'global' | 'local' | false} [css] whether to load a stylesheet for this component.
  * @property {boolean | ComponentAutoOptions} [js] whether to load a JavaScript file for this component,
  * or how to handle the template if no JavaScript file is provided.
  */
@@ -54,7 +54,7 @@ const isCustomElementConstructor = (c) =>
  */
 export default async function createComponent(
   name,
-  { html = true, css = undefined, js = false } = {},
+  { html = true, css = false, js = false } = {},
   options
 ) {
   if (customElements.get(name + '-component') !== undefined) {
