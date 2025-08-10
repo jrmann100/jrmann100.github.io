@@ -1,0 +1,6 @@
+{
+  "port": 5500,
+  "root": "build",
+  "open": false,
+  "https": "cert.cjs"
+}

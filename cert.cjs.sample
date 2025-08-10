@@ -1,0 +1,9 @@
+// copy this file to cert.cjs and fill in the path to your certificate and key;
+// or just set "https": true in five-server.config.js to generate a self-signed cert automatically
+
+const fs = require('fs');
+
+module.exports = {
+  cert: fs.readFileSync('/PATH/TO/YOUR/CERT.crt', { encoding: 'utf8' }),
+  key: fs.readFileSync('/PATH/TO/YOUR/KEY.key', { encoding: 'utf8' })
+};
