@@ -40,3 +40,5 @@ clipboard app should be expanded into more of a suite. HTML should be reactive f
 capitalize parameter descriptions in JSDoc - require this
 
 run all lint steps without short-circuiting, but report if any fail?
+
+godango length box could have little bar on the side which fills up from min to max possible length
