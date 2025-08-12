@@ -16,7 +16,7 @@
  * A fancy card-sized button with a ripple effect on user click.
  * @property {null | (MouseEvent) => void } boundButton function to handle document mouseup, bound to a single pressed component.
  */
-export class RipplingCard extends HTMLElement {
+export default class RipplingCard extends HTMLElement {
   /**
    * If either of these attrs are changed,
    * we will need to re-render the button.
@@ -227,11 +227,3 @@ export class RipplingCard extends HTMLElement {
     this.deactivate(this.wrapper);
   }
 }
-
-/**
- *  A fancy card-sized button with a ripple effect on user click.
- * @type {CustomElementConstructor}
- */
-const RippleComponent = RipplingCard;
-
-export default RippleComponent;

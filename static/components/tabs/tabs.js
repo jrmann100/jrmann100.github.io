@@ -1,10 +1,6 @@
-import Tab from './tab/tab';
+import Tab from './tab/tab.js';
 
-/**
- * TODO
- * @type {ComponentConstructor}
- */
-const Tabs = class extends HTMLElement {
+export default class Tabs extends HTMLElement {
   /**
    * @param {DocumentFragment | undefined} templateContent the template content to use for these tabs.
    */
@@ -17,17 +13,20 @@ const Tabs = class extends HTMLElement {
     if (!(wrapper instanceof HTMLElement)) {
       throw new Error('Could not find wrapper element for tabs component');
     }
-    for (const child of this.childNodes) {
+    if (customElements.get('tabs-tab-component') === undefined) {
+      throw new Error('register tabs/tab before registering tabs!');
+    }
+    for (const child of this.children) {
+      console.log(child, Object.getPrototypeOf(child));
       if (!(child instanceof Tab)) {
         throw new Error(
-          'Tabs component can only contain tab components, found' + child.constructor.name
+          `Tabs component can only contain tab components, found ${child.constructor.name}`
         );
       }
     }
 
-    wrapper.append(...this.childNodes);
+    wrapper.replaceChildren(...this.children);
+
     this.replaceChildren(templateContent);
   }
-};
-
-export default Tabs;
+}

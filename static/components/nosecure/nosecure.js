@@ -6,9 +6,8 @@
 /**
  * Shows itself only when the browsing context is not secure.
  * Like what <noscript> does for JavaScript.
- * @type {ComponentConstructor}
  */
-const NoSecure = class extends HTMLElement {
+export default class NoSecure extends HTMLElement {
   /**
    * @param {DocumentFragment | undefined} templateContent the template content to use for this component.
    */
@@ -24,6 +23,4 @@ const NoSecure = class extends HTMLElement {
       this.append(templateContent);
     }
   }
-};
-
-export default NoSecure;
+}

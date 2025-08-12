@@ -148,5 +148,6 @@ export default async function createComponent(
     };
   }
 
+  console.log('defining', name);
   customElements.define(name.replaceAll('/', '-') + '-component', CustomComponent, options);
 }

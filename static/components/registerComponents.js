@@ -1,5 +1,8 @@
 import createComponent from './components.js';
 
+// components are upgraded in the DOM as they are registered.
+// this means you should register child components before their parents!
+// otherwise, for instance, Tabs cannot know if its children are Tab components.
 (async () => {
   await createComponent('switcher', {
     css: 'global',
@@ -8,11 +11,11 @@ import createComponent from './components.js';
   await createComponent('nosecure', {
     js: true
   });
-  await createComponent('tabs', {
-    css: 'global',
+  await createComponent('tabs/tab', {
     js: true
   });
-  await createComponent('tabs/tab', {
+  await createComponent('tabs', {
+    css: 'global',
     js: true
   });
   console.log('🧩 components module ready.');
