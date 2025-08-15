@@ -10,8 +10,8 @@
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
 <nosecure-component></nosecure-component>
 <tabs-component>
-  <tabs-tab-component data-name="godango"></tabs-tab-component>
-  <tabs-tab-component data-name="options"></tabs-tab-component>
+  <tabs-tab-component data-label="godango"></tabs-tab-component>
+  <tabs-tab-component data-label="options"></tabs-tab-component>
 </tabs-component>
 <div class="godango-form" data-needs-secure hidden>
   <p class="stats">

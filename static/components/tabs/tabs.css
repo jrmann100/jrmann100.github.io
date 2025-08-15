@@ -1,4 +1,7 @@
-.tabs-component {
-  width: 100%;
-  display: flex;
+tabs-component {
+  .tabs-header {
+  }
+
+  .tabs-content {
+  }
 }

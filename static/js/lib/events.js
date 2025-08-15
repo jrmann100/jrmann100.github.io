@@ -33,7 +33,7 @@ document.addEventListener('beforenavigate', () => {
     items.push(removedIntervals + ' interval(s)');
   }
   if (items.length > 0) {
-    console.log(`💂 removed ${items.join(', ')}`);
+    console.debug(`💂 removed ${items.join(', ')}`);
   }
 });
 

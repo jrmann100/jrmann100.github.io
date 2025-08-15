@@ -1,1 +1,3 @@
-<div class="tabs-component"></div>
+<!-- TODO: semantic/accessible tags -->
+<div class="tabs-header"></div>
+<div class="tabs-content"></div>

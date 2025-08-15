@@ -83,7 +83,7 @@ async function load(path) {
     if (!docRegions.has(label)) {
       throw new Error(`could not find document region for fragment region '${label}'`);
     }
-    docRegions.get(label)?.insertNode(dynamify(range.cloneContents()));
+    docRegions.get(label)?.insertNode(dynamify(range.extractContents()));
   });
 
   document.dispatchEvent(new CustomEvent('endnavigate', { detail: { destination: path } }));
@@ -110,7 +110,7 @@ function dynamify(parent) {
         ev.preventDefault();
         const path = new URL(el.href).pathname;
         if (window.location.pathname !== path) {
-          console.log(
+          console.debug(
             `🔀 ${window.location.pathname.replace('.html', '')} -> ${path.replace('.html', '')}`
           );
           load(path);
@@ -134,7 +134,7 @@ window.layoutAddEventListener('popstate', (e) => {
   if (!(e instanceof PopStateEvent)) {
     return;
   }
-  console.log(`🔀 popstate ${window.location.pathname}`);
+  console.debug(`🔀 popstate ${window.location.pathname}`);
   load(window.location.pathname);
   if (e.state !== null) {
     const scrollOptions = Reflect.get(e.state, 'scroll');
