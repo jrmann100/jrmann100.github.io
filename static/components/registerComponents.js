@@ -12,7 +12,8 @@ import createComponent from './components.js';
     js: true
   });
   await createComponent('tabs/tab', {
-    js: true
+    js: true,
+    html: false
   });
   await createComponent('tabs', {
     css: 'global',

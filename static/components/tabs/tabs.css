@@ -24,38 +24,57 @@ tabs-component {
 
     &:not(:last-child) {
       /* effectively collapses border-right while preserving radius */
-      /* margin-right: calc(-1 * var(--default-border-width)); */
-      margin-right: 0.5em;
+      margin-right: calc(-1 * var(--default-border-width));
 
-      &::after {
+      /* --spacer-width: 0.3em; */
+      /* margin-right: var(--spacer-width); */
+
+      /* &::after {
         content: '';
-        width: 0.5em;
+        width: var(--spacer-width);
         position: absolute;
         bottom: 0;
-        right: calc(-0.5em - var(--default-border-width));
+        right: calc(calc(-1 * var(--spacer-width)) - var(--default-border-width));
         border-bottom: var(--default-border);
-      }
+      } */
     }
 
     margin-top: 0.2em;
+
+    --adjacent-shadow-offset: 0;
+    --adjacent-shadow: inset var(--adjacent-shadow-offset) 0 0.3rem -0.4rem rgba(0, 0, 0, 0.5);
     box-shadow:
       inset 0 calc(-1 * var(--default-border-width)) 0 var(--black),
-      inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+      inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5),
+      var(--adjacent-shadow);
+    /* checkme: this is so slight it almost doesn't seem worth it? */
+    /* background-color: rgba(0, 0, 0, 0.02); */
 
     transition:
       margin-top 0.2s,
       font-weight 0.2s,
       padding-top 0.2s,
       border-bottom-width 0.1s,
-      box-shadow 0.2s;
+      box-shadow 0.2s,
+      background-color 0.2s;
 
     &[aria-selected='true'] {
+      background-color: transparent;
       font-weight: bold;
       padding-top: 0.7em;
       margin-top: 0;
       box-shadow:
         inset 0 0 0 var(--black),
-        inset 0 0 0 rgba(0, 0, 0, 0.5);
+        inset 0 0 0 -0.1rem rgba(0, 0, 0, 0.5),
+        var(--adjacent-shadow);
+
+      + button {
+        --adjacent-shadow-offset: 0.4rem;
+      }
+    }
+
+    &:has(+ button[aria-selected='true']) {
+      --adjacent-shadow-offset: -0.4rem;
     }
   }
 
@@ -82,5 +101,9 @@ tabs-component {
     border: var(--default-border);
     border-top: none;
     padding: 0.5rem;
+  }
+
+  .tabs-hidden {
+    display: none;
   }
 }

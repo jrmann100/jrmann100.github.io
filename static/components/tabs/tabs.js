@@ -9,15 +9,13 @@ export default class Tabs extends HTMLElement {
 
   /**
    * TODO
-   * @type {Tab}
+   * @type {Tab | null}
    */
-  selectedTab;
+  selectedTab = null;
 
-  /**
-   * TODO
-   * @type {HTMLElement}
-   */
   wrapper;
+
+  hiddenWrapper;
 
   /**
    * @type {(els: Element[]) => asserts els is Tab[] }
@@ -59,6 +57,12 @@ export default class Tabs extends HTMLElement {
 
     this.wrapper = wrapper;
 
+    const hiddenWrapper = templateContent.querySelector('.tabs-hidden');
+    if (!(hiddenWrapper instanceof HTMLElement)) {
+      throw new Error('Could not find hidden wrapper element for tabs component');
+    }
+    this.hiddenWrapper = hiddenWrapper;
+
     const header = templateContent.querySelector('.tabs-header');
 
     if (!(header instanceof HTMLElement)) {
@@ -68,9 +72,11 @@ export default class Tabs extends HTMLElement {
     const tabs = Array.from(this.children);
     Tabs.tryCoerceTabs(tabs);
 
+    this.hiddenWrapper.replaceChildren(...tabs);
+
     this.tabLabels = new Map(
       tabs.map((tab) => {
-        // TODO: semantic tagging
+        // TODO: semantic tagging - and arrow navigation with tabindex -1
         const label = document.createElement('button');
         label.classList.add('no-ia');
         label.textContent = tab.label;
@@ -99,7 +105,10 @@ export default class Tabs extends HTMLElement {
     if (this.selectedTab === tab) {
       return;
     }
-    this.tabLabels.get(this.selectedTab)?.setAttribute('aria-selected', 'false');
+    if (this.selectedTab !== null) {
+      this.tabLabels.get(this.selectedTab)?.setAttribute('aria-selected', 'false');
+      this.hiddenWrapper.appendChild(this.selectedTab);
+    }
     this.selectedTab = tab;
     this.tabLabels.get(tab)?.setAttribute('aria-selected', 'true');
 

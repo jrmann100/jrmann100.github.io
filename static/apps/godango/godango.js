@@ -18,8 +18,7 @@ let defaults = {
   SAUCE_TYPE: 'custom',
   SAUCE_VALUE: '-' + sauce(),
   SEPARATOR: '',
-  WORDLIST: './eff_large_wordlist.txt',
-  OPTIONS_OPEN: false
+  WORDLIST: './eff_large_wordlist.txt'
 };
 
 /**
@@ -31,9 +30,6 @@ export default async function main() {
     throw new Error('could not find form');
   }
   const machine = new GodangoMachine(form);
-
-  /** @type {HTMLDetailsElement | null} */
-  const optionsDetails = form.querySelector('details.options');
 
   /** @type {HTMLInputElement | null} */
   const entropyBox = form.querySelector('input[name=entropy]');
@@ -77,15 +73,9 @@ export default async function main() {
     defaults = JSON.parse(defaultsString);
   }
 
-  if (optionsDetails === null || countInput === null || separatorInput === null) {
+  if (countInput === null || separatorInput === null) {
     throw new Error('could not find required element(s) for setting preferences');
   }
-
-  optionsDetails.addEventListener('toggle', () => {
-    defaults.OPTIONS_OPEN = optionsDetails.open;
-    updateDefaults(false);
-  });
-  optionsDetails.open = defaults.OPTIONS_OPEN;
 
   countInput.addEventListener('change', () => {
     defaults.COUNT = parseInt(countInput.value);

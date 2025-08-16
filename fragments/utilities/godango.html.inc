@@ -9,52 +9,47 @@
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
 <nosecure-component></nosecure-component>
-<tabs-component>
-  <tabs-tab-component data-label="godango"></tabs-tab-component>
-  <tabs-tab-component data-label="options"></tabs-tab-component>
-  <tabs-tab-component data-label="three"></tabs-tab-component>
-</tabs-component>
 <div class="godango-form" data-needs-secure hidden>
-  <p class="stats">
-    <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
-    <label>length <input type="text" size="3" name="length" disabled /> chars</label>
-  </p>
-  <fieldset name="result">
-    <div class="godango-machine">
-      <div class="buttonlike reel controller" role="button" tabindex="0">
-        <div class="face">SPIN</div>
-        <div class="face">SPIN</div>
-      </div>
-      <div class="reel">
-        <div class="face">🍒</div>
-        <div class="face">🍋</div>
-      </div>
-      <div class="reel">
-        <div class="face">🍒</div>
-        <div class="face">🍋</div>
-      </div>
-      <div class="reel">
-        <div class="face">🍒</div>
-        <div class="face">🍋</div>
-      </div>
-      <div class="reel">
-        <div class="face">🍒</div>
-        <div class="face">🍋</div>
-      </div>
-      <div class="reel sauce">
-        <div class="face">🍒</div>
-        <div class="face">🍋</div>
-      </div>
-    </div>
-    <input name="copy" type="button" value="copy" />
-    <input hidden name="output" size="20" readonly type="text" />
-    <input hidden name="edit" type="button" value="edit" />
-    <!-- todo width !-->
-  </fieldset>
-  <!-- TODO: consider making this a tab -->
-  <details class="options" open>
-    <summary style="font-weight: bold">options</summary>
-    <fieldset name="options">
+  <tabs-component>
+    <tabs-tab-component data-label="godango">
+      <p class="stats">
+        <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
+        <label>length <input type="text" size="3" name="length" disabled /> chars</label>
+      </p>
+      <fieldset name="result">
+        <div class="godango-machine">
+          <div class="buttonlike reel controller" role="button" tabindex="0">
+            <div class="face">SPIN</div>
+            <div class="face">SPIN</div>
+          </div>
+          <div class="reel">
+            <div class="face">🍒</div>
+            <div class="face">🍋</div>
+          </div>
+          <div class="reel">
+            <div class="face">🍒</div>
+            <div class="face">🍋</div>
+          </div>
+          <div class="reel">
+            <div class="face">🍒</div>
+            <div class="face">🍋</div>
+          </div>
+          <div class="reel">
+            <div class="face">🍒</div>
+            <div class="face">🍋</div>
+          </div>
+          <div class="reel sauce">
+            <div class="face">🍒</div>
+            <div class="face">🍋</div>
+          </div>
+        </div>
+        <input name="copy" type="button" value="copy" />
+        <input hidden name="output" size="20" readonly type="text" />
+        <input hidden name="edit" type="button" value="edit" />
+        <!-- todo width !-->
+      </fieldset>
+    </tabs-tab-component>
+    <tabs-tab-component data-label="options">
       <fieldset name="sauce">
         <legend>passphrase</legend>
         <div>
@@ -88,21 +83,23 @@
           random, you can reuse the same suffix and still remember it easily.
         </aside>
       </fieldset>
-    </fieldset>
-  </details>
-  <small
-    >This is a passphrase generator based on
-    <a href="https://www.eff.org/dice">EFF Dice-Generated Passphrases</a>, with added options
-    including custom suffixes. It uses
-    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues">Web Crypto</a>
-    to randomize passwords.<br /><br />Everything runs in your browser. Check out the source on
-    <a href="https://github.com/jrmann100/jrmann100.github.io/blob/main/static/js/godango.js"
-      >GitHub.</a
-    ></small
-  >
+    </tabs-tab-component>
+    <tabs-tab-component data-label="about"
+      >This is a passphrase generator based on
+      <a href="https://www.eff.org/dice">EFF Dice-Generated Passphrases</a>, with added options
+      including custom suffixes. It uses
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues"
+        >Web Crypto</a
+      >
+      to randomize passwords.<br /><br />Everything runs in your browser. Check out the source on
+      <a href="https://github.com/jrmann100/jrmann100.github.io/blob/main/static/js/godango.js"
+        >GitHub.</a
+      >
+    </tabs-tab-component>
+  </tabs-component>
+  <script type="module">
+    import main from '/static/apps/godango/godango.js';
+    main();
+  </script>
+  <!--{{/main}}-->
 </div>
-<script type="module">
-  import main from '/static/apps/godango/godango.js';
-  main();
-</script>
-<!--{{/main}}-->

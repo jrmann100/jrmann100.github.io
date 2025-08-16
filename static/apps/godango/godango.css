@@ -30,14 +30,6 @@ input[name='output'] {
   font-family: monospace;
 }
 
-details.options > summary::before {
-  content: 'show ';
-}
-
-details.options[open] > summary::before {
-  content: 'hide ';
-}
-
 textarea,
 .stats input {
   opacity: 0.5;
