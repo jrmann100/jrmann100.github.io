@@ -54,8 +54,8 @@ export default defineConfig([
             ClassExpression: true,
             FunctionDeclaration: true,
             FunctionExpression: true
-            // MethodDefinition: true
-          }
+          },
+          contexts: ['MethodDefinition', 'PropertyDefinition']
         }
       ],
       'jsdoc/require-description': [
@@ -67,7 +67,8 @@ export default defineConfig([
             'ClassExpression',
             'FunctionDeclaration',
             'FunctionExpression:not(MethodDefinition > FunctionExpression)',
-            'MethodDefinition:not([kind="get"], [kind="set"], [kind="constructor"])'
+            'MethodDefinition:not([kind="get"], [kind="set"], [kind="constructor"])',
+            'PropertyDefinition'
           ]
         }
       ],
@@ -118,7 +119,7 @@ export default defineConfig([
   },
   // static files are browser scripts
   {
-    files: ['static/**/*.{js, ts}'],
+    files: ['static/**/*.js'],
     languageOptions: {
       globals: globals.browser
     }
