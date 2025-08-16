@@ -1,109 +1,100 @@
 /******** interactivity module ********/
 
-input {
-  --status: var(--black);
-}
+/* TODO: may replace with @scope once available */
+:not(.no-ia) {
+  &:is(input) {
+    --status: var(--black);
+  }
 
-input:invalid {
-  /* todo prob localize to input */
-  --status: var(--bad);
-}
+  &:is(input:invalid) {
+    /* todo prob localize to input */
+    --status: var(--bad);
+  }
 
-.buttonlike,
-input,
-button,
-textarea,
-fieldset,
-select,
-.inputlike,
-input[type='checkbox']::after {
-  border-radius: 0.2em; /* checkme. we need to indicate that elements are interactive somehow but I don't like this compromise particularly */
-  border: var(--default-border);
-  background-color: transparent;
-  color: currentColor;
-  font: inherit;
-  letter-spacing: inherit;
-  word-spacing: inherit;
-}
+  &:is(
+    .buttonlike,
+    input,
+    button,
+    textarea,
+    fieldset,
+    select,
+    .inputlike,
+    input[type='checkbox']::after
+  ) {
+    border-radius: 0.2em; /* checkme. we need to indicate that elements are interactive somehow but I don't like this compromise particularly */
+    border: var(--default-border);
+    background-color: transparent;
+    color: currentColor;
+    font: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+  }
 
-textarea,
-fieldset {
-  padding: 0.5rem;
-}
+  &:is(textarea, fieldset) {
+    padding: 0.5rem;
+  }
 
-input,
-button,
-.buttonlike {
-  /* checkme inherit? */
-  font-weight: bold;
-  transition: box-shadow 0.2s;
-}
+  &:is(input, button, .buttonlike) {
+    /* checkme inherit? */
+    font-weight: bold;
+    transition: box-shadow 0.2s;
+  }
 
-.buttonsize,
-input,
-button,
-select {
-  padding: 0.5rem 0.7rem;
-}
+  &:is(.buttonsize, input, button, select) {
+    padding: 0.5rem 0.7rem;
+  }
 
-input[type='range'] {
-  padding-left: 0;
-  padding-right: 0;
-}
+  &:is(input[type='range']) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
-.buttonsize-small {
-  padding: 0.1em 0.5rem;
-}
+  &:is(.buttonsize-small) {
+    padding: 0.1em 0.5rem;
+  }
 
-.buttonlike,
-input[type='button'],
-input[type='submit'],
-button {
-  &:not(:disabled) {
-    cursor: pointer;
-    &:hover {
-      box-shadow:
-        0 0.2rem 0 var(--black),
-        0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
-    }
-    &:active {
-      box-shadow:
-        inset 0 0.1rem 0 var(--black),
-        inset 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+  &:is(.buttonlike, input[type='button'], input[type='submit'], button) {
+    &:not(:disabled) {
+      cursor: pointer;
+      &:hover {
+        box-shadow:
+          0 0.2rem 0 var(--black),
+          0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+      }
+      &:active {
+        box-shadow:
+          inset 0 0.1rem 0 var(--black),
+          inset 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+      }
     }
   }
-}
 
-input[type='text'],
-input[type='text']::placeholder {
-  font-weight: normal;
-}
-
-input[type='submit'] {
-  text-align: left;
-  margin-right: 0;
-}
-
-input[type='text']:valid,
-form:valid > input[type='submit'] {
-  --status: var(--good);
-}
-
-form:invalid > input[type='submit'],
-input:disabled,
-button:disabled {
-  opacity: 0.5;
-}
-
-input[type='text']:not([readonly]):not(:disabled) {
-  box-shadow: inset -0.5rem 0 0 var(--status);
-  &:focus {
-    box-shadow: inset -0.8rem 0 0 var(--status);
+  &:is(input[type='text'], input[type='text']::placeholder) {
+    font-weight: normal;
   }
-}
 
-input[type='radio'],
-input[type='checkbox'] {
-  width: 0.8em;
-  height: 0.8em; /* todo vertical align*/
+  &:is(input[type='submit']) {
+    text-align: left;
+    margin-right: 0;
+  }
+
+  &:is(input[type='text']:valid, form:valid > input[type='submit']) {
+    --status: var(--good);
+  }
+
+  &:is(form:invalid > input[type='submit'], input:disabled, button:disabled) {
+    opacity: 0.5;
+  }
+
+  &:is(input[type='text']:not([readonly]):not(:disabled)) {
+    box-shadow: inset -0.5rem 0 0 var(--status);
+    &:focus {
+      box-shadow: inset -0.8rem 0 0 var(--status);
+    }
+  }
+
+  &:is(input[type='radio'], input[type='checkbox']) {
+    width: 0.8em;
+    height: 0.8em; /* todo vertical align*/
+  }
 }
