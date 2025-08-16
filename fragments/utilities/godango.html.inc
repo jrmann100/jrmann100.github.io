@@ -12,6 +12,7 @@
 <tabs-component>
   <tabs-tab-component data-label="godango"></tabs-tab-component>
   <tabs-tab-component data-label="options"></tabs-tab-component>
+  <tabs-tab-component data-label="three"></tabs-tab-component>
 </tabs-component>
 <div class="godango-form" data-needs-secure hidden>
   <p class="stats">

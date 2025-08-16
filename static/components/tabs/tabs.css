@@ -1,7 +1,86 @@
+/* todo: wrapping? */
 tabs-component {
   .tabs-header {
+    display: flex;
+  }
+  .tabs-header {
+    height: 3em;
+  }
+
+  .tabs-header button {
+    border-radius: 0.2em 0.2em 0 0;
+    background-color: transparent;
+    color: currentColor;
+    font: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+    padding: 0.5rem 0.7rem 0 0.7rem;
+    position: relative;
+
+    border: var(--default-border);
+    border-bottom-width: 0;
+    display: flex;
+    flex-direction: column;
+
+    &:not(:last-child) {
+      /* effectively collapses border-right while preserving radius */
+      /* margin-right: calc(-1 * var(--default-border-width)); */
+      margin-right: 0.5em;
+
+      &::after {
+        content: '';
+        width: 0.5em;
+        position: absolute;
+        bottom: 0;
+        right: calc(-0.5em - var(--default-border-width));
+        border-bottom: var(--default-border);
+      }
+    }
+
+    margin-top: 0.2em;
+    box-shadow:
+      inset 0 calc(-1 * var(--default-border-width)) 0 var(--black),
+      inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+
+    transition:
+      margin-top 0.2s,
+      font-weight 0.2s,
+      padding-top 0.2s,
+      border-bottom-width 0.1s,
+      box-shadow 0.2s;
+
+    &[aria-selected='true'] {
+      font-weight: bold;
+      padding-top: 0.7em;
+      margin-top: 0;
+      box-shadow:
+        inset 0 0 0 var(--black),
+        inset 0 0 0 rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  /* sets the full width of the button to its bolded state,
+   * preventing horizontal shifting when selected */
+  .tabs-header button::before {
+    content: attr(data-label);
+    font-weight: bold;
+    height: 0;
+    visibility: hidden;
+  }
+
+  .tabs-header::after {
+    content: '';
+    flex-grow: 1;
+    border-bottom: var(--default-border);
   }
 
   .tabs-content {
+    display: contents;
+  }
+  .tabs-content > * {
+    display: block;
+    border: var(--default-border);
+    border-top: none;
+    padding: 0.5rem;
   }
 }
