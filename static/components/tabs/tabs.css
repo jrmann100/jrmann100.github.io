@@ -8,14 +8,15 @@ tabs-component {
   }
 
   .tabs-header button {
-    border-radius: 0.2em 0.2em 0 0;
+    /* border-radius: 0.2em 0.2em 0 0; */
     background-color: transparent;
     color: currentColor;
     font: inherit;
     letter-spacing: inherit;
     word-spacing: inherit;
-    padding: 0.5rem 0.7rem 0 0.7rem;
+    padding: 0.4rem 0.7rem 0 0.7rem;
     position: relative;
+    cursor: pointer;
 
     border: var(--default-border);
     border-bottom-width: 0;
@@ -25,57 +26,91 @@ tabs-component {
     &:not(:last-child) {
       /* effectively collapses border-right while preserving radius */
       margin-right: calc(-1 * var(--default-border-width));
-
-      /* --spacer-width: 0.3em; */
-      /* margin-right: var(--spacer-width); */
-
-      /* &::after {
-        content: '';
-        width: var(--spacer-width);
-        position: absolute;
-        bottom: 0;
-        right: calc(calc(-1 * var(--spacer-width)) - var(--default-border-width));
-        border-bottom: var(--default-border);
-      } */
     }
 
-    margin-top: 0.2em;
+    --lift: 0em;
+    padding-top: calc(0.4em + var(--lift));
+    margin-top: calc(0.2em - var(--lift));
 
     --adjacent-shadow-offset: 0;
     --adjacent-shadow: inset var(--adjacent-shadow-offset) 0 0.3rem -0.4rem rgba(0, 0, 0, 0.5);
+    --border-shadow: inset 0 calc(-1 * var(--default-border-width)) 0 var(--black);
     box-shadow:
-      inset 0 calc(-1 * var(--default-border-width)) 0 var(--black),
+      var(--border-shadow),
       inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5),
       var(--adjacent-shadow);
-    /* checkme: this is so slight it almost doesn't seem worth it? */
-    /* background-color: rgba(0, 0, 0, 0.02); */
+
+    background-color: rgba(0, 0, 0, 0.03);
 
     transition:
       margin-top 0.2s,
-      font-weight 0.2s,
+      font-weight 0.1s,
       padding-top 0.2s,
       border-bottom-width 0.1s,
-      box-shadow 0.2s,
+      border-radius 0.2s,
       background-color 0.2s;
 
-    &[aria-selected='true'] {
+    /* perk up anything that acts independently */
+    &:hover,
+    &[aria-selected='true'],
+    &:active {
+      border-radius: 0.2em 0.2em 0 0;
       background-color: transparent;
-      font-weight: bold;
-      padding-top: 0.7em;
-      margin-top: 0;
+    }
+
+    /* lift up the selected button */
+    &[aria-selected='true'] {
+      --lift: 0.3em;
+    }
+
+    /* partially strengthen engaged buttons */
+    &[aria-selected='true'],
+    &:active {
       box-shadow:
         inset 0 0 0 var(--black),
         inset 0 0 0 -0.1rem rgba(0, 0, 0, 0.5),
         var(--adjacent-shadow);
-
-      + button {
-        --adjacent-shadow-offset: 0.4rem;
-      }
+      font-weight: bold;
     }
 
-    &:has(+ button[aria-selected='true']) {
+    /* really strengthen clicked unselected buttons */
+    &:active:not([aria-selected='true']) {
+      --adjacent-shadow-offset: 0;
+      --lift: 0.3em;
+      box-shadow:
+        var(--border-shadow),
+        inset 0 0 0 var(--black),
+        var(--adjacent-shadow);
+    }
+
+    /* lift buttons slightly if they are only being hovered */
+    &:not([aria-selected='true'], :active):hover {
+      --lift: 0.2em;
+    }
+
+    &:first-child {
+      border-top-left-radius: 0.2em;
+    }
+
+    &:last-child {
+      border-top-right-radius: 0.2em;
+    }
+
+    /* look left, shade right */
+    &[aria-selected='true'] + button:not(:active) {
+      --adjacent-shadow-offset: 0.4rem;
+    }
+
+    /* look right, shade left */
+    &:not(:active):has(+ button[aria-selected='true']) {
       --adjacent-shadow-offset: -0.4rem;
     }
+  }
+
+  /* lower selected relative to active */
+  .tabs-header:has(button:active:not([aria-selected='true'])) button[aria-selected='true'] {
+    --lift: 0.1em;
+    font-weight: normal;
   }
 
   /* sets the full width of the button to its bolded state,
