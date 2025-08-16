@@ -55,7 +55,10 @@ export default defineConfig([
             FunctionDeclaration: true,
             FunctionExpression: true
           },
-          contexts: ['MethodDefinition', 'PropertyDefinition']
+          contexts: [
+            'MethodDefinition:not([kind="get"], [kind="set"], [kind="constructor"])',
+            'PropertyDefinition'
+          ]
         }
       ],
       'jsdoc/require-description': [
