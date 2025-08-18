@@ -30,7 +30,7 @@ a:hover {
   text-decoration: none;
 }
 
-@media (prefers-reduced-motion) {
+@media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important; /* checkme could be harmful for visible */
     transition: none !important;
