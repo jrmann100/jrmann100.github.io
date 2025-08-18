@@ -33,9 +33,7 @@ body {
 }
 
 *:focus-visible {
-  outline-color: var(--accent);
-  outline-width: 0.1rem;
-  outline-style: solid;
+  outline: var(--default-outline);
 }
 
 @media print, (prefers-contrast: more), (forced-colors: active) {

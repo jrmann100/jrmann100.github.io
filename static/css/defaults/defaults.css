@@ -14,6 +14,7 @@ body {
   --default-border-width: 1.5px;
   --default-border-color: var(--black);
   --default-border: var(--default-border-width) solid var(--default-border-color);
+  --default-outline: var(--default-border-width) solid var(--accent);
 }
 
 .bordered {

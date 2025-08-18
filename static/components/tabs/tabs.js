@@ -1,5 +1,8 @@
 import Tab from './tab/tab.js';
 
+// TODO: document that we are incorrectly using "tab" to define a tab panel,
+// and "label" to define a tab.
+
 export default class Tabs extends HTMLElement {
   /**
    * TODO: descriptions should be required on class properties
@@ -7,12 +10,17 @@ export default class Tabs extends HTMLElement {
    */
   tabLabels;
 
+  /**
+   * @type {Tab[]}
+   */
+  tabs;
+
   wrapper;
 
   /**
-   * @type {HTMLElement | null}
+   * @type {Tab | null}
    */
-  currentLabel = null;
+  currentTab = null;
 
   /**
    * @type {(els: Element[]) => asserts els is Tab[] }
@@ -35,6 +43,33 @@ export default class Tabs extends HTMLElement {
         }
       }
     }
+  }
+
+  handleChange() {
+    if (window.location.hash.length < 2) {
+      return;
+    }
+    const tab = this.querySelector(window.location.hash);
+    if (!(tab instanceof Tab)) {
+      return;
+    }
+    if (this.currentTab !== null) {
+      const prevLabel = this.tabLabels.get(this.currentTab);
+      if (prevLabel === undefined) {
+        throw new Error(`Could not find corresponding label for tab ${this.currentTab.id}`);
+      }
+      prevLabel.setAttribute('aria-current', 'false');
+      prevLabel.tabIndex = -1;
+      this.currentTab.classList.toggle('target', false);
+    }
+    const label = this.tabLabels.get(tab);
+    if (label === undefined) {
+      throw new Error(`Could not find corresponding label for tab ${tab.id}`);
+    }
+    label.setAttribute('aria-current', 'location');
+    label.removeAttribute('tabindex');
+    this.currentTab = tab;
+    tab.classList.toggle('target', true);
   }
 
   /**
@@ -63,46 +98,70 @@ export default class Tabs extends HTMLElement {
     const tabs = Array.from(this.children);
     Tabs.tryCoerceTabs(tabs);
 
+    this.tabs = tabs;
+
     this.wrapper.replaceChildren(...tabs);
 
     this.tabLabels = new Map();
     const tabIds = new Set();
 
-    for (const tab of tabs) {
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
       if (tabIds.has(tab.id)) {
         throw new Error(`Duplicate tab id '${tab.id}' found in tabs component!`);
       }
       tabIds.add(tab.id);
       // TODO: semantic tagging - and arrow navigation with tabindex -1
-      const label = document.createElement('a');
-      label.href = `#${tab.id}`;
+      const label = document.createElement('button');
+      label.classList.add('lbl');
+      // labels operate exactly like anchor links but they aren't really styled as such,
+      // and WAI example uses buttons.
+      label.addEventListener('click', () => this.select(tab));
       label.classList.add('no-ia');
-      label.textContent = tab.label;
+      const span = document.createElement('span');
+      span.textContent = tab.label;
+      label.appendChild(span);
       label.dataset.label = tab.label;
+      label.tabIndex = -1;
       // label.addEventListener('click', () => this.select(tab));
       this.tabLabels.set(tab, label);
+      label.addEventListener('keydown', (ev) => {
+        let j;
+        // todo: switch to up/down when tabs wrap?
+        if (ev.key === 'ArrowLeft') {
+          j = i - 1;
+        }
+        if (ev.key === 'ArrowRight') {
+          j = (i + 1) % tabs.length;
+        }
+        if (ev.key === 'Home') {
+          j = 0;
+        }
+        if (ev.key === 'End') {
+          j = -1;
+        }
+        const nextTab = tabs.at(j);
+        if (nextTab === undefined) {
+          throw new Error(`Selected tab index ${j} is out of bounds!`);
+        }
+        this.select(nextTab);
+      });
     }
 
     header.replaceChildren(...this.tabLabels.values());
 
     this.replaceChildren(templateContent);
 
-    // TODO: initially selected tab using attr - check exclusive?
-    this.select(tabs[0]);
+    // TODO: default selected tab using attr (lower precedence than hash) - check exclusive?
+    if (window.location.hash.length < 2) {
+      if (tabs.length > 0) {
+        window.history.replaceState(null, '', `#${tabs[0].id}`);
+        console.log(window.location.hash, document.querySelector(window.location.hash));
+      }
+    }
+    this.handleChange();
 
-    window.addEventListener('hashchange', () => {
-      const tab = this.querySelector(window.location.hash);
-      if (!(tab instanceof Tab)) {
-        return;
-      }
-      const label = this.tabLabels.get(tab);
-      if (label === undefined) {
-        throw new Error(`Could not find corresponding label for tab ${tab.id}`);
-      }
-      this.currentLabel?.setAttribute('aria-current', 'false');
-      label.setAttribute('aria-current', 'location');
-      this.currentLabel = label;
-    });
+    window.addEventListener('hashchange', () => this.handleChange());
   }
 
   /**
@@ -110,10 +169,8 @@ export default class Tabs extends HTMLElement {
    * @param {Tab} tab
    */
   select(tab) {
-    const tabLabel = this.tabLabels.get(tab);
-    if (tabLabel === undefined) {
-      throw new Error('Could not find label for tab to select!');
-    }
-    tabLabel.click();
+    window.history.replaceState(5, '', `#${tab.id}`);
+    this.handleChange(); // replaceState does not trigger hashchange.
+    this.tabLabels.get(tab)?.focus();
   }
 }

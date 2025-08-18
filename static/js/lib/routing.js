@@ -55,6 +55,11 @@ async function locateRegions(root) {
 }
 
 /**
+ * TODO
+ */
+let lastPathname = window.location.pathname;
+
+/**
  * Load a page fragment for a given path and swap the current content with its own.
  * @param {string} path the relative path to load.
  * @todo error handling
@@ -86,6 +91,7 @@ async function load(path) {
     docRegions.get(label)?.insertNode(dynamify(range.extractContents()));
   });
 
+  lastPathname = window.location.pathname;
   document.dispatchEvent(new CustomEvent('endnavigate', { detail: { destination: path } }));
 }
 
@@ -107,8 +113,11 @@ function dynamify(parent) {
         if (ev.ctrlKey || ev.metaKey) {
           return;
         }
-        ev.preventDefault();
         const path = new URL(el.href).pathname;
+        if (path === window.location.pathname) {
+          return; // no need to reload the same page - may be hash change.
+        }
+        ev.preventDefault();
         if (window.location.pathname !== path) {
           console.debug(
             `🔀 ${window.location.pathname.replace('.html', '')} -> ${path.replace('.html', '')}`
@@ -134,17 +143,20 @@ window.layoutAddEventListener('popstate', (e) => {
   if (!(e instanceof PopStateEvent)) {
     return;
   }
-  // if we didn't create this history entry,
-  // it might be just a hash change or something else,
-  // and we should ignore it.
-  if (e.state === null) {
+
+  // hash changes trigger popstate, but don't require navigation.
+  if (window.location.pathname === lastPathname) {
     return;
   }
+
+  lastPathname = window.location.pathname;
   console.debug(`🔀 popstate ${window.location.pathname}`);
   load(window.location.pathname);
-  const scrollOptions = Reflect.get(e.state, 'scroll');
-  if (scrollOptions !== undefined) {
-    window.scroll(scrollOptions);
+  if (e.state !== null) {
+    const scrollOptions = Reflect.get(e.state, 'scroll');
+    if (scrollOptions !== undefined) {
+      window.scroll(scrollOptions);
+    }
   }
 });
 

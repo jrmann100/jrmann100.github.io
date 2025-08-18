@@ -8,10 +8,14 @@ tabs-component {
     height: 3em;
   }
 
-  .tabs-header a {
+  .tabs-header .lbl {
+    background-color: transparent;
     color: currentColor;
+    font: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
     padding: 0 0.7rem;
-    text-decoration: none;
+    cursor: pointer;
 
     border: var(--default-border);
     border-bottom-width: 0;
@@ -38,13 +42,24 @@ tabs-component {
 
     /* background-color: rgba(0, 0, 0, 0.03); */
 
+    --box-shadow-transition: box-shadow 0.2s;
     transition:
       margin-top 0.2s,
       font-weight 0.1s,
       padding-top 0.2s,
       border-bottom-width 0.1s,
-      border-radius 0.2s;
+      border-radius 0.2s,
+      var(--box-shadow-transition);
     /* background-color 0.2s; */
+
+    &:focus-visible {
+      outline: none;
+
+      span {
+        outline: var(--default-outline);
+        outline-offset: 0.2rem;
+      }
+    }
 
     /* perk up anything that acts independently */
     &:hover,
@@ -57,6 +72,7 @@ tabs-component {
     /* lift up the selected button */
     &[aria-current='location'] {
       --lift: 0.3em;
+      --box-shadow-transition: box-shadow 0s;
     }
 
     &:active {
@@ -96,25 +112,25 @@ tabs-component {
     }
 
     /* look left, shade right */
-    &[aria-current='location'] + a:not(:active) {
+    &[aria-current='location'] + .lbl:not(:active) {
       --adjacent-shadow-offset: 0.4rem;
     }
 
     /* look right, shade left */
-    &:not(:active):has(+ a[aria-current='location']) {
+    &:not(:active):has(+ .lbl[aria-current='location']) {
       --adjacent-shadow-offset: -0.4rem;
     }
   }
 
   /* lower selected relative to active */
-  .tabs-header:has(a:active:not([aria-current='location'])) a[aria-current='location'] {
+  .tabs-header:has(.lbl:active:not([aria-current='location'])) .lbl[aria-current='location'] {
     --lift: 0.1em;
     font-weight: normal;
   }
 
   /* sets the full width of the button to its bolded state,
    * preventing horizontal shifting when selected */
-  .tabs-header a::before {
+  .tabs-header .lbl::before {
     content: attr(data-label);
     font-weight: bold;
     height: 0;
@@ -135,7 +151,7 @@ tabs-component {
     padding: 0.5rem;
   }
 
-  tabs-tab-component:not(:target) {
+  tabs-tab-component:not(.target) {
     display: none;
   }
 }
