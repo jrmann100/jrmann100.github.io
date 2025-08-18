@@ -12,7 +12,7 @@
     /* for popover menus */
     z-index: 1;
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     /* todo */
     /* position: sticky;
     top: -3rem; */

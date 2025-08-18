@@ -12,6 +12,10 @@ footer {
   padding: 1rem 1rem;
 }
 
+main {
+  flex: 1;
+}
+
 /* The footer is stuck to the bottom of the page. */
 footer {
   display: flex;

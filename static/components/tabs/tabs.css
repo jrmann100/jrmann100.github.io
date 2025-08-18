@@ -144,6 +144,20 @@ tabs-component {
     border-bottom: var(--default-border);
   }
 
+  &.fullwidth {
+    .tabs-content {
+      border: 0;
+      padding: 1rem;
+    }
+
+    .tabs-header::after,
+    .tabs-header::before {
+      content: '';
+      flex-basis: 1rem;
+      border-bottom: var(--default-border);
+    }
+  }
+
   .tabs-content {
     display: block;
     border: var(--default-border);

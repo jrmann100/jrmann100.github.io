@@ -130,15 +130,14 @@ export default class Tabs extends HTMLElement {
         // todo: switch to up/down when tabs wrap?
         if (ev.key === 'ArrowLeft') {
           j = i - 1;
-        }
-        if (ev.key === 'ArrowRight') {
+        } else if (ev.key === 'ArrowRight') {
           j = (i + 1) % tabs.length;
-        }
-        if (ev.key === 'Home') {
+        } else if (ev.key === 'Home') {
           j = 0;
-        }
-        if (ev.key === 'End') {
+        } else if (ev.key === 'End') {
           j = -1;
+        } else {
+          return;
         }
         const nextTab = tabs.at(j);
         if (nextTab === undefined) {
