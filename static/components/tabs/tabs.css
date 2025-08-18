@@ -40,22 +40,22 @@ tabs-component {
       inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5),
       var(--adjacent-shadow);
 
-    background-color: rgba(0, 0, 0, 0.03);
+    /* background-color: rgba(0, 0, 0, 0.03); */
 
     transition:
       margin-top 0.2s,
       font-weight 0.1s,
       padding-top 0.2s,
       border-bottom-width 0.1s,
-      border-radius 0.2s,
-      background-color 0.2s;
+      border-radius 0.2s;
+    /* background-color 0.2s; */
 
     /* perk up anything that acts independently */
     &:hover,
     &[aria-selected='true'],
     &:active {
       border-radius: 0.2em 0.2em 0 0;
-      background-color: transparent;
+      /* background-color: transparent; */
     }
 
     /* lift up the selected button */
@@ -129,9 +129,6 @@ tabs-component {
   }
 
   .tabs-content {
-    display: contents;
-  }
-  .tabs-content > * {
     display: block;
     border: var(--default-border);
     border-top: none;
