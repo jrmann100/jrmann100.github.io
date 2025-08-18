@@ -14,7 +14,7 @@ tabs-component {
     font: inherit;
     letter-spacing: inherit;
     word-spacing: inherit;
-    padding: 0.4rem 0.7rem 0 0.7rem;
+    padding: 0 0.7rem;
     position: relative;
     cursor: pointer;
 
@@ -23,14 +23,14 @@ tabs-component {
     display: flex;
     flex-direction: column;
 
-    &:not(:last-child) {
+    &:not(:last-of-type) {
       /* effectively collapses border-right while preserving radius */
       margin-right: calc(-1 * var(--default-border-width));
     }
 
     --lift: 0em;
     padding-top: calc(0.4em + var(--lift));
-    margin-top: calc(0.2em - var(--lift));
+    margin-top: calc(0.4em - var(--lift));
 
     --adjacent-shadow-offset: 0;
     --adjacent-shadow: inset var(--adjacent-shadow-offset) 0 0.3rem -0.4rem rgba(0, 0, 0, 0.5);
@@ -63,6 +63,10 @@ tabs-component {
       --lift: 0.3em;
     }
 
+    &:active {
+      --lift: 0.35em;
+    }
+
     /* partially strengthen engaged buttons */
     &[aria-selected='true'],
     &:active {
@@ -76,7 +80,6 @@ tabs-component {
     /* really strengthen clicked unselected buttons */
     &:active:not([aria-selected='true']) {
       --adjacent-shadow-offset: 0;
-      --lift: 0.3em;
       box-shadow:
         var(--border-shadow),
         inset 0 0 0 var(--black),
@@ -122,7 +125,8 @@ tabs-component {
     visibility: hidden;
   }
 
-  .tabs-header::after {
+  &:not(.right-aligned) .tabs-header::after,
+  &.right-aligned .tabs-header::before {
     content: '';
     flex-grow: 1;
     border-bottom: var(--default-border);

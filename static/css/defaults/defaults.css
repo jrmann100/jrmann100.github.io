@@ -10,7 +10,8 @@
 
 body {
   font-family: system-ui, Helvetica, Arial, sans-serif;
-  --default-border-width: 0.1rem;
+  /* don't make this 0.1rem, appears to round to nearest 0.5px  */
+  --default-border-width: 1.5px;
   --default-border-color: var(--black);
   --default-border: var(--default-border-width) solid var(--default-border-color);
 }
