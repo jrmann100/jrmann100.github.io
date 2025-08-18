@@ -1,4 +1,5 @@
 /* todo: wrapping? */
+/* todo: .light variant where only selected tab has border */
 tabs-component {
   .tabs-header {
     display: flex;
@@ -7,21 +8,16 @@ tabs-component {
     height: 3em;
   }
 
-  .tabs-header button {
-    /* border-radius: 0.2em 0.2em 0 0; */
-    background-color: transparent;
+  .tabs-header a {
     color: currentColor;
-    font: inherit;
-    letter-spacing: inherit;
-    word-spacing: inherit;
     padding: 0 0.7rem;
-    position: relative;
-    cursor: pointer;
+    text-decoration: none;
 
     border: var(--default-border);
     border-bottom-width: 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     &:not(:last-of-type) {
       /* effectively collapses border-right while preserving radius */
@@ -52,14 +48,14 @@ tabs-component {
 
     /* perk up anything that acts independently */
     &:hover,
-    &[aria-selected='true'],
+    &[aria-current='location'],
     &:active {
       border-radius: 0.2em 0.2em 0 0;
       /* background-color: transparent; */
     }
 
     /* lift up the selected button */
-    &[aria-selected='true'] {
+    &[aria-current='location'] {
       --lift: 0.3em;
     }
 
@@ -68,7 +64,7 @@ tabs-component {
     }
 
     /* partially strengthen engaged buttons */
-    &[aria-selected='true'],
+    &[aria-current='location'],
     &:active {
       box-shadow:
         inset 0 0 0 var(--black),
@@ -78,7 +74,7 @@ tabs-component {
     }
 
     /* really strengthen clicked unselected buttons */
-    &:active:not([aria-selected='true']) {
+    &:active:not([aria-current='location']) {
       --adjacent-shadow-offset: 0;
       box-shadow:
         var(--border-shadow),
@@ -87,7 +83,7 @@ tabs-component {
     }
 
     /* lift buttons slightly if they are only being hovered */
-    &:not([aria-selected='true'], :active):hover {
+    &:not([aria-current='location'], :active):hover {
       --lift: 0.2em;
     }
 
@@ -100,25 +96,25 @@ tabs-component {
     }
 
     /* look left, shade right */
-    &[aria-selected='true'] + button:not(:active) {
+    &[aria-current='location'] + a:not(:active) {
       --adjacent-shadow-offset: 0.4rem;
     }
 
     /* look right, shade left */
-    &:not(:active):has(+ button[aria-selected='true']) {
+    &:not(:active):has(+ a[aria-current='location']) {
       --adjacent-shadow-offset: -0.4rem;
     }
   }
 
   /* lower selected relative to active */
-  .tabs-header:has(button:active:not([aria-selected='true'])) button[aria-selected='true'] {
+  .tabs-header:has(a:active:not([aria-current='location'])) a[aria-current='location'] {
     --lift: 0.1em;
     font-weight: normal;
   }
 
   /* sets the full width of the button to its bolded state,
    * preventing horizontal shifting when selected */
-  .tabs-header button::before {
+  .tabs-header a::before {
     content: attr(data-label);
     font-weight: bold;
     height: 0;
@@ -139,7 +135,7 @@ tabs-component {
     padding: 0.5rem;
   }
 
-  .tabs-hidden {
+  tabs-tab-component:not(:target) {
     display: none;
   }
 }

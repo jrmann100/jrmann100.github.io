@@ -7,15 +7,12 @@ export default class Tabs extends HTMLElement {
    */
   tabLabels;
 
-  /**
-   * TODO
-   * @type {Tab | null}
-   */
-  selectedTab = null;
-
   wrapper;
 
-  hiddenWrapper;
+  /**
+   * @type {HTMLElement | null}
+   */
+  currentLabel = null;
 
   /**
    * @type {(els: Element[]) => asserts els is Tab[] }
@@ -57,12 +54,6 @@ export default class Tabs extends HTMLElement {
 
     this.wrapper = wrapper;
 
-    const hiddenWrapper = templateContent.querySelector('.tabs-hidden');
-    if (!(hiddenWrapper instanceof HTMLElement)) {
-      throw new Error('Could not find hidden wrapper element for tabs component');
-    }
-    this.hiddenWrapper = hiddenWrapper;
-
     const header = templateContent.querySelector('.tabs-header');
 
     if (!(header instanceof HTMLElement)) {
@@ -72,26 +63,46 @@ export default class Tabs extends HTMLElement {
     const tabs = Array.from(this.children);
     Tabs.tryCoerceTabs(tabs);
 
-    this.hiddenWrapper.replaceChildren(...tabs);
+    this.wrapper.replaceChildren(...tabs);
 
-    this.tabLabels = new Map(
-      tabs.map((tab) => {
-        // TODO: semantic tagging - and arrow navigation with tabindex -1
-        const label = document.createElement('button');
-        label.classList.add('no-ia');
-        label.textContent = tab.label;
-        label.dataset.label = tab.label;
-        label.addEventListener('click', () => this.select(tab));
-        return [tab, label];
-      })
-    );
+    this.tabLabels = new Map();
+    const tabIds = new Set();
 
-    // TODO: initially selected tab
-    this.select(tabs[0]);
+    for (const tab of tabs) {
+      if (tabIds.has(tab.id)) {
+        throw new Error(`Duplicate tab id '${tab.id}' found in tabs component!`);
+      }
+      tabIds.add(tab.id);
+      // TODO: semantic tagging - and arrow navigation with tabindex -1
+      const label = document.createElement('a');
+      label.href = `#${tab.id}`;
+      label.classList.add('no-ia');
+      label.textContent = tab.label;
+      label.dataset.label = tab.label;
+      // label.addEventListener('click', () => this.select(tab));
+      this.tabLabels.set(tab, label);
+    }
 
     header.replaceChildren(...this.tabLabels.values());
 
     this.replaceChildren(templateContent);
+
+    // TODO: initially selected tab using attr - check exclusive?
+    this.select(tabs[0]);
+
+    window.addEventListener('hashchange', () => {
+      const tab = this.querySelector(window.location.hash);
+      if (!(tab instanceof Tab)) {
+        return;
+      }
+      const label = this.tabLabels.get(tab);
+      if (label === undefined) {
+        throw new Error(`Could not find corresponding label for tab ${tab.id}`);
+      }
+      this.currentLabel?.setAttribute('aria-current', 'false');
+      label.setAttribute('aria-current', 'location');
+      this.currentLabel = label;
+    });
   }
 
   /**
@@ -99,19 +110,10 @@ export default class Tabs extends HTMLElement {
    * @param {Tab} tab
    */
   select(tab) {
-    if (!this.tabLabels.has(tab)) {
-      throw new Error('Can only select tabs that are children of this Tabs component!');
+    const tabLabel = this.tabLabels.get(tab);
+    if (tabLabel === undefined) {
+      throw new Error('Could not find label for tab to select!');
     }
-    if (this.selectedTab === tab) {
-      return;
-    }
-    if (this.selectedTab !== null) {
-      this.tabLabels.get(this.selectedTab)?.setAttribute('aria-selected', 'false');
-      this.hiddenWrapper.appendChild(this.selectedTab);
-    }
-    this.selectedTab = tab;
-    this.tabLabels.get(tab)?.setAttribute('aria-selected', 'true');
-
-    this.wrapper.replaceChildren(tab);
+    tabLabel.click();
   }
 }

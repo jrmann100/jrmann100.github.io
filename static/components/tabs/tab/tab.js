@@ -9,9 +9,9 @@ export default class Tab extends HTMLElement {
 
   constructor() {
     super();
-    if (this.dataset.label === undefined) {
-      throw new Error('tab component must have data-label!');
+    if (this.id === '') {
+      throw new Error('Tab component must have a non-empty id!');
     }
-    this.label = this.dataset.label;
+    this.label = this.dataset.label ?? this.id;
   }
 }

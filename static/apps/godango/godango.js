@@ -25,29 +25,29 @@ let defaults = {
  * Make UI responsive.
  */
 export default async function main() {
-  const form = document.querySelector('.godango-form');
-  if (form === null) {
+  const tabs = document.querySelector('.godango-app');
+  if (tabs === null) {
     throw new Error('could not find form');
   }
-  const machine = new GodangoMachine(form);
+  const machine = new GodangoMachine(tabs);
 
   /** @type {HTMLInputElement | null} */
-  const entropyBox = form.querySelector('input[name=entropy]');
+  const entropyBox = tabs.querySelector('input[name=entropy]');
 
   /** @type {HTMLInputElement | null} */
-  const copyButton = form.querySelector('input[name=copy]');
+  const copyButton = tabs.querySelector('input[name=copy]');
 
   /** @type {HTMLInputElement | null} */
-  const countInput = form.querySelector('input[name=count]');
+  const countInput = tabs.querySelector('input[name=count]');
   /** @type {HTMLInputElement | null} */
-  const separatorInput = form.querySelector('input[name=separator]');
+  const separatorInput = tabs.querySelector('input[name=separator]');
   /** @type {NodeListOf<HTMLInputElement>} */
-  const sauceRadios = form.querySelectorAll('input[name=sauce-type]');
+  const sauceRadios = tabs.querySelectorAll('input[name=sauce-type]');
   /** @type {HTMLInputElement | null} */
-  const sauceInput = form.querySelector('input[name=sauce-value]');
+  const sauceInput = tabs.querySelector('input[name=sauce-value]');
 
   /** @type {HTMLDivElement | null} */
-  const sauceReel = form.querySelector('.sauce .face');
+  const sauceReel = tabs.querySelector('.sauce .face');
 
   /**
    * Update user settings.
@@ -127,7 +127,7 @@ export default async function main() {
   );
 
   /** @type {HTMLInputElement | null} */
-  const currentSauceType = form.querySelector(
+  const currentSauceType = tabs.querySelector(
     `input[name=sauce-type][value=${defaults.SAUCE_TYPE}]`
   );
   if (currentSauceType) {

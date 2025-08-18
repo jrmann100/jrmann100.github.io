@@ -134,13 +134,17 @@ window.layoutAddEventListener('popstate', (e) => {
   if (!(e instanceof PopStateEvent)) {
     return;
   }
+  // if we didn't create this history entry,
+  // it might be just a hash change or something else,
+  // and we should ignore it.
+  if (e.state === null) {
+    return;
+  }
   console.debug(`🔀 popstate ${window.location.pathname}`);
   load(window.location.pathname);
-  if (e.state !== null) {
-    const scrollOptions = Reflect.get(e.state, 'scroll');
-    if (scrollOptions !== undefined) {
-      window.scroll(scrollOptions);
-    }
+  const scrollOptions = Reflect.get(e.state, 'scroll');
+  if (scrollOptions !== undefined) {
+    window.scroll(scrollOptions);
   }
 });
 
