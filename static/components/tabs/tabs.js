@@ -155,7 +155,6 @@ export default class Tabs extends HTMLElement {
     if (window.location.hash.length < 2) {
       if (tabs.length > 0) {
         window.history.replaceState(null, '', `#${tabs[0].id}`);
-        console.log(window.location.hash, document.querySelector(window.location.hash));
       }
     }
     this.handleChange();
