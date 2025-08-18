@@ -144,6 +144,17 @@ tabs-component {
     border-bottom: var(--default-border);
   }
 
+  .tabs-content {
+    display: block;
+    border: var(--default-border);
+    border-top: none;
+    padding: 0.5rem;
+  }
+
+  tabs-tab-component:not(.target) {
+    display: none;
+  }
+
   &.fullwidth {
     .tabs-content {
       border: 0;
@@ -156,16 +167,5 @@ tabs-component {
       flex-basis: 1rem;
       border-bottom: var(--default-border);
     }
-  }
-
-  .tabs-content {
-    display: block;
-    border: var(--default-border);
-    border-top: none;
-    padding: 0.5rem;
-  }
-
-  tabs-tab-component:not(.target) {
-    display: none;
   }
 }
