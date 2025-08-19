@@ -17,16 +17,26 @@ tabs-component {
     padding: 0 0.7rem;
     cursor: pointer;
 
-    border: var(--default-border);
-    border-bottom-width: 0;
+    border: 0;
+    /* border: var(--default-border); */
+    /* border-bottom-width: 0; */
     display: flex;
     flex-direction: column;
     align-items: center;
-
     &:not(:last-of-type) {
       /* effectively collapses border-right while preserving radius */
-      margin-right: calc(-1 * var(--default-border-width));
+      margin-right: var(--default-border-width);
     }
+    /* apparently you want all of these to be a bit over or under to avoid sub-pixel conflicts */
+    --nbw: calc(-1 * var(--default-border-width) - 0.1px);
+    --pbw: calc(100% + var(--default-border-width) + 0.1px);
+    /* margin-bottom: var(--default-border-width); */
+    clip-path: polygon(
+      var(--nbw) var(--nbw),
+      var(--pbw) var(--nbw),
+      var(--pbw) 99.9%,
+      var(--nbw) 99.9%
+    );
 
     --lift: 0em;
     padding-top: calc(0.4em + var(--lift));
@@ -34,22 +44,22 @@ tabs-component {
 
     --adjacent-shadow-offset: 0;
     --adjacent-shadow: inset var(--adjacent-shadow-offset) 0 0.3rem -0.4rem rgba(0, 0, 0, 0.5);
-    --border-shadow: inset 0 calc(-1 * var(--default-border-width)) 0 var(--black);
+    --border-shadow: 0 0 0 var(--default-border-width) var(--black);
+    --border-bottom-shadow: inset 0 calc(-1 * var(--default-border-width)) var(--black);
+    --border-extra-shadow: inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
     box-shadow:
-      var(--border-shadow),
-      inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5),
+      var(--border-shadow), var(--border-bottom-shadow), var(--border-extra-shadow),
       var(--adjacent-shadow);
 
     /* background-color: rgba(0, 0, 0, 0.03); */
 
-    --box-shadow-transition: box-shadow 0.2s;
     transition:
       margin-top 0.2s,
       font-weight 0.1s,
       padding-top 0.2s,
       border-bottom-width 0.1s,
       border-radius 0.2s,
-      var(--box-shadow-transition);
+      box-shadow 0.2s;
     /* background-color 0.2s; */
 
     &:focus-visible {
@@ -72,7 +82,7 @@ tabs-component {
     /* lift up the selected button */
     &[aria-current='location'] {
       --lift: 0.3em;
-      --box-shadow-transition: box-shadow 0s;
+      --border-bottom-shadow: inset 0 0 0 0 transparent;
     }
 
     &:active {
@@ -80,22 +90,17 @@ tabs-component {
     }
 
     /* partially strengthen engaged buttons */
+    /* CHECKME: this bolds when :active, but not header links? */
     &[aria-current='location'],
     &:active {
-      box-shadow:
-        inset 0 0 0 var(--black),
-        inset 0 0 0 -0.1rem rgba(0, 0, 0, 0.5),
-        var(--adjacent-shadow);
+      --border-extra-shadow: inset 0 0;
       font-weight: bold;
     }
 
+    /* todo: slight shadow on current adjacent to active? */
     /* really strengthen clicked unselected buttons */
     &:active:not([aria-current='location']) {
       --adjacent-shadow-offset: 0;
-      box-shadow:
-        var(--border-shadow),
-        inset 0 0 0 var(--black),
-        var(--adjacent-shadow);
     }
 
     /* lift buttons slightly if they are only being hovered */
@@ -166,6 +171,24 @@ tabs-component {
       content: '';
       flex-basis: 1rem;
       border-bottom: var(--default-border);
+    }
+  }
+
+  &.minimal {
+    .tabs-header .lbl {
+      margin-right: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:not([aria-current='location']) {
+        border-radius: 0;
+        --border-shadow: 0 0;
+        --lift: 0em;
+        --adjacent-shadow-offset: 0;
+        --border-extra-shadow: inset 0 0;
+      }
     }
   }
 }
