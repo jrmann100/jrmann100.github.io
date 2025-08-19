@@ -1,3 +1,8 @@
+/* 
+ * .fullwidth - content is borderless with larger padding, spacer on both sides of header
+ * .minimal   - no shadows, only selected tab has border
+ */
+
 /* todo: wrapping? */
 /* todo: .light variant where only selected tab has border */
 tabs-component {
@@ -28,14 +33,14 @@ tabs-component {
       margin-right: var(--default-border-width);
     }
     /* apparently you want all of these to be a bit over or under to avoid sub-pixel conflicts */
-    --nbw: calc(-1 * var(--default-border-width) - 0.1px);
-    --pbw: calc(100% + var(--default-border-width) + 0.1px);
+    --nbw: calc(-1 * var(--default-border-width));
+    --pbw: calc(100.5% + var(--default-border-width));
     /* margin-bottom: var(--default-border-width); */
     clip-path: polygon(
       var(--nbw) var(--nbw),
       var(--pbw) var(--nbw),
-      var(--pbw) 99.9%,
-      var(--nbw) 99.9%
+      var(--pbw) 99.5%,
+      var(--nbw) 99.5%
     );
 
     --lift: 0em;
@@ -53,13 +58,14 @@ tabs-component {
 
     /* background-color: rgba(0, 0, 0, 0.03); */
 
+    --box-shadow-transition: box-shadow 0.2s;
     transition:
       margin-top 0.2s,
       font-weight 0.1s,
       padding-top 0.2s,
       border-bottom-width 0.1s,
       border-radius 0.2s,
-      box-shadow 0.2s;
+      var(--box-shadow-transition);
     /* background-color 0.2s; */
 
     &:focus-visible {
@@ -83,6 +89,10 @@ tabs-component {
     &[aria-current='location'] {
       --lift: 0.3em;
       --border-bottom-shadow: inset 0 0 0 0 transparent;
+
+      &:not(:active) {
+        --box-shadow-transition: box-shadow 0s;
+      }
     }
 
     &:active {
@@ -147,6 +157,13 @@ tabs-component {
     content: '';
     flex-grow: 1;
     border-bottom: var(--default-border);
+  }
+
+  &:not(.right-aligned) .tabs-header {
+    margin-left: var(--default-border-width);
+  }
+  &.right-aligned .tabs-header {
+    margin-right: var(--default-border-width);
   }
 
   .tabs-content {
