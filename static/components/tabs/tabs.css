@@ -8,23 +8,18 @@
 tabs-component {
   .tabs-header {
     display: flex;
-  }
-  .tabs-header {
     height: 3em;
   }
 
   .tabs-header .lbl {
+    /* basic button reset */
     background-color: transparent;
     color: currentColor;
     font: inherit;
     letter-spacing: inherit;
     word-spacing: inherit;
-    padding: 0 0.7rem;
     cursor: pointer;
 
-    border: 0;
-    /* border: var(--default-border); */
-    /* border-bottom-width: 0; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,6 +28,7 @@ tabs-component {
       margin-right: var(--default-border-width);
     }
 
+    padding: 0 0.7rem;
     --lift: 0em;
     padding-top: calc(0.4em + var(--lift));
     margin-top: calc(0.4em - var(--lift));
@@ -52,14 +48,16 @@ tabs-component {
       border-bottom-width 0.1s,
       border-radius 0.2s,
       var(--box-shadow-transition);
-    /* background-color 0.2s; */
 
     border: var(--default-border);
     border-bottom: 0;
+
+    /* collapse all right borders by nudging all labels over one border-width */
     &:not(:last-of-type) {
       margin-right: calc(-1 * var(--default-border-width));
     }
 
+    /* the label text is outlined rather than the whole button. */
     &:focus-visible {
       outline: none;
 
@@ -74,7 +72,6 @@ tabs-component {
     &[aria-current='location'],
     &:active {
       border-radius: 0.2em 0.2em 0 0;
-      /* background-color: transparent; */
     }
 
     /* lift up the selected button */
@@ -92,14 +89,14 @@ tabs-component {
     }
 
     /* partially strengthen engaged buttons */
-    /* CHECKME: this bolds when :active, but not header links? */
+    /* checkme: this bolds when :active, inconsistent with header link behavior */
     &[aria-current='location'],
     &:active {
       --adjacent-shadow: inset 0 0 transparent;
       font-weight: bold;
     }
 
-    /* todo: slight shadow on current adjacent to active? */
+    /* todo: slight shadow on aria-current when adjacent to :active? */
     /* really strengthen clicked unselected buttons */
     &:active:not([aria-current='location']) {
       --adjacent-shadow-offset-x: 0;
@@ -136,7 +133,7 @@ tabs-component {
   }
 
   /* sets the full width of the button to its bolded state,
-   * preventing horizontal shifting when selected */
+   * preventing width shifting when selected */
   .tabs-header .lbl::before {
     content: attr(data-label);
     font-weight: bold;
@@ -144,6 +141,7 @@ tabs-component {
     visibility: hidden;
   }
 
+  /* fill the remaining width with bottom border */
   &:not(.right-aligned) .tabs-header::after,
   &.right-aligned .tabs-header::before {
     content: '';
@@ -154,7 +152,7 @@ tabs-component {
   .tabs-content {
     display: block;
     border: var(--default-border);
-    border-top: none;
+    border-top: 0;
     padding: 0.5rem;
   }
 
@@ -168,6 +166,7 @@ tabs-component {
       padding: 1rem;
     }
 
+    /* pad the label strip */
     .tabs-header::after,
     .tabs-header::before {
       content: '';
@@ -178,9 +177,9 @@ tabs-component {
 
   &.minimal {
     .tabs-header .lbl {
-      margin-right: 0;
       --adjacent-shadow: inset 0 0 transparent;
 
+      /* non-current styled like link */
       &:hover {
         text-decoration: underline;
       }
@@ -190,12 +189,14 @@ tabs-component {
         border-color: transparent;
       }
 
+      /* to compensate for the transparent border, we must collapse both edges */
       margin-right: calc(-1 * var(--default-border-width));
       margin-left: calc(-1 * var(--default-border-width));
     }
 
-    &:not(.right-aligned) .tabs-header::before,
-    &.right-aligned .tabs-header::after {
+    /* add a little spacer we can collapse the endmost border into. */
+    &:not(.right-aligned):not(.full-width) .tabs-header::before,
+    &.right-aligned:not(.full-width) .tabs-header::after {
       content: '';
       flex-basis: var(--default-border-width);
       border-bottom: var(--default-border);
