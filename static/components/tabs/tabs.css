@@ -186,8 +186,6 @@ tabs-component {
       }
 
       &:not([aria-current='location']) {
-        border-radius: 0;
-        --border-shadow: 0 0;
         --lift: 0em;
         border-color: transparent;
       }
