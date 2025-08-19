@@ -1,5 +1,5 @@
 /* 
- * .fullwidth - content is borderless with larger padding, spacer on both sides of header
+ * .full-width - content is borderless with larger padding, spacer on both sides of header
  * .minimal   - no shadows, only selected tab has border
  */
 
@@ -162,7 +162,7 @@ tabs-component {
     display: none;
   }
 
-  &.fullwidth {
+  &.full-width {
     .tabs-content {
       border: 0;
       padding: 1rem;
@@ -192,6 +192,13 @@ tabs-component {
 
       margin-right: calc(-1 * var(--default-border-width));
       margin-left: calc(-1 * var(--default-border-width));
+    }
+
+    &:not(.right-aligned) .tabs-header::before,
+    &.right-aligned .tabs-header::after {
+      content: '';
+      flex-basis: var(--default-border-width);
+      border-bottom: var(--default-border);
     }
   }
 }
