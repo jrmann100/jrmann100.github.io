@@ -9,7 +9,7 @@
 <!--{{main}}-->
 <noscript>Sorry, but you need JavaScript to use this utility. 😔</noscript>
 <nosecure-component></nosecure-component>
-<tabs-component class="godango-app" data-needs-secure hidden>
+<tabs-component class="godango-app fullwidth minimal" data-needs-secure hidden>
   <tabs-tab-component data-label="godango" id="godango">
     <p class="stats">
       <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>

@@ -32,29 +32,15 @@ tabs-component {
       /* effectively collapses border-right while preserving radius */
       margin-right: var(--default-border-width);
     }
-    /* apparently you want all of these to be a bit over or under to avoid sub-pixel conflicts */
-    --nbw: calc(-1 * var(--default-border-width));
-    --pbw: calc(100.5% + var(--default-border-width));
-    /* margin-bottom: var(--default-border-width); */
-    clip-path: polygon(
-      var(--nbw) var(--nbw),
-      var(--pbw) var(--nbw),
-      var(--pbw) 99.5%,
-      var(--nbw) 99.5%
-    );
 
     --lift: 0em;
     padding-top: calc(0.4em + var(--lift));
     margin-top: calc(0.4em - var(--lift));
 
-    --adjacent-shadow-offset: 0;
-    --adjacent-shadow: inset var(--adjacent-shadow-offset) 0 0.3rem -0.4rem rgba(0, 0, 0, 0.5);
-    --border-shadow: 0 0 0 var(--default-border-width) var(--black);
     --border-bottom-shadow: inset 0 calc(-1 * var(--default-border-width)) var(--black);
-    --border-extra-shadow: inset 0 -0.3rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-    box-shadow:
-      var(--border-shadow), var(--border-bottom-shadow), var(--border-extra-shadow),
-      var(--adjacent-shadow);
+    --adjacent-shadow: inset var(--adjacent-shadow-offset-x, 0)
+      var(--adjacent-shadow-offset-y, -0.4rem) 0 rgba(0, 0, 0, 0.1);
+    box-shadow: var(--border-bottom-shadow), var(--adjacent-shadow);
 
     /* background-color: rgba(0, 0, 0, 0.03); */
 
@@ -67,6 +53,12 @@ tabs-component {
       border-radius 0.2s,
       var(--box-shadow-transition);
     /* background-color 0.2s; */
+
+    border: var(--default-border);
+    border-bottom: 0;
+    &:not(:last-of-type) {
+      margin-right: calc(-1 * var(--default-border-width));
+    }
 
     &:focus-visible {
       outline: none;
@@ -103,14 +95,14 @@ tabs-component {
     /* CHECKME: this bolds when :active, but not header links? */
     &[aria-current='location'],
     &:active {
-      --border-extra-shadow: inset 0 0;
+      --adjacent-shadow: inset 0 0 transparent;
       font-weight: bold;
     }
 
     /* todo: slight shadow on current adjacent to active? */
     /* really strengthen clicked unselected buttons */
     &:active:not([aria-current='location']) {
-      --adjacent-shadow-offset: 0;
+      --adjacent-shadow-offset-x: 0;
     }
 
     /* lift buttons slightly if they are only being hovered */
@@ -128,12 +120,12 @@ tabs-component {
 
     /* look left, shade right */
     &[aria-current='location'] + .lbl:not(:active) {
-      --adjacent-shadow-offset: 0.4rem;
+      --adjacent-shadow-offset-x: 0.3rem;
     }
 
     /* look right, shade left */
     &:not(:active):has(+ .lbl[aria-current='location']) {
-      --adjacent-shadow-offset: -0.4rem;
+      --adjacent-shadow-offset-x: -0.3rem;
     }
   }
 
@@ -157,13 +149,6 @@ tabs-component {
     content: '';
     flex-grow: 1;
     border-bottom: var(--default-border);
-  }
-
-  &:not(.right-aligned) .tabs-header {
-    margin-left: var(--default-border-width);
-  }
-  &.right-aligned .tabs-header {
-    margin-right: var(--default-border-width);
   }
 
   .tabs-content {
@@ -194,6 +179,7 @@ tabs-component {
   &.minimal {
     .tabs-header .lbl {
       margin-right: 0;
+      --adjacent-shadow: inset 0 0 transparent;
 
       &:hover {
         text-decoration: underline;
@@ -203,9 +189,11 @@ tabs-component {
         border-radius: 0;
         --border-shadow: 0 0;
         --lift: 0em;
-        --adjacent-shadow-offset: 0;
-        --border-extra-shadow: inset 0 0;
+        border-color: transparent;
       }
+
+      margin-right: calc(-1 * var(--default-border-width));
+      margin-left: calc(-1 * var(--default-border-width));
     }
   }
 }
