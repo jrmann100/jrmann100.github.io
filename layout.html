@@ -101,10 +101,30 @@
                       content: '🔒 ';
                     }
                   </style>
-                  <input data-label="☀️ light" title="Use light color scheme" value="light" />
-                  <input data-label="☁️ auto" title="Match system color scheme" value="auto" />
-                  <input data-label="🌙 dark" title="Use light color scheme" value="dark" />
-                  <input data-label="lock" title="Lock current color scheme" value="lock" />
+                  <input
+                    name="light"
+                    data-label="☀️ light"
+                    title="Use light color scheme"
+                    value="light"
+                  />
+                  <input
+                    name="auto"
+                    data-label="☁️ auto"
+                    title="Match system color scheme"
+                    value="auto"
+                  />
+                  <input
+                    name="dark"
+                    data-label="🌙 dark"
+                    title="Use light color scheme"
+                    value="dark"
+                  />
+                  <input
+                    name="lock"
+                    data-label="lock"
+                    title="Lock current color scheme"
+                    value="lock"
+                  />
                 </switcher-component>
                 <button class="colors-shuffle">🔄 change</button>
               </div>
