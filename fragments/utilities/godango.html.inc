@@ -11,10 +11,7 @@
 <nosecure-component></nosecure-component>
 <tabs-component class="godango-app full-width minimal" data-needs-secure hidden>
   <tabs-tab-component data-label="godango" id="godango">
-    <p class="stats">
-      <label>entropy ≈ <input type="text" size="3" name="entropy" disabled /> bits,</label>
-      <label>length <input type="text" size="3" name="length" disabled /> chars</label>
-    </p>
+    <!-- todo: removed entropy but we should show it in options editing mode? -->
     <fieldset name="result">
       <div class="godango-machine">
         <div class="buttonlike reel controller" role="button" tabindex="0">
@@ -42,7 +39,8 @@
           <div class="face">🍋</div>
         </div>
       </div>
-      <input name="copy" type="button" value="copy" />
+      <!-- todo: size length-value based on max length -->
+      <button name="copy" type="button">copy (<span class="length-value">(23)</span>)</button>
       <input hidden name="output" size="20" readonly type="text" />
       <input hidden name="edit" type="button" value="edit" />
       <!-- todo width !-->

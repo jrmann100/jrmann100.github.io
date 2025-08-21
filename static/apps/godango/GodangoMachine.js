@@ -419,7 +419,7 @@ export default class GodangoMachine {
 
     this.displayedLength += this.lengthVelocity * timeDelta;
 
-    this.lengthBox.value = Math.round(this.displayedLength).toString();
+    this.lengthBox.textContent = Math.round(this.displayedLength).toString();
     // this.lengthBox.style.transform = `translateY(${this.displayedLength - 30}px)`;
 
     // if all reels have stopped moving and none are held, pause the animation loop.
@@ -471,7 +471,7 @@ export default class GodangoMachine {
     });
 
     /** @type {HTMLInputElement | null} */
-    const nullableLengthBox = root.querySelector('input[name=length]');
+    const nullableLengthBox = root.querySelector('.length-value');
     if (nullableLengthBox === null) {
       throw new Error('Length box element not found');
     }

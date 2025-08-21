@@ -6,6 +6,9 @@
 /* todo: wrapping? */
 /* todo: .light variant where only selected tab has border */
 tabs-component {
+  display: flex;
+  flex-direction: column;
+
   .tabs-header {
     display: flex;
     height: 3em;
@@ -154,6 +157,7 @@ tabs-component {
     border: var(--default-border);
     border-top: 0;
     padding: 0.5rem;
+    flex: 1;
   }
 
   tabs-tab-component:not(.target) {

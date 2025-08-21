@@ -17,6 +17,16 @@
 
   .reel:not(.controller) {
     font-family: monospace;
+    border-color: color-mix(in srgb, var(--black) 40%, transparent);
+    /* border-width: var(--default-border-width) 0; */
+  }
+
+  /* .reel.sauce {
+    border-left-width: var(--default-border-width);
+  } */
+
+  .reel:not(.controller):not(:last-child) {
+    border-right-width: 0;
   }
 
   .reel:not(.controller, .sauce) {
@@ -31,10 +41,6 @@
     box-shadow:
       inset 0 0.4rem 0.4rem -0.4rem var(--controller-shadow-color),
       inset 0 -0.4rem 0.4rem -0.4rem var(--controller-shadow-color);
-  }
-
-  .reel:not(.controller):not(:last-child) {
-    border-right-width: 0;
   }
 
   .face {

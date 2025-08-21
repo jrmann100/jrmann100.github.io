@@ -38,6 +38,7 @@
   }
 
   /* I am so proud of this */
+  /* checkme: what is the behavior in firefox which is not webkit? */
   progress::-webkit-progress-bar {
     background-image: repeating-linear-gradient(
       to right,
