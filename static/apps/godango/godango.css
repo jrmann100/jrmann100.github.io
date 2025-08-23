@@ -5,40 +5,12 @@ header nav li.utilities {
   font-weight: 900;
 }
 
-/* todo mobile format */
-summary {
-  width: fit-content;
-  cursor: pointer;
-}
-
-.godango:not([hidden]) {
-  display: flex;
-  flex-flow: column;
-  row-gap: 1rem;
-}
-
-fieldset[name='result'] {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  border: 0;
-  padding: 0;
-  margin: 2rem 0;
-  justify-self: center;
-}
-
-fieldset[name='options'] {
-  display: flex;
-  flex-flow: column;
-  gap: 1rem;
-}
-
-fieldset[name='sauce'] {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: 0.5rem;
-}
-
 .length-value {
   font-family: monospace;
+}
+
+.godango-app {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
