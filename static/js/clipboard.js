@@ -87,7 +87,7 @@ export default function main() {
             const links = new Set(
               string.split(/\s+/).filter((/** @type {string} */ line) => {
                 try {
-                  return new URL(line).host;
+                  return new URL(line).host; // TODO: identify all urls using regex; this doesn't even trim()
                 } catch {
                   return false;
                 }
