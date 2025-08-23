@@ -38,3 +38,7 @@ fieldset[name='sauce'] {
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   gap: 0.5rem;
 }
+
+.length-value {
+  font-family: monospace;
+}
