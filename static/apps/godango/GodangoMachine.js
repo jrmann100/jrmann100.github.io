@@ -6,8 +6,9 @@
 import { sauce, word } from './math.js';
 
 /**
- * @typedef {Object} GodangoConfiguration
- * @property {string} [separator] the string to place between words.
+ * @typedef {object} GodangoConfiguration
+ * @property {string} separator the string to place between words.
+ * @property {string} sauceSeparator the string to place before the sauce.
  * @property {number} wordCount the number of word reels (not including the controller or sauce reel).
  */
 
@@ -31,10 +32,37 @@ export default class GodangoMachine {
   configuration;
 
   /**
+   * @typedef {object} Reel
+   * @property {HTMLElement} reel the container element for the reel.
+   * @property {[HTMLElement, HTMLElement]} faces the two faces of the reel.
+   * @property {HTMLElement | null} leftSeparator the separator to the left of the reel.
+   * @property {number} velocity the current velocity of the reel.
+   * @property {number} position the current position of the reel, between 0 and 1.
+   * @property {'controller'|'word'|'sauce'} type the type of reel.
+   * The faces swap positions such that there is always at least one face visible,
+   * and another face entering from the top.
+   *
+   * | Position | First Face | Second Face |
+   * |----------|------------|-------------|
+   * | 0        | Center     | Above       |
+   * | 0.49     | Below      | Entering    |
+   * | 0.5      | Top        | Center      |
+   * | 0.99     | Entering   | Below       |
+   */
+
+  /**
    * The reels of the machine.
-   * @type {HTMLElement[]}
+   * @type {Reel[]}
    */
   reels;
+
+  reel(index) {
+    const maybeReel = this.reels[index];
+    if (maybeReel === undefined) {
+      throw new Error(`Reel ${index} does not exist`);
+    }
+    return maybeReel;
+  }
 
   /**
    * Displays the length of the current passphrase.
@@ -52,66 +80,32 @@ export default class GodangoMachine {
    */
   currentLength = 0;
 
-  /**
-   * The words currently displayed on the reels.
-   * @type {(string | null)[]}
-   */
-  words = [];
+  // /**
+  //  * The words currently displayed on the reels.
+  //  * @type {(string | null)[]}
+  //  */
+  // words = [];
 
-  /**
-   * Update a word currently being displayed on a reel,
-   * and any other UI state that depends on it.
-   * @param {number} index the index of the reel to update.
-   * @param {string} word the new word to display.
-   */
-  setWord(index, word) {
-    this.currentLength -= this.words[index]?.length ?? 0;
-    this.words[index] = word;
-    this.currentLength += word.length;
-  }
+  // /**
+  //  * Update a word currently being displayed on a reel,
+  //  * and any other UI state that depends on it.
+  //  * @param {number} index the index of the reel to update.
+  //  * @param {string} word the new word to display.
+  //  */
+  // setWord(index, word) {
+  //   this.currentLength -= this.words[index]?.length ?? 0;
+  //   this.words[index] = word;
+  //   this.currentLength += word.length;
+  // }
 
   // TODO: compute dynamically based on sauce and separators?
   constantLength = 0;
-
-  /**
-   * The faces of the machine, grouped in pairs by reel.
-   * @type {[HTMLElement, HTMLElement][]}
-   */
-  faces;
-
-  /**
-   * @returns {number} the number of reels in the machine.
-   */
-  get reelCount() {
-    return this.faces.length;
-  }
-
-  /**
-   * The velocity of each reel.
-   * @type {number[]}
-   */
-  velocities;
 
   /**
    * The velocity of the length indicator.
    * @type {number}
    */
   lengthVelocity = 0;
-
-  /**
-   * The position of each reel, between 0 and 1.
-   * The faces swap positions such that there is always at least one face visible,
-   * and another face entering from the top.
-   *
-   * | Position | First Face | Second Face |
-   * |----------|------------|-------------|
-   * | 0        | Center     | Above       |
-   * | 0.49     | Below      | Entering    |
-   * | 0.5      | Top        | Center      |
-   * | 0.99     | Entering   | Below       |
-   * @type {number[]}
-   */
-  positions;
 
   /**
    * The number of reels currently moving.
@@ -238,31 +232,32 @@ export default class GodangoMachine {
   /**
    * Add velocity to a reel.
    * Updates {@link movingReels} if the reel transitions between moving and stopped.
-   * @param {number} reelIndex the index of the reel to add velocity to.
+   * @param {Reel} reel the reel to add velocity to.
    * @param {number} delta the amount of velocity to add.
    */
-  addVelocity(reelIndex, delta) {
+  addVelocity(reel, delta) {
     if (delta === 0) return;
 
-    if (this.velocities[reelIndex] === 0) {
-      this.velocities[reelIndex] = delta;
+    if (reel.velocity === 0) {
+      reel.velocity = delta;
       this.movingReels++;
       return;
     }
 
-    if ((this.velocities[reelIndex] += delta) === 0) {
+    if ((reel.velocity += delta) === 0) {
       this.movingReels--;
     }
   }
 
+  // TODO: if reel is prototype, this can be set reel.velocity
   /**
    * Set the velocity of a reel to a specific value.
    * Decrements {@link movingReels} if the reel was previously moving.
-   * @param {number} reelIndex the index of the reel for which to clear the velocity.
+   * @param {Reel} reel the reel for which to clear the velocity.
    */
-  clearVelocity(reelIndex) {
-    if (this.velocities[reelIndex] !== 0) {
-      this.velocities[reelIndex] = 0;
+  clearVelocity(reel) {
+    if (reel.velocity !== 0) {
+      reel.velocity = 0;
       this.movingReels--;
     }
   }
@@ -290,39 +285,37 @@ export default class GodangoMachine {
   /**
    * Get new content for a reel face - a sauce value if it is the sauce (last) reel;
    * otherwise, a random word.
-   * @param {number} i the index of the reel getting new content.
+   * @param {Reel} reel the reel getting new content.
    * @returns {string} the new content for the face.
    */
-  getNewFaceContent(i) {
-    return i === this.reels.length - 1 ? sauce() : word();
+  getNewFaceContent(reel) {
+    return reel.type === 'sauce' ? sauce() : word();
   }
 
   /**
    * Update the position of a reel.
-   * @param {number} i the index of the reel to update.
+   * @param {Reel} reel the reel to update.
    * @param {number} newPosition the new position of the reel, between 0 and 1.
    * @param {boolean} [force] whether to force an update of the reel content.
    */
-  updatePosition(i, newPosition, force = false) {
-    const [a, b] = this.faces[i];
-    if (i !== 0) {
-      if (force || (this.positions[i] < 0.5 && newPosition >= 0.5)) {
-        this.setWord(i - 1, b.textContent ?? '');
+  updatePosition(reel, newPosition, force = false) {
+    const [a, b] = reel.faces;
+    if (reel.type !== 'controller') {
+      if (force || (reel.position < 0.5 && newPosition >= 0.5)) {
         // the sauce reel is the last reel
-        a.textContent = this.getNewFaceContent(i);
+        a.textContent = this.getNewFaceContent(reel);
       }
       if (force || newPosition > 1) {
-        this.setWord(i - 1, a.textContent ?? '');
         // the sauce reel is the last reel
-        b.textContent = this.getNewFaceContent(i);
+        b.textContent = this.getNewFaceContent(reel);
       }
       if (force) {
         this.displayedLength = this.currentLength;
       }
     }
-    this.positions[i] = newPosition % 1;
-    this.renderFace(a, this.positions[i], true);
-    this.renderFace(b, this.positions[i], false);
+    reel.position = newPosition % 1;
+    this.renderFace(a, reel.position, true);
+    this.renderFace(b, reel.position, false);
   }
 
   // DEBUG_FRAME_RATE = 30;
@@ -359,10 +352,10 @@ export default class GodangoMachine {
     // this means timeFactor is 1 if running at 60 FPS, or 2 if running at 30 FPS.
     const timeFactor = timeDelta * 60;
 
-    this.faces.forEach((_, i) => {
+    this.reels.forEach((reel, i) => {
       let totalForce =
-        this.velocities[i] *
-        -(this.velocities[i] > 0
+        reel.velocity *
+        -(reel.velocity > 0
           ? GodangoMachine.constants.FORWARD_FRICTION_FACTOR
           : GodangoMachine.constants.BACKWARD_FRICTION_FORCE);
 
@@ -375,17 +368,17 @@ export default class GodangoMachine {
         // the springs start to engage one at a time every END_OFFSET ms,
         // except for the controller (0th) reel, which engages at the same time as the first reel.
         // round to nearest 0.5
-        const nearestSnap = Math.round(this.positions[i] * 2) / 2;
+        const nearestSnap = Math.round(reel.position * 2) / 2;
         // the spring can only engage if the velocity is low enough;
         // otherwise it glides across the peaks.
-        if (this.velocities[i] < GodangoMachine.constants.SPRING_THRESHOLD) {
-          totalForce += (nearestSnap - this.positions[i]) * GodangoMachine.constants.SPRING_FACTOR;
+        if (reel.velocity < GodangoMachine.constants.SPRING_THRESHOLD) {
+          totalForce += (nearestSnap - reel.position) * GodangoMachine.constants.SPRING_FACTOR;
         }
       }
-      this.addVelocity(i, totalForce * timeFactor);
+      this.addVelocity(reel, totalForce * timeFactor);
 
-      if (Math.abs(this.velocities[i]) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
-        this.clearVelocity(i);
+      if (Math.abs(reel.velocity) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
+        this.clearVelocity(reel);
       }
     });
 
@@ -394,27 +387,27 @@ export default class GodangoMachine {
       if (this.clicks[i][1] === 0) {
         // boosting is technically a force, but it's instantaneous and not applied over time.
         // therefore we don't incorporate it into acceleration and apply it directly to the velocity.
-        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_VELOCITY);
-        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_VELOCITY);
+        this.addVelocity(this.reels[this.clicks[i][1]++], GodangoMachine.constants.BOOST_VELOCITY);
+        this.addVelocity(this.reels[this.clicks[i][1]++], GodangoMachine.constants.BOOST_VELOCITY);
         this.clicks[i][0] = timestamp;
       }
       // for every following reel, wait START_OFFSET ms after the last reel was boosted.
       else if (timestamp - this.clicks[i][0] > GodangoMachine.constants.CLICK_START_OFFSET) {
         this.clicks[i][0] = timestamp;
-        this.addVelocity(this.clicks[i][1]++, GodangoMachine.constants.BOOST_VELOCITY);
+        this.addVelocity(this.reels[this.clicks[i][1]++], GodangoMachine.constants.BOOST_VELOCITY);
       }
       // remove this entry if there are no more reels to boost.
       // clicks is a queue and all clicks take the same amount of time to process,
       // so the entry to remove is always the first one.
-      if (this.clicks[i][1] >= this.reelCount) {
+      if (this.clicks[i][1] >= this.reels.length) {
         this.clicks.shift();
         i--;
       }
     }
 
-    for (let i = 0; i < this.reelCount; i++) {
-      this.updatePosition(i, this.positions[i] + timeDelta * this.velocities[i]);
-    }
+    this.reels.forEach((reel) =>
+      this.updatePosition(reel, reel.position + timeDelta * reel.velocity)
+    );
 
     let lengthForce =
       // friction should be constant here since the effect should be the same
@@ -437,7 +430,8 @@ export default class GodangoMachine {
     // if all reels have stopped moving and none are held, pause the animation loop.
     if (
       this.movingReels === 0 &&
-      timestamp - this.lastWheelTime > this.reelCount * GodangoMachine.constants.WHEEL_END_OFFSET &&
+      timestamp - this.lastWheelTime >
+        this.reels.length * GodangoMachine.constants.WHEEL_END_OFFSET &&
       this.lengthVelocity === 0
     ) {
       this.animationRunning = false;
@@ -457,12 +451,48 @@ export default class GodangoMachine {
     }
   }
 
+  static createFace() {
+    const face = document.createElement('div');
+    face.classList.add('face');
+    face.textContent = 'SPIN';
+    return face;
+  }
+
+  /**
+   *
+   * @param {Reel['type']} type
+   */
+  createReel(type = 'word') {
+    const reel = document.createElement('div');
+    reel.classList.add('reel');
+    /** @type {[HTMLElement, HTMLElement]} */
+    const faces = [GodangoMachine.createFace(), GodangoMachine.createFace()];
+    reel.replaceChildren(...faces);
+    if (type === 'controller') {
+      reel.classList.add('controller', 'buttonlike');
+      reel.setAttribute('role', 'button');
+      reel.setAttribute('tabindex', '0');
+    } else {
+      const separator = document.createElement('div');
+      separator.classList.add('separator');
+      separator.textContent =
+        type === 'sauce' ? this.configuration.sauceSeparator : this.configuration.separator || '␣';
+      reel.appendChild(separator);
+    }
+
+    if (type === 'sauce') {
+      reel.classList.add('sauce');
+    }
+    this.machine.appendChild(reel);
+    this.reels.push({ reel, faces, leftSeparator: null, velocity: 0, position: 0, type });
+  }
+
   /**
    * Construct a new machine.
    * @param {Element} root an element which contains all components of the machine.
    * @param {GodangoConfiguration} [configuration] the configuration for the machine.
    */
-  constructor(root, configuration = { wordCount: 5 }) {
+  constructor(root, configuration = { wordCount: 5, sauceSeparator: '-', separator: '' }) {
     /** @type {HTMLElement | null} */
     const nullableMachine = root.querySelector('.godango-machine');
     if (nullableMachine === null) {
@@ -472,33 +502,6 @@ export default class GodangoMachine {
 
     this.configuration = configuration;
 
-    const createFace = () => {
-      const face = document.createElement('div');
-      face.classList.add('face');
-      face.textContent = 'SPIN';
-      return face;
-    };
-
-    this.faces = [];
-    this.reels = [];
-    for (let i = 0; i < configuration.wordCount + 2; i++) {
-      const reel = document.createElement('div');
-      reel.classList.add('reel');
-      /** @type {[HTMLElement, HTMLElement]} */
-      const faces = [createFace(), createFace()];
-      reel.replaceChildren(...faces);
-      if (i === 0) {
-        reel.classList.add('controller', 'buttonlike');
-        reel.setAttribute('role', 'button');
-        reel.setAttribute('tabindex', '0');
-      } else if (i === configuration.wordCount + 1) {
-        reel.classList.add('sauce');
-      }
-      this.machine.appendChild(reel);
-      this.faces.push(faces);
-      this.reels.push(reel);
-    }
-
     /** @type {HTMLInputElement | null} */
     const nullableLengthBox = root.querySelector('.length-value');
     if (nullableLengthBox === null) {
@@ -506,14 +509,18 @@ export default class GodangoMachine {
     }
     this.lengthBox = nullableLengthBox;
 
-    this.velocities = new Array(this.reelCount).fill(0);
-    this.positions = new Array(this.reelCount).fill(0);
+    this.reels = [];
+    this.createReel('controller');
+    for (let i = 0; i < this.configuration.wordCount; i++) {
+      this.createReel('word');
+    }
+    this.createReel('sauce');
 
     /**
      * The controller reel is the first reel.
      * It has a static label and handles user input.
      */
-    const controller = this.reels[0];
+    const controller = this.reels[0].reel;
 
     controller.addEventListener('click', () => {
       this.clicks.push([GodangoMachine.constants.NEVER, 0]);
@@ -535,15 +542,14 @@ export default class GodangoMachine {
         this.resumeAnimation();
         this.lastWheelTime = performance.now();
         // manually scroll the reels.
-        for (let i = 0; i < this.reelCount; i++) {
-          this.updatePosition(i, Math.max(this.positions[i] - event.deltaY / 1000, 0));
-        }
+
+        this.reels.forEach((reel) =>
+          this.updatePosition(reel, Math.max(reel.position - event.deltaY / 1000, 0))
+        );
       }
     );
 
-    for (let i = 1; i < this.reelCount; i++) {
-      this.updatePosition(i, this.positions[i], true);
-    }
+    this.reels.forEach((reel) => this.updatePosition(reel, reel.position, true));
 
     // quickly init the reels - should just loop once and then terminate since there is no motion.
     this.resumeAnimation();
@@ -554,12 +560,10 @@ export default class GodangoMachine {
    * @returns {(string | null)[]} the word displayed on each word reel.
    */
   getPassphrase() {
-    return this.positions
+    return this.reels
       .slice(1) // skip the controller
-      .map((position, i) =>
-        position < 0.25 || position > 0.75
-          ? this.faces[i + 1][0].textContent
-          : this.faces[i + 1][1].textContent
+      .map(({ position, faces: [a, b] }) =>
+        position < 0.25 || position > 0.75 ? a.textContent : b.textContent
       );
   }
 }
