@@ -5,6 +5,113 @@
 
 import { sauce, word } from './math.js';
 
+// todo: this could be a jordan component, then would directly extend HTMLElement
+export class GodangoReel {
+  /**
+   * @type {HTMLElement}
+   * The reel element itself.
+   */
+  reel;
+
+  /**
+   * @type {GodangoMachine}
+   */
+  parent;
+
+  /**
+   * The two faces of the reel.
+   * @type {[HTMLElement, HTMLElement]}
+   */
+  faces;
+
+  /**
+   * The separator to the left of the reel, if any.
+   * @type {HTMLElement | null}
+   */
+  leftSeparator = null;
+
+  /**
+   * The current velocity of the reel.
+   * Positive values indicate downward movement.
+   * @type {number}
+   */
+  #velocity = 0;
+
+  get velocity() {
+    return this.#velocity;
+  }
+
+  set velocity(value) {
+    if (this.#velocity === 0 && value !== 0) {
+      this.parent.movingReels++;
+    } else if (this.#velocity !== 0 && value === 0) {
+      this.parent.movingReels--;
+    }
+    this.#velocity = value;
+  }
+
+  /**
+   * The current position of the reel, between 0 and 1.
+   * The faces swap positions such that there is always at least one face visible,
+   * and another face entering from the top.
+   *
+   * | Position | First Face | Second Face |
+   * |----------|------------|-------------|
+   * | 0        | Center     | Above       |
+   * | 0.49     | Below      | Entering    |
+   * | 0.5      | Top        | Center      |
+   * | 0.99     | Entering   | Below       |
+   */
+  position = 0;
+
+  /**
+   * The type of reel.
+   * @type {'controller'|'word'|'sauce'}
+   */
+  type;
+
+  static createFace() {
+    const face = document.createElement('div');
+    face.classList.add('face');
+    face.textContent = 'SPIN';
+    return face;
+  }
+
+  /**
+   *
+   * @param {GodangoMachine} parent
+   * @param {GodangoReel['type']} [type]
+   */
+  constructor(parent, type = 'word') {
+    this.parent = parent;
+    this.reel = document.createElement('div');
+    this.reel.classList.add('reel');
+    this.faces = [GodangoReel.createFace(), GodangoReel.createFace()];
+    this.reel.replaceChildren(...this.faces);
+    this.type = type;
+
+    if (type === 'controller') {
+      this.reel.classList.add('controller', 'buttonlike');
+      this.reel.setAttribute('role', 'button');
+      this.reel.setAttribute('tabindex', '0');
+    } else {
+      this.leftSeparator = document.createElement('div');
+      this.leftSeparator.classList.add('separator');
+      this.leftSeparator.textContent =
+        type === 'sauce'
+          ? this.parent.configuration.sauceSeparator
+          : this.parent.configuration.separator || '␣';
+      this.parent.machine.appendChild(this.leftSeparator);
+    }
+
+    if (type === 'sauce') {
+      this.reel.classList.add('sauce');
+    }
+    this.parent.machine.appendChild(this.reel);
+    this.parent.reels.push(this);
+  }
+}
+
 /**
  * @typedef {object} GodangoConfiguration
  * @property {string} separator the string to place between words.
@@ -32,37 +139,10 @@ export default class GodangoMachine {
   configuration;
 
   /**
-   * @typedef {object} Reel
-   * @property {HTMLElement} reel the container element for the reel.
-   * @property {[HTMLElement, HTMLElement]} faces the two faces of the reel.
-   * @property {HTMLElement | null} leftSeparator the separator to the left of the reel.
-   * @property {number} velocity the current velocity of the reel.
-   * @property {number} position the current position of the reel, between 0 and 1.
-   * @property {'controller'|'word'|'sauce'} type the type of reel.
-   * The faces swap positions such that there is always at least one face visible,
-   * and another face entering from the top.
-   *
-   * | Position | First Face | Second Face |
-   * |----------|------------|-------------|
-   * | 0        | Center     | Above       |
-   * | 0.49     | Below      | Entering    |
-   * | 0.5      | Top        | Center      |
-   * | 0.99     | Entering   | Below       |
-   */
-
-  /**
    * The reels of the machine.
-   * @type {Reel[]}
+   * @type {GodangoReel[]}
    */
-  reels;
-
-  reel(index) {
-    const maybeReel = this.reels[index];
-    if (maybeReel === undefined) {
-      throw new Error(`Reel ${index} does not exist`);
-    }
-    return maybeReel;
-  }
+  reels = [];
 
   /**
    * Displays the length of the current passphrase.
@@ -230,39 +310,6 @@ export default class GodangoMachine {
   }
 
   /**
-   * Add velocity to a reel.
-   * Updates {@link movingReels} if the reel transitions between moving and stopped.
-   * @param {Reel} reel the reel to add velocity to.
-   * @param {number} delta the amount of velocity to add.
-   */
-  addVelocity(reel, delta) {
-    if (delta === 0) return;
-
-    if (reel.velocity === 0) {
-      reel.velocity = delta;
-      this.movingReels++;
-      return;
-    }
-
-    if ((reel.velocity += delta) === 0) {
-      this.movingReels--;
-    }
-  }
-
-  // TODO: if reel is prototype, this can be set reel.velocity
-  /**
-   * Set the velocity of a reel to a specific value.
-   * Decrements {@link movingReels} if the reel was previously moving.
-   * @param {Reel} reel the reel for which to clear the velocity.
-   */
-  clearVelocity(reel) {
-    if (reel.velocity !== 0) {
-      reel.velocity = 0;
-      this.movingReels--;
-    }
-  }
-
-  /**
    * Update the position of a reel face.
    * @param {HTMLElement} face the element to update.
    * @param {number} position the position value between 0 and 1.
@@ -285,7 +332,7 @@ export default class GodangoMachine {
   /**
    * Get new content for a reel face - a sauce value if it is the sauce (last) reel;
    * otherwise, a random word.
-   * @param {Reel} reel the reel getting new content.
+   * @param {GodangoReel} reel the reel getting new content.
    * @returns {string} the new content for the face.
    */
   getNewFaceContent(reel) {
@@ -294,7 +341,7 @@ export default class GodangoMachine {
 
   /**
    * Update the position of a reel.
-   * @param {Reel} reel the reel to update.
+   * @param {GodangoReel} reel the reel to update.
    * @param {number} newPosition the new position of the reel, between 0 and 1.
    * @param {boolean} [force] whether to force an update of the reel content.
    */
@@ -375,10 +422,10 @@ export default class GodangoMachine {
           totalForce += (nearestSnap - reel.position) * GodangoMachine.constants.SPRING_FACTOR;
         }
       }
-      this.addVelocity(reel, totalForce * timeFactor);
+      reel.velocity += totalForce * timeFactor;
 
       if (Math.abs(reel.velocity) < GodangoMachine.constants.MIN_ABS_VELOCITY) {
-        this.clearVelocity(reel);
+        reel.velocity = 0;
       }
     });
 
@@ -387,14 +434,14 @@ export default class GodangoMachine {
       if (this.clicks[i][1] === 0) {
         // boosting is technically a force, but it's instantaneous and not applied over time.
         // therefore we don't incorporate it into acceleration and apply it directly to the velocity.
-        this.addVelocity(this.reels[this.clicks[i][1]++], GodangoMachine.constants.BOOST_VELOCITY);
-        this.addVelocity(this.reels[this.clicks[i][1]++], GodangoMachine.constants.BOOST_VELOCITY);
+        this.reels[this.clicks[i][1]++].velocity += GodangoMachine.constants.BOOST_VELOCITY;
+        this.reels[this.clicks[i][1]++].velocity += GodangoMachine.constants.BOOST_VELOCITY;
         this.clicks[i][0] = timestamp;
       }
       // for every following reel, wait START_OFFSET ms after the last reel was boosted.
       else if (timestamp - this.clicks[i][0] > GodangoMachine.constants.CLICK_START_OFFSET) {
         this.clicks[i][0] = timestamp;
-        this.addVelocity(this.reels[this.clicks[i][1]++], GodangoMachine.constants.BOOST_VELOCITY);
+        this.reels[this.clicks[i][1]++].velocity += GodangoMachine.constants.BOOST_VELOCITY;
       }
       // remove this entry if there are no more reels to boost.
       // clicks is a queue and all clicks take the same amount of time to process,
@@ -451,42 +498,6 @@ export default class GodangoMachine {
     }
   }
 
-  static createFace() {
-    const face = document.createElement('div');
-    face.classList.add('face');
-    face.textContent = 'SPIN';
-    return face;
-  }
-
-  /**
-   *
-   * @param {Reel['type']} type
-   */
-  createReel(type = 'word') {
-    const reel = document.createElement('div');
-    reel.classList.add('reel');
-    /** @type {[HTMLElement, HTMLElement]} */
-    const faces = [GodangoMachine.createFace(), GodangoMachine.createFace()];
-    reel.replaceChildren(...faces);
-    if (type === 'controller') {
-      reel.classList.add('controller', 'buttonlike');
-      reel.setAttribute('role', 'button');
-      reel.setAttribute('tabindex', '0');
-    } else {
-      const separator = document.createElement('div');
-      separator.classList.add('separator');
-      separator.textContent =
-        type === 'sauce' ? this.configuration.sauceSeparator : this.configuration.separator || '␣';
-      reel.appendChild(separator);
-    }
-
-    if (type === 'sauce') {
-      reel.classList.add('sauce');
-    }
-    this.machine.appendChild(reel);
-    this.reels.push({ reel, faces, leftSeparator: null, velocity: 0, position: 0, type });
-  }
-
   /**
    * Construct a new machine.
    * @param {Element} root an element which contains all components of the machine.
@@ -509,12 +520,11 @@ export default class GodangoMachine {
     }
     this.lengthBox = nullableLengthBox;
 
-    this.reels = [];
-    this.createReel('controller');
+    new GodangoReel(this, 'controller');
     for (let i = 0; i < this.configuration.wordCount; i++) {
-      this.createReel('word');
+      new GodangoReel(this, 'word');
     }
-    this.createReel('sauce');
+    new GodangoReel(this, 'sauce');
 
     /**
      * The controller reel is the first reel.

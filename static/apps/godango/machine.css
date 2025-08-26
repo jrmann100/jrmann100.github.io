@@ -53,4 +53,8 @@
     padding: 0.5rem 1rem;
     will-change: transform, transform-origin, opacity;
   }
+
+  .separator {
+    display: none;
+  }
 }
