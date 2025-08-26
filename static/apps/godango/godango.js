@@ -6,14 +6,14 @@
 import GodangoMachine from './GodangoMachine.js';
 
 /**
- *
- * @param {Element} root
- * @returns
+ * Query the DOM for core elements of the app.
+ * @param {Element} root the component which wraps the godango app.
+ * @returns { { copyButton: HTMLButtonElement, configureButton: HTMLButtonElement } } the core elements of the app.
  */
 const getElements = (root) => {
   const nullableElements = {
-    copyButton: root.querySelector('[name=copy]'),
-    configureButton: root.querySelector('[name=configure]')
+    copyButton: /** @type {HTMLButtonElement} */ (root.querySelector('button[name=copy]')),
+    configureButton: /** @type {HTMLButtonElement} */ (root.querySelector('[name=configure]'))
   };
   for (const [name, element] of Object.entries(nullableElements)) {
     if (element === null) {
@@ -27,6 +27,7 @@ const getElements = (root) => {
 
   return elements;
 };
+
 /**
  * Make UI responsive.
  */

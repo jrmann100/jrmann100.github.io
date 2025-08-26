@@ -1,34 +1,46 @@
 import Tab from './tab/tab.js';
 
-// TODO: document that we are incorrectly using "tab" to define a tab panel,
-// and "label" to define a tab.
+// TODO: WARNING: this uses the global hash to id tabs;
+// this means individual tab panels cannot share IDs across tabs components.
+// We might resolve this by moving state into query params and namespacing by a (auto-generated?) tabs component ID.
+// Hash is also not ideal since it treats tabs as anchors.
 
 /**
+ * A tab panel component which automatically generates a tab list for its children,
+ * which themselves are custom "tab" components.
  *
+ * The component is designed to conform with the ARIA APG tabs design pattern:
+ * {@link https://www.w3.org/WAI/ARIA/apg/patterns/tabs/}
+ *
+ * However, for simplicity, we call each tab panel a "tab" and the tabs themselves "labels".
  */
 export default class Tabs extends HTMLElement {
   /**
-   * TODO: descriptions should be required on class properties
+   * The child tab labels, as mapped from their corresponding tab panels.
    * @type {Map<Tab, HTMLElement>}
    */
   tabLabels;
 
   /**
+   * The child tab panels.
    * @type {Tab[]}
    */
   tabs;
 
   /**
-   *
+   * The component which wraps the tab panels and labels.
    */
   wrapper;
 
   /**
+   * The currently displayed tab panel, if any.
    * @type {Tab | null}
    */
   currentTab = null;
 
   /**
+   * Assert that all elements are Tab components,
+   * registering the Tab component if necessary.
    * @type {(els: Element[]) => asserts els is Tab[] }
    */
   static tryCoerceTabs(els) {
@@ -52,9 +64,12 @@ export default class Tabs extends HTMLElement {
   }
 
   /**
-   *
+   * Handles a change to the page's URL hash, which is matched against tab panel IDs
+   * to determine which tab panel to display.
+   * If the hash does not match any tab panel ID, no action is taken.
    */
   handleChange() {
+    // checkme: maybe empty hash should revert to default tab once default tab is implemented?
     if (window.location.hash.length < 2) {
       return;
     }
@@ -172,8 +187,8 @@ export default class Tabs extends HTMLElement {
   }
 
   /**
-   * TODO
-   * @param {Tab} tab
+   * Trigger selection of a tab panel by changing the page's URL hash.
+   * @param {Tab} tab the tab panel to select.
    */
   select(tab) {
     window.history.replaceState(5, '', `#${tab.id}`);

@@ -3,6 +3,7 @@
  */
 export default class Tab extends HTMLElement {
   /**
+   * A human-readable label which represents this tab.
    * @type {string}
    */
   label; // todo: upgrade to an html element?
