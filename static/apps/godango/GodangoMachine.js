@@ -8,24 +8,34 @@ import { sauce, word } from './math.js';
 // todo: this could be a jordan component, then would directly extend HTMLElement
 export class GodangoReel {
   /**
+   * @readonly
    * @type {HTMLElement}
    * The reel element itself.
    */
   reel;
 
   /**
+   * @readonly
    * @type {GodangoMachine}
    */
   parent;
 
   /**
+   * The type of reel.
+   * @type {'controller'|'word'|'sauce'}
+   */
+  type;
+
+  /**
    * The two faces of the reel.
+   * @readonly
    * @type {[HTMLElement, HTMLElement]}
    */
   faces;
 
   /**
    * The separator to the left of the reel, if any.
+   * @readonly
    * @type {HTMLElement | null}
    */
   leftSeparator = null;
@@ -51,6 +61,66 @@ export class GodangoReel {
   }
 
   /**
+   * @readonly
+   * @type {string | null}
+   */
+  value = null;
+
+  createFace() {
+    const face = document.createElement('div');
+    face.classList.add('face');
+    this.refresh(face);
+    return face;
+  }
+
+  /**
+   *
+   * @param {GodangoReel['faces'][0]} face
+   */
+  refresh(face) {
+    if (this.type === 'word') {
+      face.textContent = word();
+    } else if (this.type === 'sauce') {
+      face.textContent = sauce();
+    } else if (this.type === 'controller') {
+      face.textContent = 'SPIN';
+    } else {
+      throw new Error(`Unknown reel type ${this.type}`);
+    }
+  }
+
+  /**
+   *
+   * @param {GodangoReel['faces'][0]} face
+   */
+  isVisible(face) {
+    this.parent.currentLength -= this.value?.length ?? 0;
+    this.content = face.textContent;
+    this.parent.currentLength += this.value?.length ?? 0;
+  }
+
+  /**
+   * Update the reel's faces based on its position.
+   */
+  render() {
+    for (let i = 0; i < this.faces.length; i++) {
+      const face = this.faces[i];
+      let isFirstFace = i === 0;
+      // the position of the second face is offset by 0.5
+      // occasionally the position will be negative; then we should add 1, mod, then abs.
+      const p = Math.abs((this.position + 1 + (isFirstFace ? 0.5 : 0)) % 1);
+      face.style.transform = `translateY(${
+        // go from all the way above the reel to all the way below it
+        GodangoMachine.between(p, -100, 0, 100) - Number(!isFirstFace) * 100
+      }%) rotateX(${GodangoMachine.between(p, GodangoMachine.constants.MAX_TILT, -GodangoMachine.constants.MAX_TILT)}deg)`;
+      // when a face is entering, its bottom edge should be at the top;
+      // when it is exiting, its top edge should be at the bottom.
+      face.style.transformOrigin = `${GodangoMachine.between(p, 100, 0)}% 50%`;
+      face.style.opacity = `${GodangoMachine.between(p, 0, 1, 0)}`;
+    }
+  }
+
+  /**
    * The current position of the reel, between 0 and 1.
    * The faces swap positions such that there is always at least one face visible,
    * and another face entering from the top.
@@ -62,19 +132,25 @@ export class GodangoReel {
    * | 0.5      | Top        | Center      |
    * | 0.99     | Entering   | Below       |
    */
-  position = 0;
+  #position = 0;
 
-  /**
-   * The type of reel.
-   * @type {'controller'|'word'|'sauce'}
-   */
-  type;
+  get position() {
+    return this.#position;
+  }
 
-  static createFace() {
-    const face = document.createElement('div');
-    face.classList.add('face');
-    face.textContent = 'SPIN';
-    return face;
+  set position(newPosition) {
+    if (this.type !== 'controller') {
+      if (this.#position < 0.5 && newPosition >= 0.5) {
+        this.refresh(this.faces[0]);
+        this.isVisible(this.faces[1]);
+      }
+      if (newPosition > 1) {
+        this.refresh(this.faces[1]);
+        this.isVisible(this.faces[0]);
+      }
+    }
+    this.#position = newPosition % 1;
+    this.render();
   }
 
   /**
@@ -86,9 +162,9 @@ export class GodangoReel {
     this.parent = parent;
     this.reel = document.createElement('div');
     this.reel.classList.add('reel');
-    this.faces = [GodangoReel.createFace(), GodangoReel.createFace()];
-    this.reel.replaceChildren(...this.faces);
     this.type = type;
+    this.faces = [this.createFace(), this.createFace()];
+    this.reel.replaceChildren(...this.faces);
 
     if (type === 'controller') {
       this.reel.classList.add('controller', 'buttonlike');
@@ -109,6 +185,8 @@ export class GodangoReel {
     }
     this.parent.machine.appendChild(this.reel);
     this.parent.reels.push(this);
+    // force count to update
+    this.isVisible(this.faces[0]);
   }
 }
 
@@ -159,27 +237,6 @@ export default class GodangoMachine {
    * The sum of the lengths of all words currently displayed on the reels.
    */
   currentLength = 0;
-
-  // /**
-  //  * The words currently displayed on the reels.
-  //  * @type {(string | null)[]}
-  //  */
-  // words = [];
-
-  // /**
-  //  * Update a word currently being displayed on a reel,
-  //  * and any other UI state that depends on it.
-  //  * @param {number} index the index of the reel to update.
-  //  * @param {string} word the new word to display.
-  //  */
-  // setWord(index, word) {
-  //   this.currentLength -= this.words[index]?.length ?? 0;
-  //   this.words[index] = word;
-  //   this.currentLength += word.length;
-  // }
-
-  // TODO: compute dynamically based on sauce and separators?
-  constantLength = 0;
 
   /**
    * The velocity of the length indicator.
@@ -309,62 +366,6 @@ export default class GodangoMachine {
     return secondStop + (thirdStop - secondStop) * ((position - 0.5) * 2);
   }
 
-  /**
-   * Update the position of a reel face.
-   * @param {HTMLElement} face the element to update.
-   * @param {number} position the position value between 0 and 1.
-   * @param {boolean} [a] whether this is the first or the second face of the reel.
-   */
-  renderFace(face, position, a = false) {
-    // the position of the second face is offset by 0.5
-    // occasionally the position will be negative; then we should add 1, mod, then abs.
-    const p = Math.abs((position + 1 + (a ? 0.5 : 0)) % 1);
-    face.style.transform = `translateY(${
-      // go from all the way above the reel to all the way below it
-      GodangoMachine.between(p, -100, 0, 100) - Number(!a) * 100
-    }%) rotateX(${GodangoMachine.between(p, GodangoMachine.constants.MAX_TILT, -GodangoMachine.constants.MAX_TILT)}deg)`;
-    // when a face is entering, its bottom edge should be at the top;
-    // when it is exiting, its top edge should be at the bottom.
-    face.style.transformOrigin = `${GodangoMachine.between(p, 100, 0)}% 50%`;
-    face.style.opacity = `${GodangoMachine.between(p, 0, 1, 0)}`;
-  }
-
-  /**
-   * Get new content for a reel face - a sauce value if it is the sauce (last) reel;
-   * otherwise, a random word.
-   * @param {GodangoReel} reel the reel getting new content.
-   * @returns {string} the new content for the face.
-   */
-  getNewFaceContent(reel) {
-    return reel.type === 'sauce' ? sauce() : word();
-  }
-
-  /**
-   * Update the position of a reel.
-   * @param {GodangoReel} reel the reel to update.
-   * @param {number} newPosition the new position of the reel, between 0 and 1.
-   * @param {boolean} [force] whether to force an update of the reel content.
-   */
-  updatePosition(reel, newPosition, force = false) {
-    const [a, b] = reel.faces;
-    if (reel.type !== 'controller') {
-      if (force || (reel.position < 0.5 && newPosition >= 0.5)) {
-        // the sauce reel is the last reel
-        a.textContent = this.getNewFaceContent(reel);
-      }
-      if (force || newPosition > 1) {
-        // the sauce reel is the last reel
-        b.textContent = this.getNewFaceContent(reel);
-      }
-      if (force) {
-        this.displayedLength = this.currentLength;
-      }
-    }
-    reel.position = newPosition % 1;
-    this.renderFace(a, reel.position, true);
-    this.renderFace(b, reel.position, false);
-  }
-
   // DEBUG_FRAME_RATE = 30;
   // DEBUG_DROPPED_FRAMES = 0;
 
@@ -452,9 +453,7 @@ export default class GodangoMachine {
       }
     }
 
-    this.reels.forEach((reel) =>
-      this.updatePosition(reel, reel.position + timeDelta * reel.velocity)
-    );
+    this.reels.forEach((reel) => (reel.position += timeDelta * reel.velocity));
 
     let lengthForce =
       // friction should be constant here since the effect should be the same
@@ -526,6 +525,9 @@ export default class GodangoMachine {
     }
     new GodangoReel(this, 'sauce');
 
+    // don't animate the initial length
+    this.displayedLength = this.currentLength;
+
     /**
      * The controller reel is the first reel.
      * It has a static label and handles user input.
@@ -553,13 +555,11 @@ export default class GodangoMachine {
         this.lastWheelTime = performance.now();
         // manually scroll the reels.
 
-        this.reels.forEach((reel) =>
-          this.updatePosition(reel, Math.max(reel.position - event.deltaY / 1000, 0))
+        this.reels.forEach(
+          (reel) => (reel.position = Math.max(reel.position - event.deltaY / 1000, 0))
         );
       }
     );
-
-    this.reels.forEach((reel) => this.updatePosition(reel, reel.position, true));
 
     // quickly init the reels - should just loop once and then terminate since there is no motion.
     this.resumeAnimation();
@@ -572,8 +572,6 @@ export default class GodangoMachine {
   getPassphrase() {
     return this.reels
       .slice(1) // skip the controller
-      .map(({ position, faces: [a, b] }) =>
-        position < 0.25 || position > 0.75 ? a.textContent : b.textContent
-      );
+      .map((reel) => reel.value);
   }
 }
