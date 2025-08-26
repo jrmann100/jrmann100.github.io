@@ -5,16 +5,21 @@
 
 import { sauce, word } from './math.js';
 
-// todo: this could be a jordan component, then would directly extend HTMLElement
+// checkme: consider making this a component proper
+/**
+ * A single reel in a GodangoMachine,
+ * able to control the state of the parent machine as necessary.
+ */
 export class GodangoReel {
   /**
+   * The reel element itself.
    * @readonly
    * @type {HTMLElement}
-   * The reel element itself.
    */
   reel;
 
   /**
+   * The machine which contains this reel.
    * @readonly
    * @type {GodangoMachine}
    */
@@ -61,11 +66,16 @@ export class GodangoReel {
   }
 
   /**
+   * The text content of the currently visible face.
    * @readonly
    * @type {string | null}
    */
   value = null;
 
+  /**
+   * Create a new face on this reel.
+   * @returns {GodangoReel['faces'][0]} a new face element with content.
+   */
   createFace() {
     const face = document.createElement('div');
     face.classList.add('face');
@@ -74,8 +84,8 @@ export class GodangoReel {
   }
 
   /**
-   *
-   * @param {GodangoReel['faces'][0]} face
+   * Update the content of a face (ideally when it is out of view).
+   * @param {GodangoReel['faces'][0]} face the face to update.
    */
   refresh(face) {
     if (this.type === 'word') {
@@ -90,10 +100,11 @@ export class GodangoReel {
   }
 
   /**
-   *
-   * @param {GodangoReel['faces'][0]} face
+   * When a face becomes visible, this reel's content is the content of the visible face.
+   * The length of the displayed passphrase is updated accordingly.
+   * @param {GodangoReel['faces'][0]} face the face which is now visible.
    */
-  isVisible(face) {
+  isNowVisible(face) {
     this.parent.currentLength -= this.value?.length ?? 0;
     this.content = face.textContent;
     this.parent.currentLength += this.value?.length ?? 0;
@@ -142,11 +153,11 @@ export class GodangoReel {
     if (this.type !== 'controller') {
       if (this.#position < 0.5 && newPosition >= 0.5) {
         this.refresh(this.faces[0]);
-        this.isVisible(this.faces[1]);
+        this.isNowVisible(this.faces[1]);
       }
       if (newPosition > 1) {
         this.refresh(this.faces[1]);
-        this.isVisible(this.faces[0]);
+        this.isNowVisible(this.faces[0]);
       }
     }
     this.#position = newPosition % 1;
@@ -154,9 +165,8 @@ export class GodangoReel {
   }
 
   /**
-   *
-   * @param {GodangoMachine} parent
-   * @param {GodangoReel['type']} [type]
+   * @param {GodangoMachine} parent the machine which contains this reel.
+   * @param {GodangoReel['type']} [type] the type of reel to create.
    */
   constructor(parent, type = 'word') {
     this.parent = parent;
@@ -186,7 +196,7 @@ export class GodangoReel {
     this.parent.machine.appendChild(this.reel);
     this.parent.reels.push(this);
     // force count to update
-    this.isVisible(this.faces[0]);
+    this.isNowVisible(this.faces[0]);
   }
 }
 
@@ -250,6 +260,9 @@ export default class GodangoMachine {
    */
   movingReels = 0;
 
+  /**
+   * Constants used in the animation of any machine.
+   */
   static constants = Object.freeze({
     NEVER: -Infinity,
     /**
