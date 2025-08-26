@@ -6,6 +6,12 @@
 import { sauce, word } from './math.js';
 
 /**
+ * @typedef {Object} GodangoConfiguration
+ * @property {string} [separator] the string to place between words.
+ * @property {number} wordCount the number of word reels (not including the controller or sauce reel).
+ */
+
+/**
  * A series of spinning reels which snap into place with a spring-like action,
  * constantly randomizing the words displayed on their faces.
  * Designed for the purpose of generating passphrases.
@@ -17,6 +23,12 @@ export default class GodangoMachine {
    * @type {HTMLElement}
    */
   machine;
+
+  /**
+   * The current configuration of the machine.
+   * @type {GodangoConfiguration}
+   */
+  configuration;
 
   /**
    * The reels of the machine.
@@ -448,8 +460,9 @@ export default class GodangoMachine {
   /**
    * Construct a new machine.
    * @param {Element} root an element which contains all components of the machine.
+   * @param {GodangoConfiguration} [configuration] the configuration for the machine.
    */
-  constructor(root) {
+  constructor(root, configuration = { wordCount: 5 }) {
     /** @type {HTMLElement | null} */
     const nullableMachine = root.querySelector('.godango-machine');
     if (nullableMachine === null) {
@@ -457,18 +470,34 @@ export default class GodangoMachine {
     }
     this.machine = nullableMachine;
 
-    this.reels = Array.from(this.machine.querySelectorAll('.reel'));
-    this.faces = this.reels.map((reel) => {
-      /**
-       * @type {HTMLElement[]}
-       */
-      const theseFaces = Array.from(reel.querySelectorAll('.face'));
-      if (theseFaces.length !== 2) {
-        throw new Error('Each reel must have exactly two faces');
+    this.configuration = configuration;
+
+    const createFace = () => {
+      const face = document.createElement('div');
+      face.classList.add('face');
+      face.textContent = 'SPIN';
+      return face;
+    };
+
+    this.faces = [];
+    this.reels = [];
+    for (let i = 0; i < configuration.wordCount + 2; i++) {
+      const reel = document.createElement('div');
+      reel.classList.add('reel');
+      /** @type {[HTMLElement, HTMLElement]} */
+      const faces = [createFace(), createFace()];
+      reel.replaceChildren(...faces);
+      if (i === 0) {
+        reel.classList.add('controller', 'buttonlike');
+        reel.setAttribute('role', 'button');
+        reel.setAttribute('tabindex', '0');
+      } else if (i === configuration.wordCount + 1) {
+        reel.classList.add('sauce');
       }
-      const [a, b] = theseFaces;
-      return [a, b];
-    });
+      this.machine.appendChild(reel);
+      this.faces.push(faces);
+      this.reels.push(reel);
+    }
 
     /** @type {HTMLInputElement | null} */
     const nullableLengthBox = root.querySelector('.length-value');

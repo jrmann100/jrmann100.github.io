@@ -20,11 +20,10 @@ const getElements = (root) => {
       throw new Error(`could not find ${name}`);
     }
   }
-
-  const elements =
-    /** @type {{ [K in keyof typeof nullableElements]: NonNullable<typeof nullableElements[K]> }} */ (
-      nullableElements
-    );
+  /**
+   * @typedef { { [K in keyof typeof nullableElements]: NonNullable<typeof nullableElements[K]> }} Elements
+   */
+  const elements = /** @type {Elements} */ (nullableElements);
 
   return elements;
 };
@@ -47,6 +46,6 @@ export default async function main() {
   let configuring = false;
   elements.configureButton.addEventListener('click', () => {
     configuring = !configuring;
-    machine.configure(configuring);
+    // machine.configure(configuring);
   });
 }
