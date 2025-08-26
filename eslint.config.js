@@ -76,7 +76,8 @@ export default defineConfig([
         }
       ],
       'jsdoc/no-blank-blocks': 'warn',
-      quotes: ['warn', 'single', { avoidEscape: true }]
+      quotes: ['warn', 'single', { avoidEscape: true }],
+      'prefer-template': 'warn'
     },
     settings: {
       jsdoc: {
