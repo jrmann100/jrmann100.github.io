@@ -57,7 +57,7 @@ export default async function createComponent(
   { html = true, css = false, js = false } = {},
   options
 ) {
-  if (customElements.get(name + '-component') !== undefined) {
+  if (customElements.get(`${name}-component`) !== undefined) {
     return;
   }
   /**
@@ -148,5 +148,5 @@ export default async function createComponent(
     };
   }
 
-  customElements.define(name.replaceAll('/', '-') + '-component', CustomComponent, options);
+  customElements.define(`${name.replaceAll('/', '-')}-component`, CustomComponent, options);
 }

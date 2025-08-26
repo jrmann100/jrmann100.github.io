@@ -169,8 +169,8 @@ export default class RipplingCard extends HTMLElement {
       this.wrapper.classList.remove('deactivate');
       this.wrapper.classList.remove('activate');
       // These CSS variables dictate the ripple's origin.
-      this.wrapper.style.setProperty('--ripple-top', ev.clientY - box.y + 'px');
-      this.wrapper.style.setProperty('--ripple-left', ev.clientX - box.x + 'px');
+      this.wrapper.style.setProperty('--ripple-top', `${ev.clientY - box.y}px`);
+      this.wrapper.style.setProperty('--ripple-left', `${ev.clientX - box.x}px`);
       // We actually need a pause for the browser renderer
       // to realize that the "activate" class was reloaded.
       setTimeout(() => {

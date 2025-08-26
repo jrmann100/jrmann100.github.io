@@ -30,7 +30,7 @@ export default function main() {
     for (const item of items) {
       const figure = document.createElement('figure');
       const caption = document.createElement('figcaption');
-      caption.textContent = item.kind + ': ' + item.type;
+      caption.textContent = `${item.kind}: ${item.type}`;
       figure.append(caption);
       if (item.kind === 'string') {
         /**

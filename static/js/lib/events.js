@@ -27,10 +27,10 @@ document.addEventListener('beforenavigate', () => {
 
   let items = [];
   if (removedListeners > 0) {
-    items.push(removedListeners + ' event listener(s)');
+    items.push(`${removedListeners} event listener(s)`);
   }
   if (removedIntervals > 0) {
-    items.push(removedIntervals + ' interval(s)');
+    items.push(`${removedIntervals} interval(s)`);
   }
   if (items.length > 0) {
     console.debug(`💂 removed ${items.join(', ')}`);

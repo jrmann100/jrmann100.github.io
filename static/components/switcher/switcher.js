@@ -58,7 +58,7 @@ export default class Switcher extends HTMLElement {
       }
       input.setAttribute('name', name);
       input.setAttribute('type', 'radio');
-      const id = name + '-' + input.getAttribute('value');
+      const id = `${name}-${input.getAttribute('value')}`;
       input.setAttribute('id', id);
       const label = document.createElement('label');
       label.setAttribute('for', id);

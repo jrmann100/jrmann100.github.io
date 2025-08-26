@@ -3,6 +3,9 @@ import Tab from './tab/tab.js';
 // TODO: document that we are incorrectly using "tab" to define a tab panel,
 // and "label" to define a tab.
 
+/**
+ *
+ */
 export default class Tabs extends HTMLElement {
   /**
    * TODO: descriptions should be required on class properties
@@ -15,6 +18,9 @@ export default class Tabs extends HTMLElement {
    */
   tabs;
 
+  /**
+   *
+   */
   wrapper;
 
   /**
@@ -45,6 +51,9 @@ export default class Tabs extends HTMLElement {
     }
   }
 
+  /**
+   *
+   */
   handleChange() {
     if (window.location.hash.length < 2) {
       return;

@@ -43,7 +43,7 @@ async function locateRegions(root) {
     [start, end] = [commentsIterator.nextNode(), commentsIterator.nextNode()]
   ) {
     const label = start.nodeValue?.match(tagRegex)?.[1];
-    if ('/' + label !== end.nodeValue?.match(tagRegex)?.[1]) {
+    if (`/${label}` !== end.nodeValue?.match(tagRegex)?.[1]) {
       throw new Error(`document's region tags don't match: '${start}' and '${end}'`);
     }
     const range = document.createRange();
@@ -70,7 +70,7 @@ async function load(path) {
   await nextEventLoop();
 
   // fetch the fragment text.
-  let text = await (await fetch('/fragments/' + path)).text(); // todo fallback
+  let text = await (await fetch(`/fragments/${path}`)).text(); // todo fallback
   // turn the fragment into DOM content.
   const contextualFragment = document.createRange().createContextualFragment(text);
 
