@@ -67,7 +67,6 @@ export class GodangoReel {
 
   /**
    * The text content of the currently visible face.
-   * @readonly
    * @type {string | null}
    */
   value = null;
@@ -106,7 +105,7 @@ export class GodangoReel {
    */
   isNowVisible(face) {
     this.parent.currentLength -= this.value?.length ?? 0;
-    this.content = face.textContent;
+    this.value = face.textContent;
     this.parent.currentLength += this.value?.length ?? 0;
   }
 
