@@ -57,7 +57,7 @@ window.layoutSetInterval = window.setInterval;
  * We override setInerval for page-local scripts.
  * @param {TimerHandler} handler called on every pulse.
  * @param {number | undefined} timeout milliseconds between pulses.
- * @param {any[]} args other args used by window.setInterval().
+ * @param {...any} args other args used by window.setInterval().
  * @returns {number} an interval ID.
  */
 window.setInterval = (handler, timeout, ...args) => {
