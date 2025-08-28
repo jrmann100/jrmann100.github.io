@@ -16,6 +16,12 @@ import Tab from './tab/tab.js';
  */
 export default class Tabs extends HTMLElement {
   /**
+   * A unique identifier for this tabs component.
+   * @type {string}
+   */
+  tabsId;
+
+  /**
    * The child tab labels, as mapped from their corresponding tab panels.
    * @type {Map<Tab, HTMLElement>}
    */
@@ -69,18 +75,22 @@ export default class Tabs extends HTMLElement {
    * If the hash does not match any tab panel ID, no action is taken.
    */
   handleChange() {
-    // checkme: maybe empty hash should revert to default tab once default tab is implemented?
-    if (window.location.hash.length < 2) {
+    const params = new URLSearchParams(window.location.search);
+    const tabId = params.get(this.tabsId);
+    if (tabId === null) {
       return;
     }
-    const tab = this.querySelector(window.location.hash);
+
+    const tab = this.tabs.find((tab) => tab.tabId === tabId);
     if (!(tab instanceof Tab)) {
+      // checkme: better to switch to a default tab?
       return;
     }
+
     if (this.currentTab !== null) {
       const prevLabel = this.tabLabels.get(this.currentTab);
       if (prevLabel === undefined) {
-        throw new Error(`Could not find corresponding label for tab ${this.currentTab.id}`);
+        throw new Error(`Could not find corresponding label for tab ${this.currentTab.tabId}`);
       }
       prevLabel.setAttribute('aria-current', 'false');
       prevLabel.tabIndex = -1;
@@ -88,7 +98,7 @@ export default class Tabs extends HTMLElement {
     }
     const label = this.tabLabels.get(tab);
     if (label === undefined) {
-      throw new Error(`Could not find corresponding label for tab ${tab.id}`);
+      throw new Error(`Could not find corresponding label for tab ${tab.tabId}`);
     }
     label.setAttribute('aria-current', 'location');
     label.removeAttribute('tabindex');
@@ -101,6 +111,11 @@ export default class Tabs extends HTMLElement {
    */
   constructor(templateContent) {
     super();
+    if (this.dataset.id === undefined || this.dataset.id === '') {
+      throw new Error('Tabs component must have a non-empty data-id!');
+    }
+    this.tabsId = this.dataset.id;
+
     if (templateContent === undefined) {
       throw new Error('Missing template content for tabs component, please register with HTML.');
     }
@@ -131,10 +146,10 @@ export default class Tabs extends HTMLElement {
 
     for (let i = 0; i < tabs.length; i++) {
       const tab = tabs[i];
-      if (tabIds.has(tab.id)) {
-        throw new Error(`Duplicate tab id '${tab.id}' found in tabs component!`);
+      if (tabIds.has(tab.tabId)) {
+        throw new Error(`Duplicate tab id '${tab.tabId}' found in tabs component!`);
       }
-      tabIds.add(tab.id);
+      tabIds.add(tab.tabId);
       // TODO: semantic tagging - and arrow navigation with tabindex -1
       const label = document.createElement('button');
       label.classList.add('lbl');
@@ -175,24 +190,27 @@ export default class Tabs extends HTMLElement {
 
     this.replaceChildren(templateContent);
 
-    // TODO: default selected tab using attr (lower precedence than hash) - check exclusive?
-    if (window.location.hash.length < 2) {
+    const params = new URLSearchParams(window.location.search);
+    // TODO: default selected tab using attr (lower precedence than search) - check exclusive?
+    if (!params.has(`tab-${this.tabsId}`)) {
       if (tabs.length > 0) {
-        window.history.replaceState(null, '', `#${tabs[0].id}`);
+        this.select(tabs[0]);
       }
     }
     this.handleChange();
 
-    window.addEventListener('hashchange', () => this.handleChange());
+    window.addEventListener('popstate', () => this.handleChange());
   }
 
   /**
-   * Trigger selection of a tab panel by changing the page's URL hash.
+   * Trigger selection of a tab panel by changing the page's search params.
    * @param {Tab} tab the tab panel to select.
    */
   select(tab) {
-    window.history.replaceState(5, '', `#${tab.id}`);
-    this.handleChange(); // replaceState does not trigger hashchange.
+    const url = new URL(window.location.href);
+    url.searchParams.set(this.tabsId, tab.tabId);
+    window.history.replaceState(5, '', url);
+    this.handleChange(); // replaceState obviously doesn't trigger popstate
     this.tabLabels.get(tab)?.focus();
   }
 }

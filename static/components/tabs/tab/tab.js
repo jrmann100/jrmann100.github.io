@@ -8,11 +8,18 @@ export default class Tab extends HTMLElement {
    */
   label; // todo: upgrade to an html element?
 
+  /**
+   * A unique identifier for this tab.
+   * @type {string}
+   */
+  tabId;
+
   constructor() {
     super();
-    if (this.id === '') {
-      throw new Error('Tab component must have a non-empty id!');
+    if (this.dataset.id === undefined || this.dataset.id === '') {
+      throw new Error('Tab component must have a non-empty data-name!');
     }
-    this.label = this.dataset.label ?? this.id;
+    this.tabId = this.dataset.id;
+    this.label = this.dataset.label ?? this.tabId;
   }
 }

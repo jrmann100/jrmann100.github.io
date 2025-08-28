@@ -39,13 +39,6 @@ export class GodangoReel {
   faces;
 
   /**
-   * The separator to the left of the reel, if any.
-   * @readonly
-   * @type {HTMLElement | null}
-   */
-  leftSeparator = null;
-
-  /**
    * The current velocity of the reel.
    * Positive values indicate downward movement.
    * @type {number}
@@ -169,30 +162,17 @@ export class GodangoReel {
    */
   constructor(parent, type = 'word') {
     this.parent = parent;
-    this.reel = document.createElement('div');
+    this.reel = document.createElement(type === 'controller' ? 'button' : 'div');
     this.reel.classList.add('reel');
     this.type = type;
     this.faces = [this.createFace(), this.createFace()];
     this.reel.replaceChildren(...this.faces);
-
+    this.reel.classList.add(type);
     if (type === 'controller') {
-      this.reel.classList.add('controller', 'buttonlike');
-      this.reel.setAttribute('role', 'button');
-      this.reel.setAttribute('tabindex', '0');
+      this.parent.machine.insertBefore(this.reel, this.parent.contentWrapper);
     } else {
-      this.leftSeparator = document.createElement('div');
-      this.leftSeparator.classList.add('separator');
-      this.leftSeparator.textContent =
-        type === 'sauce'
-          ? this.parent.configuration.sauceSeparator
-          : this.parent.configuration.separator || '␣';
-      this.parent.machine.appendChild(this.leftSeparator);
+      this.parent.contentWrapper.appendChild(this.reel);
     }
-
-    if (type === 'sauce') {
-      this.reel.classList.add('sauce');
-    }
-    this.parent.machine.appendChild(this.reel);
     this.parent.reels.push(this);
     // force count to update
     this.isNowVisible(this.faces[0]);
@@ -218,6 +198,12 @@ export default class GodangoMachine {
    * @type {HTMLElement}
    */
   machine;
+
+  /**
+   * Container element for the non-controller reels.
+   * @type {HTMLElement}
+   */
+  contentWrapper;
 
   /**
    * The current configuration of the machine.
@@ -522,7 +508,26 @@ export default class GodangoMachine {
     }
     this.machine = nullableMachine;
 
+    this.contentWrapper = document.createElement('div');
+    this.contentWrapper.classList.add('content');
+    this.machine.appendChild(this.contentWrapper);
+
     this.configuration = configuration;
+
+    new GodangoReel(this, 'controller');
+    for (let i = 0; i < this.configuration.wordCount; i++) {
+      new GodangoReel(this, 'word');
+    }
+    new GodangoReel(this, 'sauce');
+
+    // <!-- todo: size length-value based on max length -->
+    // <button name="copy" type="button">copy (<span class="length-value">(23)</span>)</button>
+    const copyButton = this.machine.appendChild(document.createElement('button'));
+    Object.assign(copyButton, {
+      name: 'copy',
+      type: 'button',
+      innerHTML: 'copy (<span class="length-value">(23)</span>)'
+    });
 
     /** @type {HTMLInputElement | null} */
     const nullableLengthBox = root.querySelector('.length-value');
@@ -530,12 +535,6 @@ export default class GodangoMachine {
       throw new Error('Length box element not found');
     }
     this.lengthBox = nullableLengthBox;
-
-    new GodangoReel(this, 'controller');
-    for (let i = 0; i < this.configuration.wordCount; i++) {
-      new GodangoReel(this, 'word');
-    }
-    new GodangoReel(this, 'sauce');
 
     // don't animate the initial length
     this.displayedLength = this.currentLength;

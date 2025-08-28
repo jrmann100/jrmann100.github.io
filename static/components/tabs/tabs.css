@@ -38,7 +38,7 @@ tabs-component {
 
     --border-bottom-shadow: inset 0 calc(-1 * var(--default-border-width)) var(--black);
     --adjacent-shadow: inset var(--adjacent-shadow-offset-x, 0)
-      var(--adjacent-shadow-offset-y, -0.4rem) 0 rgba(0, 0, 0, 0.1);
+      var(--adjacent-shadow-offset-y, -0.3rem) 0 rgba(0, 0, 0, 0.1);
     box-shadow: var(--border-bottom-shadow), var(--adjacent-shadow);
 
     /* background-color: rgba(0, 0, 0, 0.03); */
