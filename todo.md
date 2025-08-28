@@ -44,3 +44,5 @@ run all lint steps without short-circuiting, but report if any fail?
 godango length box could have little bar on the side which fills up from min to max possible length
 
 require modules have jsdoc description/author
+
+theoretically links could have data-transition which triggers a class to be applied on body for the duration of the view transition. just store that on the history state and you can have the same/variant class on popstate.
