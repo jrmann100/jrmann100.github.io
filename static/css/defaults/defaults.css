@@ -27,10 +27,6 @@ body {
   justify-content: center;
 }
 
-a:hover {
-  text-decoration: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important; /* checkme could be harmful for visible */

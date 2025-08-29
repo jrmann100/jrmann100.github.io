@@ -19,5 +19,9 @@ import createComponent from './components.js';
     css: 'global',
     js: true
   });
+  await createComponent('tipme', {
+    js: true,
+    html: true
+  });
   console.log('🧩 components module ready.');
 })();

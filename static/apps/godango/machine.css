@@ -40,6 +40,7 @@
     flex: 0 0 11ch;
   }
 
+  /* checkme: no hover state */
   .controller {
     border-radius: 0.25rem;
     --controller-shadow-color: color-mix(in srgb, var(--black) 50%, transparent);

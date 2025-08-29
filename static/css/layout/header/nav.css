@@ -148,3 +148,11 @@ header nav .fake-details .nav-dropdown {
   gap: 0.5rem;
   font-weight: initial;
 }
+
+header nav .tip button {
+  white-space: nowrap;
+  /* overrides shadow color */
+  --black: var(--accent);
+  color: var(--black);
+  border-color: var(--black);
+}
