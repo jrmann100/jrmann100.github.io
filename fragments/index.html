@@ -114,7 +114,7 @@ jordan mann
         >
       </li>
       <li>
-        <a href="https://jsfiddle.net/user/jrmann100">
+        <a href="https://jsfiddle.net/u/jrmann100">
           <svg
             aria-label="JSFiddle"
             viewBox="0 0 512 512"
